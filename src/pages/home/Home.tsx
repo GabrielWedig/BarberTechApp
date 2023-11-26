@@ -1,3 +1,10 @@
+import { Header } from '../../components'
+
 export const Home = () => {
-  return <p>Olá</p>;
-};
+  return (
+    <>
+      <Header />
+      <p>Olá</p>
+    </>
+  )
+}
