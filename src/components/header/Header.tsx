@@ -1,19 +1,29 @@
 import { Button } from '..'
-
-// const logo = require('../../../public/img/logo.svg')
+import { ReactComponent as Logo } from '../../img/logo.svg'
+import * as S from './style'
 
 export const Header = () => {
   return (
-    <header>
-      {/* <img src={logo} alt="logo" /> */}
+    <S.Header>
+      <Logo />
       <nav>
-        <Button>Home</Button>
-        <Button>Serviços</Button>
-        <Button>Sobre</Button>
-        <Button>Contatos</Button>
-        <Button>Depoimentos</Button>
+        <Button type="transparent-active" onClick={() => console.log()}>
+          Home
+        </Button>
+        <Button type="transparent" onClick={() => console.log()}>
+          Serviços
+        </Button>
+        <Button type="transparent" onClick={() => console.log()}>
+          Sobre
+        </Button>
+        <Button type="transparent" onClick={() => console.log()}>
+          Contatos
+        </Button>
+        <Button type="transparent" onClick={() => console.log()}>
+          Depoimentos
+        </Button>
       </nav>
-      <Button>Login</Button>
-    </header>
+      <Button onClick={() => console.log()}>Login</Button>
+    </S.Header>
   )
 }
