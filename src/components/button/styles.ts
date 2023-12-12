@@ -11,7 +11,7 @@ const CommonButton = styled(Button)({
 
 export const PrimaryButton = styled(CommonButton)({
   backgroundColor: colors.orange,
-  color: colors.black,
+  color: colors.black.main,
   padding: '10px 60px',
   borderRadius: '8px',
   fontWeight: '400',
