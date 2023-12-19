@@ -1,22 +1,19 @@
 import styled from 'styled-components'
-import { colors, shadows } from '../../constants'
-import aboutImg from '../../img/about.jpeg'
+import { colors, shadows } from '../../../constants'
+import aboutImg from '../../../img/about.jpeg'
 
-//TODO: separar arquivos por sections e fazer ser responsivo
+//TODO: fazer todas as páginas responsivas
 export const AboutImg = styled.div`
   width: 100%;
-  height: calc(100vh - 98px);
+  padding-top: 98px;
+  height: 100vh;
   background: linear-gradient(
-      ${colors.blue.ninety} 20.37%,
+      ${colors.blue.eighty} 20.37%,
       ${colors.blue.fifty} 56.89%,
       ${colors.blue.main} 89.13%,
       ${colors.blue.main} 111.22%
     ),
-    url(${aboutImg});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 100%;
-  position: relative;
+    url(${aboutImg}) center / 100% no-repeat;
 `
 
 export const TitleBox = styled.section`

@@ -12,6 +12,7 @@ interface ButtonProps {
 
 type ButtonType = 'primary' | 'transparent' | 'transparent-active'
 
+//TODO: arrumar comportamento do hover / melhorar
 const getButtonByType = (type: ButtonType) => {
   switch (type) {
     case 'primary':

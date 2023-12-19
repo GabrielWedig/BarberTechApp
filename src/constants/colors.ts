@@ -10,7 +10,7 @@ export const colors = {
   blue: {
     main: '#0D121E',
     fifty: 'rgba(13, 18, 30, 0.50)',
-    ninety: 'rgba(13, 18, 30, 0.90)'
+    eighty: 'rgba(13, 18, 30, 0.80)'
   }
 }
 
