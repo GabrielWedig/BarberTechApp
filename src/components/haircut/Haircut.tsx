@@ -1,3 +1,4 @@
+import { getImageSource } from '../../utils/getImageSource'
 import * as S from './style'
 
 interface HaircutProps {
@@ -8,13 +9,16 @@ interface HaircutProps {
 }
 
 export const Haircut = ({ name, price, photo, description }: HaircutProps) => {
-  console.log(photo)
+  const formatPrice = (price: number) => {
+    return `R$ ${price},00`
+  }
+  
   return (
     <S.Haircut>
-      <img src={photo} alt="haircut-photo" />
+      <S.Image url={getImageSource(photo)} />
       <div className="footer">
         <span>{name}</span>
-        <span>{price}</span>
+        <span className="price">{formatPrice(price)}</span>
       </div>
     </S.Haircut>
   )

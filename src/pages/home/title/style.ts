@@ -6,7 +6,7 @@ import { getImageSource } from '../../../utils/getImageSource'
 export const AboutImg = styled.div`
   width: 100%;
   padding-top: 98px;
-  height: 100vh;
+  height: calc(100vh - 98px);
   background: linear-gradient(
       ${colors.blue.eighty} 20.37%,
       ${colors.blue.fifty} 56.89%,

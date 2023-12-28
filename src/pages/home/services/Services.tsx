@@ -10,7 +10,7 @@ import { Haircut } from '../../../components'
 export const Services = () => {
   const content = contentJson.home.services
   const { getAllHaircuts } = useHaircuts()
-  const { state: haircuts, reset: setHaircuts } =
+  const { state: haircuts, set: setHaircuts } =
     useArrayState<GetAllHaircutsResponse>()
 
   useEffect(() => {
@@ -30,16 +30,18 @@ export const Services = () => {
 
   return (
     <S.ServicesContainer>
-      <h3>{content.title}</h3>
+      <h2>{content.title}</h2>
       <p>{content.text}</p>
-      {haircuts.map((h) => (
-        <Haircut
-          name={h.name}
-          photo={h.imageSource}
-          description={h.description}
-          price={h.price}
-        />
-      ))}
+      <div className="haircuts-box">
+        {haircuts.map((h) => (
+          <Haircut
+            name={h.name}
+            photo={h.imageSource}
+            description={h.description}
+            price={h.price}
+          />
+        ))}
+      </div>
     </S.ServicesContainer>
   )
 }

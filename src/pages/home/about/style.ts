@@ -15,7 +15,7 @@ interface ImageProps {
 export const AboutContainer = styled(Container)`
   display: flex;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh - 98px);
   background-color: ${colors.blue.main};
   position: relative;
 `

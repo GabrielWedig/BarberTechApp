@@ -8,16 +8,12 @@ export const useArrayState = <T>(initialState: T[] = []) => {
   }
 
   const remove = (index: number) => {
-    setState((current) => {
-      const newState = [...current]
-      newState.splice(index, 1)
-      return newState
-    })
+    setState((current) => [...current].splice(index, 1))
   }
 
-  const reset = (newArray: T[]) => {
+  const set = (newArray: T[]) => {
     setState(newArray)
   }
 
-  return { state, add, remove, reset }
+  return { state, add, remove, set }
 }
