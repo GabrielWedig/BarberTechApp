@@ -1,4 +1,3 @@
-//TODO: renomear o arquivo para constants
 export const colors = {
   black: {
     main: '#000000',

@@ -2,7 +2,6 @@ import { Button } from '..'
 import { ReactComponent as Logo } from '../../img/logo.svg'
 import * as S from './style'
 
-// TODO: fazer ele sumindo depois de um tempo
 export const Header = () => {
   return (
     <S.Header>

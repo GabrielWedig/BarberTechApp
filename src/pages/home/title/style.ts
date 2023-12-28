@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import { colors, shadows } from '../../../constants'
 import aboutImg from '../../../img/about.jpeg'
 
-//TODO: fazer todas as páginas responsivas
 export const AboutImg = styled.div`
   width: 100%;
   padding-top: 98px;
