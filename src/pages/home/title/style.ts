@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { colors, shadows } from '../../../constants'
-import aboutImg from '../../../img/about.jpeg'
+import contentJson from '../../../content.json'
+import { getImageSource } from '../../../utils/getImageSource'
 
 export const AboutImg = styled.div`
   width: 100%;
@@ -12,7 +13,7 @@ export const AboutImg = styled.div`
       ${colors.blue.main} 89.13%,
       ${colors.blue.main} 111.22%
     ),
-    url(${aboutImg}) center / 100% no-repeat;
+    url(${getImageSource(contentJson.home.title.image)}) center / 100% no-repeat;
 `
 
 export const TitleBox = styled.section`

@@ -1,19 +1,17 @@
 import * as S from './style'
-import content from '../../../content.json'
-import image1 from '../../../img/about1.jpeg'
-import image2 from '../../../img/about2.jpeg'
-import image3 from '../../../img/about3.jpeg'
+import contentJson from '../../../content.json'
 import googlePlay from '../../../img/google-play-badge.png'
 import appStore from '../../../img/app-store-badge.svg'
+import { getImageSource } from '../../../utils/getImageSource'
 
 export const About = () => {
-  const { title, text1, text2 } = content.home.about
+  const content = contentJson.home.about
 
   return (
     <S.AboutContainer>
       <S.ImagesBox>
         <S.Image
-          url={image1}
+          url={getImageSource(content.images[0])}
           width="320px"
           height="370px"
           top="20%"
@@ -21,19 +19,24 @@ export const About = () => {
           zindex={1}
         />
         <S.Image
-          url={image2}
+          url={getImageSource(content.images[1])}
           width="250px"
           height="300px"
           bottom="10%"
           left="30%"
           zindex={2}
         />
-        <S.Image url={image3} width="400px" height="300px" bottom="11%" />
+        <S.Image
+          url={getImageSource(content.images[2])}
+          width="400px"
+          height="300px"
+          bottom="11%"
+        />
       </S.ImagesBox>
       <S.ContentBox>
-        <h2>{title}</h2>
-        <p>{text1}</p>
-        <p>{text2}</p>
+        <h2>{content.title}</h2>
+        <p>{content.text1}</p>
+        <p>{content.text2}</p>
         <S.BadgeBox>
           <button>
             <img src={googlePlay} alt="google-play" />
