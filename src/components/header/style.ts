@@ -10,7 +10,7 @@ export const Header = styled.header`
     align-items: center;
     justify-content: space-between;
     position: fixed;
-    z-index: 2;
+    z-index: 3;
 
     button {
         margin: 0 8px;

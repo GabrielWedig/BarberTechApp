@@ -15,7 +15,7 @@ interface ImageProps {
 export const AboutContainer = styled(Container)`
   display: flex;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh - 98px);
   background-color: ${colors.blue.main};
   position: relative;
 `
@@ -25,7 +25,6 @@ export const ImagesBox = styled.div`
   width: 50%;
 `
 
-// TODO: resolver os warnings amarelos / diminuir o appStore no photoshop
 export const Image = styled.div<ImageProps>`
   background: url(${(props) => props.url}) center / 100% no-repeat;
   width: ${(props) => props.width};

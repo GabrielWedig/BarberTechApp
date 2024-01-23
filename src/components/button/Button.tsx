@@ -5,14 +5,14 @@ import {
 } from './styles'
 
 interface ButtonProps {
-  children: React.ReactNode
+  content?: string
+  children?: React.ReactNode
   type?: ButtonType
   onClick: () => void
 }
 
 type ButtonType = 'primary' | 'transparent' | 'transparent-active'
 
-//TODO: arrumar comportamento do hover / melhorar
 const getButtonByType = (type: ButtonType) => {
   switch (type) {
     case 'primary':
@@ -28,9 +28,10 @@ const getButtonByType = (type: ButtonType) => {
 
 export const Button = ({
   type = 'primary',
+  content,
   children,
   onClick
 }: ButtonProps) => {
   const StyledButton = getButtonByType(type)
-  return <StyledButton onClick={onClick}>{children}</StyledButton>
+  return <StyledButton onClick={onClick}>{children ?? content}</StyledButton>
 }

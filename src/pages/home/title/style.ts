@@ -1,19 +1,19 @@
 import styled from 'styled-components'
 import { colors, shadows } from '../../../constants'
-import aboutImg from '../../../img/about.jpeg'
+import contentJson from '../../../content.json'
+import { getImageSource } from '../../../utils/getImageSource'
 
-//TODO: fazer todas as páginas responsivas
 export const AboutImg = styled.div`
   width: 100%;
   padding-top: 98px;
-  height: 100vh;
+  height: calc(100vh - 98px);
   background: linear-gradient(
       ${colors.blue.eighty} 20.37%,
       ${colors.blue.fifty} 56.89%,
       ${colors.blue.main} 89.13%,
       ${colors.blue.main} 111.22%
     ),
-    url(${aboutImg}) center / 100% no-repeat;
+    url(${getImageSource(contentJson.home.title.image)}) center / 100% no-repeat;
 `
 
 export const TitleBox = styled.section`
