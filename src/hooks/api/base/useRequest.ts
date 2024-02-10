@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios'
 
 export const useRequest = (baseURL: string) => {
   const instance = axios.create({
-    baseURL: `https://localhost:7027/api/`
+    baseURL: `https://barber-tech-api.onrender.com/api/`
     //headers,
   })
 

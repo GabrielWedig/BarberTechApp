@@ -6,18 +6,35 @@ interface ImageProps {
 }
 
 export const Haircut = styled.div`
-  width: 350px;
+  width: 325px;
   height: 400px;
   background-color: white;
-  filter: drop-shadow(4px 5px 8px rgba(0, 0, 0, 0.35));
-  border-radius: 10px;
+  filter: drop-shadow(4px 5px 8px rgba(0, 0, 0, 0.50));
+  border-radius: 0 0 10px 10px;
 
   .footer {
     padding: 0 20px;
-    height: 15%;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .row {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  button {
+    color: ${colors.black.main};
+    background-color: transparent;
+    text-decoration: underline;
+    font-weight: 400;
+    border: none;
+    font-size: 14px;
   }
 
   span {
@@ -34,8 +51,7 @@ export const Haircut = styled.div`
 `
 
 export const Image = styled.div<ImageProps>`
-  border-radius: 10px 10px 0 0;
   background: url(${(props) => props.url}) center / 150% no-repeat;
   width: 100%;
-  height: 85%;
+  height: 80%;
 `
