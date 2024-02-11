@@ -1,0 +1,38 @@
+import * as S from './style'
+import contentJson from '../../../content.json'
+import { usingTryCatch } from '../../../hooks/api/usingTryCatch'
+import { useEffect } from 'react'
+import { useArrayState } from '../../../hooks/useArrayState'
+import { useEstablishments } from '../../../hooks/api/establishments/useEstablishments'
+import { EstablishmentData } from '../../../hooks/api/establishments/Establishments'
+
+export const Localization = () => {
+  const content = contentJson.home.localization
+
+  const { getAllEstablishments } = useEstablishments()
+
+  const { state: establishments, set: setEstablishments } =
+    useArrayState<EstablishmentData>()
+
+  useEffect(() => {
+    fetchEstablishments()
+  }, [])
+
+  const fetchEstablishments = async () => {
+    const { data, error } = await usingTryCatch(getAllEstablishments())
+
+    if (error || !data) {
+      return
+      // chama modal
+    }
+
+    setEstablishments(data)
+    console.log(data)
+  }
+
+  return (
+    <S.TeamContainer>
+      <h2>{content.title}</h2>
+    </S.TeamContainer>
+  )
+}
