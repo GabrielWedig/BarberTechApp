@@ -1,10 +1,10 @@
 import { useRequest } from '../base/useRequest'
-import { GetAllHaircutsResponse } from './Haircuts'
+import { HaircutData } from './Haircuts'
 
 export const useHaircuts = () => {
   const { get } = useRequest('haircuts')
 
-  const getAllHaircuts = async (): Promise<GetAllHaircutsResponse[]> => {
+  const getAllHaircuts = async (): Promise<HaircutData[]> => {
     const { data } = await get()
     return data
   }
