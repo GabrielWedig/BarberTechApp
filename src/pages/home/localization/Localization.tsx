@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { useArrayState } from '../../../hooks/useArrayState'
 import { useEstablishments } from '../../../hooks/api/establishments/useEstablishments'
 import { EstablishmentData } from '../../../hooks/api/establishments/Establishments'
+import { Establishment } from '../../../components'
 
 export const Localization = () => {
   const content = contentJson.home.localization
@@ -27,12 +28,16 @@ export const Localization = () => {
     }
 
     setEstablishments(data)
-    console.log(data)
   }
 
   return (
-    <S.TeamContainer>
+    <S.EstablishmentsContainer>
       <h2>{content.title}</h2>
-    </S.TeamContainer>
+      <div className="establishments-box">
+        {establishments.map((establishment) => (
+          <Establishment establishment={establishment} />
+        ))}
+      </div>
+    </S.EstablishmentsContainer>
   )
 }
