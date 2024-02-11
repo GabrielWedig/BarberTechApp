@@ -1,8 +1,9 @@
-import { Header } from '../../components'
+import { Footer, Header } from '../../components'
 import { About } from './about/About'
 import { Title } from './title/Title'
 import { Services } from './services/Services'
-import { Team } from './team/team'
+import { Team } from './team/Team'
+import { Localization } from './localization/Localization'
 
 export const Home = () => {
   return (
@@ -12,6 +13,8 @@ export const Home = () => {
       <About />
       <Services />
       <Team />
+      <Localization />
+      <Footer />
     </>
   )
 }
