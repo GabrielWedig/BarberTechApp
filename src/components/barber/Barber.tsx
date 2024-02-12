@@ -1,16 +1,16 @@
-import { BarberData } from '../../hooks/api/barbers/Barbers'
-import { getImageSource } from '../../utils/getImageSource'
 import * as S from './style'
-import InstagramIcon from '@mui/icons-material/Instagram'
-import FacebookIcon from '@mui/icons-material/Facebook'
+import { Instagram, Facebook } from '@mui/icons-material'
 import { useState } from 'react'
-import { Stars } from '../stars/Stars'
+import { Stars } from '..'
 
 interface BarberProps {
-  barber: BarberData
+  name: string
+  rating: number
+  about: string
+  imageSource: string
 }
 
-export const Barber = ({ barber }: BarberProps) => {
+export const Barber = ({ name, rating, about, imageSource }: BarberProps) => {
   const [showInfos, setShowInfos] = useState(false)
 
   return (
@@ -20,18 +20,18 @@ export const Barber = ({ barber }: BarberProps) => {
     >
       <S.BarberMask showInfos={showInfos}>
         <div className="barber-header">
-          <span>{barber.name}</span>
-          <Stars rating={barber.qntStars} />
+          <span>{name}</span>
+          <Stars rating={rating} />
         </div>
-        <p>{barber.about}</p>
+        <p>{about}</p>
       </S.BarberMask>
-      <S.Image url={getImageSource(barber.imageSource)} />
+      <S.Image url={imageSource} />
       <div className="social-box">
         <button>
-          <InstagramIcon fontSize="large" />
+          <Instagram fontSize="large" />
         </button>
         <button>
-          <FacebookIcon fontSize="large" />
+          <Facebook fontSize="large" />
         </button>
       </div>
     </S.Barber>

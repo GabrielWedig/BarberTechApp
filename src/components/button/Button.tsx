@@ -1,37 +1,36 @@
-import {
-  PrimaryButton,
-  TransparentButton,
-  TransparentActiveButton
-} from './styles'
+import * as S from './style'
 
 interface ButtonProps {
-  content?: string
-  children?: React.ReactNode
+  children: React.ReactNode
   type?: ButtonType
   onClick: () => void
 }
 
-type ButtonType = 'primary' | 'transparent' | 'transparent-active'
+type ButtonType = 'primary' | 'transparent'
 
-const getButtonByType = (type: ButtonType) => {
-  switch (type) {
-    case 'primary':
-      return PrimaryButton
-    case 'transparent':
-      return TransparentButton
-    case 'transparent-active':
-      return TransparentActiveButton
-    default:
-      return PrimaryButton
+const types = {
+  primary: {
+    background: 'orange',
+    textColor: 'black'
+  },
+  transparent: {
+    background: 'transparent',
+    textColor: 'white'
   }
 }
 
 export const Button = ({
-  type = 'primary',
-  content,
   children,
+  type = 'primary',
   onClick
 }: ButtonProps) => {
-  const StyledButton = getButtonByType(type)
-  return <StyledButton onClick={onClick}>{children ?? content}</StyledButton>
+  return (
+    <S.StyledButton
+      background={types[type].background}
+      textColor={types[type].textColor}
+      onClick={onClick}
+    >
+      {children}
+    </S.StyledButton>
+  )
 }

@@ -1,4 +1,3 @@
-import { colors } from './../../constants/colors'
 import styled from 'styled-components'
 
 interface ImageProps {
@@ -12,7 +11,7 @@ interface HaircutMaskProps {
 export const Haircut = styled.button`
   width: 325px;
   height: 450px;
-  background-color: ${colors.white};
+  background-color: var(--white);
   filter: drop-shadow(4px 5px 8px rgba(0, 0, 0, 0.50));
   border-radius: 10px;
   border: none;
@@ -37,7 +36,7 @@ export const Haircut = styled.button`
   }
 
   button {
-    color: ${colors.black.main};
+    color: var(--black);
     background-color: transparent;
     text-decoration: underline;
     font-weight: 400;
@@ -48,7 +47,7 @@ export const Haircut = styled.button`
   p {
     width: 100%;
     margin: 0;
-    color: ${colors.white};
+    color: var(--white);
     text-align: start;
   }
 
@@ -59,13 +58,13 @@ export const Haircut = styled.button`
   .price {
     padding: 5px 10px;
     border-radius: 10px;
-    background-color: ${colors.black.main};
-    color: ${colors.white};
+    background-color: var(--black);
+    color: var(--white);
     font-weight: 400;
   }
 
   &:hover {
-    background-color: #E0E0E0;
+    background-color: var(--gray);
   }
 `
 
@@ -85,7 +84,7 @@ export const HaircutMask = styled.div<HaircutMaskProps>`
   opacity: ${(props) => props.showInfos ? 1 : 0};
 
   span {
-    color: ${colors.white};
+    color: var(--white);
   }
 `
 

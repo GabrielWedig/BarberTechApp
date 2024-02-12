@@ -1,14 +1,17 @@
+import * as S from './style'
 import { Button } from '..'
 import { ReactComponent as Logo } from '../../img/logo.svg'
-import * as S from './style'
+import { scrollToSection } from '../../utils'
 import contentJson from '../../content.json'
-import InstagramIcon from '@mui/icons-material/Instagram'
-import FacebookIcon from '@mui/icons-material/Facebook'
-import TwitterIcon from '@mui/icons-material/Twitter'
-import YoutubeIcon from '@mui/icons-material/YouTube'
-import RoomIcon from '@mui/icons-material/Room'
-import EmailIcon from '@mui/icons-material/Email'
-import PhoneIcon from '@mui/icons-material/Phone'
+import {
+  Phone,
+  Email,
+  Room,
+  YouTube,
+  Twitter,
+  Facebook,
+  Instagram
+} from '@mui/icons-material'
 
 export const Footer = () => {
   const content = contentJson.footer
@@ -16,39 +19,48 @@ export const Footer = () => {
   return (
     <S.Footer>
       <div className="column">
-        <Logo className="logo"/>
+        <Logo className="logo" />
         <p>{content.description}</p>
         <div className="social-box">
           <button className="social-icon">
-            <InstagramIcon />
+            <Instagram />
           </button>
           <button className="social-icon">
-            <FacebookIcon />
+            <Facebook />
           </button>
           <button className="social-icon">
-            <TwitterIcon />
+            <Twitter />
           </button>
           <button className="social-icon">
-            <YoutubeIcon />
+            <YouTube />
           </button>
         </div>
       </div>
       <div className="column">
         <h3>{content.fastLinks}</h3>
         <nav>
-          <Button type="transparent" onClick={() => console.log()}>
+          <Button type="transparent" onClick={() => scrollToSection('home')}>
             Home
           </Button>
-          <Button type="transparent" onClick={() => console.log()}>
+          <Button
+            type="transparent"
+            onClick={() => scrollToSection('services')}
+          >
             Serviços
           </Button>
-          <Button type="transparent" onClick={() => console.log()}>
+          <Button type="transparent" onClick={() => scrollToSection('about')}>
             Sobre
           </Button>
-          <Button type="transparent" onClick={() => console.log()}>
+          <Button
+            type="transparent"
+            onClick={() => scrollToSection('contacts')}
+          >
             Contatos
           </Button>
-          <Button type="transparent" onClick={() => console.log()}>
+          <Button
+            type="transparent"
+            onClick={() => scrollToSection('depositions')}
+          >
             Depoimentos
           </Button>
         </nav>
@@ -56,10 +68,16 @@ export const Footer = () => {
       <div className="column">
         <h3>{content.downloads}</h3>
         <nav>
-          <Button type="transparent" onClick={() => console.log()}>
+          <Button
+            type="transparent"
+            onClick={() => console.log('link google play')}
+          >
             Google Play
           </Button>
-          <Button type="transparent" onClick={() => console.log()}>
+          <Button
+            type="transparent"
+            onClick={() => console.log('link play store')}
+          >
             App Store
           </Button>
         </nav>
@@ -68,15 +86,15 @@ export const Footer = () => {
         <h3>{content.contacts}</h3>
         <div className="contacts-box">
           <div className="contact">
-            <RoomIcon />
+            <Room />
             <span>{content.address}</span>
           </div>
           <div className="contact">
-            <EmailIcon />
+            <Email />
             <span>{content.email}</span>
           </div>
           <div className="contact">
-            <PhoneIcon />
+            <Phone />
             <span>{content.phone}</span>
           </div>
         </div>

@@ -1,20 +1,26 @@
-import { EstablishmentData } from '../../hooks/api/establishments/Establishments'
-import { getImageSource } from '../../utils/getImageSource'
-import { Stars } from '../stars/Stars'
+import { Stars } from '..'
 import * as S from './style'
 
 interface EstablishmentProps {
-  establishment: EstablishmentData
+  imageSource: string
+  address: string
+  rating: number
+  businessTime: string
 }
 
-export const Establishment = ({ establishment }: EstablishmentProps) => {
+export const Establishment = ({
+  imageSource,
+  address,
+  rating,
+  businessTime
+}: EstablishmentProps) => {
   return (
     <S.Establishment>
-      <S.Image url={getImageSource(establishment.imageSource)} />
+      <S.Image url={imageSource} />
       <S.Infos>
-        <span>{establishment.address}</span>
-        <Stars rating={establishment.qntStars} />
-        <span>{establishment.businessTime}</span>
+        <span>{address}</span>
+        <Stars rating={rating} />
+        <span>{businessTime}</span>
       </S.Infos>
     </S.Establishment>
   )

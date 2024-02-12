@@ -1,10 +1,9 @@
 import styled from 'styled-components'
-import { colors } from '../../constants'
 
 export const Footer = styled.footer`
   padding: 100px 200px;
-  background-color: ${colors.blue.main};
-  color: ${colors.white};
+  background-color: var(--blue);
+  color: var(--white);
   display: flex;
   justify-content: space-between;
 
@@ -25,9 +24,9 @@ export const Footer = styled.footer`
 
   .social-icon {
     border: none;
-    background-color: ${colors.white};
+    background-color: var(--white);
     border-radius: 100%;
-    color: ${colors.orange};
+    color: var(--orange);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,7 +46,7 @@ export const Footer = styled.footer`
   }
 
   .contact > svg {
-    color: ${colors.orange};
+    color: var(--orange);
     margin-right: 10px
   }
 `

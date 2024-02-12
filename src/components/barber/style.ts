@@ -1,4 +1,3 @@
-import { colors } from './../../constants/colors'
 import styled from 'styled-components'
 
 interface ImageProps {
@@ -27,7 +26,7 @@ export const Barber = styled.div`
 
   p,
   span {
-    color: ${colors.white};
+    color: var(--white);
   }
 
   span {

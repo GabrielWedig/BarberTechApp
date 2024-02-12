@@ -16,3 +16,12 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 100px;
 }
+
+:root {
+  --black: #000000;
+  --white: #FFFFFF;
+  --orange: #F0B35B;
+  --blue: #0D121E;
+  --transparent: transparent;
+  --gray: #E0E0E0;
+}

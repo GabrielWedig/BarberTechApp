@@ -1,4 +1,3 @@
-import { colors } from './../../constants/colors'
 import styled from 'styled-components'
 
 interface ImageProps {
@@ -25,9 +24,9 @@ export const Infos = styled.div`
   left: 25%;
   padding: 10px;
   border-radius: 10px;
-  border: 1px solid ${colors.white};
-  background-color: ${colors.black.main};
-  color: ${colors.white};
+  border: 1px solid var(--white);
+  background-color: var(--black);
+  color: var(--white);
   display: flex;
   flex-direction: column;
   align-items: center;
