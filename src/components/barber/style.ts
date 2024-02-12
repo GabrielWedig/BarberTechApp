@@ -61,7 +61,7 @@ export const BarberMask = styled.div<BarberMaskProps>`
   flex-direction: column;
   justify-content: flex-end;
   transition: opacity 0.5s ease;
-  opacity: ${(props) => props.$showInfos ? 1 : 0};
+  opacity: ${(props) => props.$showInfos === 'true' ? 1 : 0};
 `
 
 export const Image = styled.div<ImageProps>`

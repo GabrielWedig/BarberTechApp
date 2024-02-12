@@ -81,7 +81,7 @@ export const HaircutMask = styled.div<HaircutMaskProps>`
   flex-direction: column;
   justify-content: flex-end;
   transition: opacity 0.5s ease;
-  opacity: ${(props) => (props.$showInfos ? 1 : 0)};
+  opacity: ${(props) => (props.$showInfos === 'true' ? 1 : 0)};
 
   span {
     color: var(--white);
