@@ -1,17 +1,20 @@
 import * as S from './style'
 import contentJson from '../../../content.json'
-import { usingTryCatch } from '../../../hooks/api/usingTryCatch'
 import { useEffect } from 'react'
-import { useArrayState } from '../../../hooks/useArrayState'
-import { BarberData } from '../../../hooks/api/barbers/Barbers'
-import { useBarbers } from '../../../hooks/api/barbers/useBarbers'
-import { Barber } from '../../../components/barber/Barber'
+import { Barber } from '../../../components'
+import {
+  useBarbers,
+  BarberData,
+  useArrayState,
+  usingTryCatch
+} from '../../../hooks'
 
 export const Team = () => {
   const content = contentJson.home.team
-  const { getAllBarbers } = useBarbers()
 
   const { state: barbers, set: setBarbers } = useArrayState<BarberData>()
+
+  const { getAllBarbers } = useBarbers()
 
   useEffect(() => {
     fetchBarbers()
@@ -31,8 +34,14 @@ export const Team = () => {
   return (
     <S.TeamContainer>
       <h2>{content.title}</h2>
-      {barbers.map((barber) => (
-        <Barber barber={barber} />
+      {barbers.map((b) => (
+        <Barber
+          about={b.about}
+          imageSource={b.imageSource}
+          name={b.name}
+          rating={b.qntStars}
+          key={b.id}
+        />
       ))}
     </S.TeamContainer>
   )

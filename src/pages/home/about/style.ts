@@ -1,39 +1,12 @@
 import styled from 'styled-components'
-import { colors } from '../../../constants'
-import { Container } from '../../../components/container/style'
-
-interface ImageProps {
-  url: string
-  width: string
-  height: string
-  top?: string
-  bottom?: string
-  left?: string
-  zindex?: number
-}
+import { Container } from '../../../components'
 
 export const AboutContainer = styled(Container)`
   display: flex;
   align-items: center;
   height: calc(100vh - 98px);
-  background-color: ${colors.blue.main};
+  background-color: var(--blue);
   position: relative;
-`
-
-export const ImagesBox = styled.div`
-  display: flex;
-  width: 50%;
-`
-
-export const Image = styled.div<ImageProps>`
-  background: url(${(props) => props.url}) center / 100% no-repeat;
-  width: ${(props) => props.width};
-  height: ${(props) => props.height};
-  position: absolute;
-  top: ${(props) => props.top};
-  bottom: ${(props) => props.bottom};
-  left: ${(props) => props.left};
-  z-index: ${(props) => props.zindex};
 `
 
 export const ContentBox = styled.div`
@@ -43,13 +16,13 @@ export const ContentBox = styled.div`
   gap: 20px;
 
   h2 {
-    color: ${colors.white};
+    color: var(--white);
     font-size: 40px;
     font-weight: 700;
   }
 
   p {
-    color: ${colors.white};
+    color: var(--white);
   }
 `
 
@@ -59,7 +32,7 @@ export const BadgeBox = styled.div`
   gap: 30px;
 
   button {
-    background-color: transparent;
+    background-color: var(--transparent);
     border: none;
     cursor: pointer;
   }

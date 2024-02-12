@@ -11,7 +11,9 @@ export const Title = () => {
       <S.TitleBox>
         <h1>{content.title}</h1>
         <p>{content.schedules}</p>
-        <Button content="Agendar horário" onClick={() => console.log()} />
+        <Button onClick={() => console.log('abre modal')}>
+          {content.button}
+        </Button>
       </S.TitleBox>
     </>
   )

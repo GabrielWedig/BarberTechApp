@@ -1,16 +1,15 @@
 {
-  "imageSourceBase": "https://9jnq7ntowayxhgea.public.blob.vercel-storage.com/",
   "home": {
     "title": {
       "title": "ESTILO É UM REFLEXO DA SUA ATITUDE E SUA PERSONALIDADE",
       "schedules": "Hórario de funcionamento: 09:00 às 20:00",
-      "image": "title.jpeg"
+      "image": "https://9jnq7ntowayxhgea.public.blob.vercel-storage.com/title.jpeg",
+      "button": "Agendar horário"
     },
     "about": {
       "text1": "Lorem ipsum dolor sit amet consectetur. Sed vitae egestas risus in eleifend porttitor nam. Amet ut dictumst commodo aliquam eget augue at mi. Commodo sollicitudin ultrices ut nulla venenatis quam at.",
       "text2": "Lorem ipsum dolor sit amet consectetur. Sed vitae egestas risus in eleifend porttitor nam. Amet ut dictumst commodo aliquam eget augue at mi. Commodo sollicitudin ultrices ut nulla venenatis quam at.",
-      "title": "Sobre",
-      "images": ["about1.jpeg", "about2.jpeg", "about3.jpeg"]
+      "title": "Sobre"
     },
     "services": {
       "text": "Lorem ipsum dolor sit amet consectetur. Sed vitae egestas risus in eleifend porttitor nam. Amet ut dictumst commodo aliquam eget augue at mi. Commodo sollicitudin ultrices ut nulla venenatis quam at.",

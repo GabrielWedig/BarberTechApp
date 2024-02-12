@@ -6,7 +6,7 @@ import { formatPrice } from '../../utils'
 
 interface HaircutProps {
   rating: number
-  about: string
+  about?: string
   imageSource: string
   name: string
   price: number
@@ -30,7 +30,7 @@ export const Haircut = ({
     >
       <S.HaircutMask showInfos={showInfos}>
         <Stars rating={rating} />
-        <p>{about}</p>
+        <p>{about ?? ''}</p>
       </S.HaircutMask>
       <S.Image url={imageSource} />
       <div className="footer">

@@ -1,10 +1,9 @@
 import styled from 'styled-components'
-import { colors } from '../../../constants'
-import { Container } from '../../../components/container/style'
+import { Container } from '../../../components'
 
 export const TeamContainer = styled(Container)`
   height: calc(100vh - 98px);
-  background-color: ${colors.blue.main};
+  background-color: var(--blue);
   display: flex;
   justify-content: center;
   align-items: center;

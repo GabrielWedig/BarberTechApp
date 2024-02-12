@@ -1,19 +1,17 @@
 import styled from 'styled-components'
-import { colors, shadows } from '../../../constants'
 import contentJson from '../../../content.json'
-import { getImageSource } from '../../../utils/getImageSource'
 
 export const AboutImg = styled.div`
   width: 100%;
   padding-top: 98px;
   height: calc(100vh - 98px);
   background: linear-gradient(
-      ${colors.blue.eighty} 20.37%,
-      ${colors.blue.fifty} 56.89%,
-      ${colors.blue.main} 89.13%,
-      ${colors.blue.main} 111.22%
+      var(--blue80) 20.37%,
+      var(--blue50) 56.89%,
+      var(--blue) 89.13%,
+      var(--blue) 111.22%
     ),
-    url(${getImageSource(contentJson.home.title.image)}) center / 100% no-repeat;
+    url(${contentJson.home.title.image}) center / cover no-repeat;
 `
 
 export const TitleBox = styled.section`
@@ -29,16 +27,16 @@ export const TitleBox = styled.section`
 
   h1 {
     width: 850px;
-    color: ${colors.white};
-    text-shadow: ${shadows.main} ${colors.black.fifty};
+    color: var(--white);
+    text-shadow: var(--shadow);
     text-align: center;
     font-size: 44px;
     font-weight: 700;
   }
 
   p {
-    color: ${colors.white};
-    text-shadow: ${shadows.main} ${colors.black.eighty};
+    color: var(--white);
+    text-shadow: var(--shadow);
     font-size: 26px;
     font-weight: 300;
   }

@@ -16,4 +16,4 @@ export interface EventScheduleData {
   status: EventStatus
 }
 
-type EventStatus = 'Active' | 'Comepleted' | 'Canceled'
+type EventStatus = 'Active' | 'Completed' | 'Canceled'

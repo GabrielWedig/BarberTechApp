@@ -12,7 +12,7 @@ export const Haircut = styled.button`
   width: 325px;
   height: 450px;
   background-color: var(--white);
-  filter: drop-shadow(4px 5px 8px rgba(0, 0, 0, 0.50));
+  filter: var(--dropShadow);
   border-radius: 10px;
   border: none;
   padding: 0;

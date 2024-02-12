@@ -1,11 +1,13 @@
 import * as S from './style'
 import contentJson from '../../../content.json'
-import { usingTryCatch } from '../../../hooks/api/usingTryCatch'
 import { useEffect } from 'react'
-import { useArrayState } from '../../../hooks/useArrayState'
-import { useEstablishments } from '../../../hooks/api/establishments/useEstablishments'
-import { EstablishmentData } from '../../../hooks/api/establishments/Establishments'
 import { Establishment } from '../../../components'
+import {
+  useEstablishments,
+  EstablishmentData,
+  useArrayState,
+  usingTryCatch
+} from '../../../hooks'
 
 export const Localization = () => {
   const content = contentJson.home.localization
@@ -34,8 +36,14 @@ export const Localization = () => {
     <S.EstablishmentsContainer>
       <h2>{content.title}</h2>
       <div className="establishments-box">
-        {establishments.map((establishment) => (
-          <Establishment establishment={establishment} />
+        {establishments.map((e) => (
+          <Establishment
+            address={e.address}
+            businessTime={e.businessTime}
+            imageSource={e.imageSource}
+            rating={e.qntStars}
+            key={e.id}
+          />
         ))}
       </div>
     </S.EstablishmentsContainer>

@@ -1,17 +1,19 @@
 import * as S from './style'
 import contentJson from '../../../content.json'
-import { useHaircuts } from '../../../hooks/api/haircuts/useHaircuts'
-import { usingTryCatch } from '../../../hooks/api/usingTryCatch' // rever imports / criar index lá
 import { useEffect } from 'react'
-import { useArrayState } from '../../../hooks/useArrayState'
-import { HaircutData } from '../../../hooks/api/haircuts/Haircuts'
 import { Haircut } from '../../../components'
+import {
+  useHaircuts,
+  HaircutData,
+  useArrayState,
+  usingTryCatch
+} from '../../../hooks'
 
 export const Services = () => {
   const content = contentJson.home.services
+
   const { getAllHaircuts } = useHaircuts()
-  const { state: haircuts, set: setHaircuts } =
-    useArrayState<HaircutData>()
+  const { state: haircuts, set: setHaircuts } = useArrayState<HaircutData>()
 
   useEffect(() => {
     fetchHaircuts()
@@ -33,8 +35,15 @@ export const Services = () => {
       <h2>{content.title}</h2>
       <p>{content.text}</p>
       <div className="haircuts-box">
-        {haircuts.map((haircut) => (
-          <Haircut haircut={haircut} />
+        {haircuts.map((h) => (
+          <Haircut
+            about={h.description}
+            imageSource={h.imageSource}
+            name={h.name}
+            price={h.price}
+            rating={h.qntStars}
+            key={h.id}
+          />
         ))}
       </div>
     </S.ServicesContainer>
