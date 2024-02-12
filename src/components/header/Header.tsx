@@ -17,10 +17,10 @@ export const Header = () => {
         <Button type="transparent" onClick={() => scrollToSection('about')}>
           Sobre
         </Button>
-        <Button type="transparent" onClick={() => scrollToSection('contacts')}>
+        <Button type="transparent" onClick={() => scrollToSection('footer')}>
           Contatos
         </Button>
-        <Button type="transparent" onClick={() => scrollToSection('depositions')}>
+        <Button type="transparent" onClick={() => console.log('navega depoimentos')}>
           Depoimentos
         </Button>
       </nav>

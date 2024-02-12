@@ -35,11 +35,16 @@ export const Barber = styled.div`
   }
 
   button {
+    transition: color 0.5s ease;
     background-color: transparent;
     border: none;
-    color: white;
+    color: var(--white);
     width: auto;
     margin: 0 5px;
+  }
+
+  button:hover {
+    color: var(--orange);
   }
 `
 

@@ -19,8 +19,9 @@ export const Establishment = ({
       <S.Image url={imageSource} />
       <S.Infos>
         <span>{address}</span>
-        <Stars rating={rating} />
+
         <span>{businessTime}</span>
+        <Stars rating={rating} />
       </S.Infos>
     </S.Establishment>
   )

@@ -8,7 +8,7 @@ export const About = () => {
   const content = contentJson.home.about
 
   return (
-    <S.AboutContainer>
+    <S.AboutContainer id='about'>
       <img src={aboutImage} alt="images" />
       <S.ContentBox>
         <h2>{content.title}</h2>
@@ -19,7 +19,7 @@ export const About = () => {
             <img src={googlePlay} alt="google-play" />
           </button>
           <button>
-            <img src={appStore} alt="app-store" />
+            <img src={appStore} alt="app-store" className='app-store-badge'/>
           </button>
         </S.BadgeBox>
       </S.ContentBox>

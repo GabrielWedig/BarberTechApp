@@ -4,6 +4,7 @@ import { Container } from '../../../components'
 export const AboutContainer = styled(Container)`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   height: calc(100vh - 98px);
   background-color: var(--blue);
   position: relative;
@@ -18,7 +19,7 @@ export const ContentBox = styled.div`
   h2 {
     color: var(--white);
     font-size: 40px;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   p {
@@ -39,5 +40,9 @@ export const BadgeBox = styled.div`
 
   button > img {
     width: 220px;
+  }
+
+  .app-store-badge {
+    height: 65px;
   }
 `

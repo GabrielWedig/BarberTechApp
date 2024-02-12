@@ -1,4 +1,5 @@
 import * as S from './style'
+import { buttonTypes } from './types'
 
 interface ButtonProps {
   children: React.ReactNode
@@ -8,27 +9,26 @@ interface ButtonProps {
 
 type ButtonType = 'primary' | 'transparent'
 
-const types = {
-  primary: {
-    background: 'orange',
-    textColor: 'black'
-  },
-  transparent: {
-    background: 'transparent',
-    textColor: 'white'
-  }
-}
-
 export const Button = ({
   children,
   type = 'primary',
   onClick
 }: ButtonProps) => {
+  const button = buttonTypes[type]
+
   return (
     <S.StyledButton
-      background={types[type].background}
-      textColor={types[type].textColor}
+      background={button.background}
+      textColor={button.textColor}
+      hoverColor={button.hoverColor}
+      fontWeight={button.fontWeight}
+      padding={button.padding}
       onClick={onClick}
+      sx={{
+        '&:hover': {
+          backgroundColor: button.background
+        }
+      }}
     >
       {children}
     </S.StyledButton>

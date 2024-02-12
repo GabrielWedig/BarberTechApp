@@ -8,11 +8,10 @@ export const Stars = ({ rating }: StarsProps) => {
   const qntStars = [1, 2, 3, 4, 5]
 
   const getFill = (star: number) => {
-    if (rating >= star) {
-      const convertInteger = Math.floor(rating)
-      return (rating - convertInteger) * 10
-    }
-    return 100
+    if (star <= rating) return 0
+    const rest = star - rating
+    if (rest === 0) return 100
+    return rest * 100
   }
 
   return (

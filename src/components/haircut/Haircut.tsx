@@ -30,7 +30,7 @@ export const Haircut = ({
     >
       <S.HaircutMask showInfos={showInfos}>
         <Stars rating={rating} />
-        <p>{about ?? ''}</p>
+        <p className='about'>{about ?? ''}</p>
       </S.HaircutMask>
       <S.Image url={imageSource} />
       <div className="footer">
@@ -38,7 +38,7 @@ export const Haircut = ({
           <span>{name}</span>
           <span className="price">{formatPrice(price)}</span>
         </div>
-        <button>{content.button}</button>
+        <span className='schedule'>{content.schedule}</span>
       </div>
     </S.Haircut>
   )

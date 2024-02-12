@@ -17,7 +17,7 @@ export const Footer = () => {
   const content = contentJson.footer
 
   return (
-    <S.Footer>
+    <S.Footer id='footer'>
       <div className="column">
         <Logo className="logo" />
         <p>{content.description}</p>
@@ -53,13 +53,13 @@ export const Footer = () => {
           </Button>
           <Button
             type="transparent"
-            onClick={() => scrollToSection('contacts')}
+            onClick={() => scrollToSection('footer')}
           >
             Contatos
           </Button>
           <Button
             type="transparent"
-            onClick={() => scrollToSection('depositions')}
+            onClick={() => console.log('navega depoimentos')}
           >
             Depoimentos
           </Button>

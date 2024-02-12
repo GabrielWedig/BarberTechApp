@@ -19,9 +19,10 @@ export const Image = styled.div<ImageProps>`
 `
 
 export const Infos = styled.div`
+  width: 60%;
   position: absolute;
   bottom: 5%;
-  left: 25%;
+  left: 20%;
   padding: 10px;
   border-radius: 10px;
   border: 1px solid var(--white);

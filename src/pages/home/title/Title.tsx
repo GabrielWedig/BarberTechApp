@@ -7,7 +7,7 @@ export const Title = () => {
 
   return (
     <>
-      <S.AboutImg />
+      <S.TitleImg id='home'/>
       <S.TitleBox>
         <h1>{content.title}</h1>
         <p>{content.schedules}</p>

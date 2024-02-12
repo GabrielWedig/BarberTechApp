@@ -27,7 +27,7 @@ html {
   --blue50: rgba(13, 18, 30, 0.5);
   --blue80: rgba(13, 18, 30, 0.8);
   --transparent: transparent;
-  --gray: #e0e0e0;
+  --gray: #c0c0c0;
   --shadow50: 3px 3px 8px var(--black50);
   --shadow80: 3px 3px 8px var(--black80);
   --dropShadow: drop-shadow(4px 5px 8px var(--black50));

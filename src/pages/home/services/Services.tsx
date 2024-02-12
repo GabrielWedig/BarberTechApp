@@ -31,7 +31,7 @@ export const Services = () => {
   }
 
   return (
-    <S.ServicesContainer>
+    <S.ServicesContainer id='services'>
       <h2>{content.title}</h2>
       <p>{content.text}</p>
       <div className="haircuts-box">

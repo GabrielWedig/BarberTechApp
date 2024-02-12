@@ -35,7 +35,7 @@ export const Haircut = styled.button`
     align-items: center;
   }
 
-  button {
+  .schedule {
     color: var(--black);
     background-color: transparent;
     text-decoration: underline;
@@ -44,15 +44,8 @@ export const Haircut = styled.button`
     font-size: 16px;
   }
 
-  p {
-    width: 100%;
-    margin: 0;
-    color: var(--white);
-    text-align: start;
-  }
-
   span {
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .price {
@@ -61,6 +54,13 @@ export const Haircut = styled.button`
     background-color: var(--black);
     color: var(--white);
     font-weight: 400;
+  }
+
+  .about {
+    width: 100%;
+    margin: 0;
+    color: var(--white);
+    text-align: start;
   }
 
   &:hover {
@@ -81,7 +81,7 @@ export const HaircutMask = styled.div<HaircutMaskProps>`
   flex-direction: column;
   justify-content: flex-end;
   transition: opacity 0.5s ease;
-  opacity: ${(props) => props.showInfos ? 1 : 0};
+  opacity: ${(props) => (props.showInfos ? 1 : 0)};
 
   span {
     color: var(--white);
