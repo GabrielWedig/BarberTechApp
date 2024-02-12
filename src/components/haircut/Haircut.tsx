@@ -19,7 +19,7 @@ export const Haircut = ({
   name,
   price
 }: HaircutProps) => {
-  const [showInfos, setShowInfos] = useState(false)
+  const [showInfos, setShowInfos] = useState<boolean>(false)
 
   const content = contentJson.home.services
 
@@ -28,17 +28,17 @@ export const Haircut = ({
       onMouseEnter={() => setShowInfos(true)}
       onMouseLeave={() => setShowInfos(false)}
     >
-      <S.HaircutMask showInfos={showInfos}>
+      <S.HaircutMask $showInfos={showInfos ? 'true' : 'false'}>
         <Stars rating={rating} />
-        <p className='about'>{about ?? ''}</p>
+        <p className="about">{about ?? ''}</p>
       </S.HaircutMask>
-      <S.Image url={imageSource} />
+      <S.Image $url={imageSource} />
       <div className="footer">
         <div className="row">
           <span>{name}</span>
           <span className="price">{formatPrice(price)}</span>
         </div>
-        <span className='schedule'>{content.schedule}</span>
+        <span className="schedule">{content.schedule}</span>
       </div>
     </S.Haircut>
   )

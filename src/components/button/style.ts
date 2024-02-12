@@ -2,15 +2,15 @@ import { Button, styled } from '@mui/material'
 
 interface ButtonProps {
   background: string
-  textColor: string
-  hoverColor: string | null,
+  textcolor: string
+  hovercolor: string | null,
   fontWeight: number,
   padding: string | null
 }
 
 export const StyledButton = styled(Button)<ButtonProps>((props) => ({
   backgroundColor: getColor(props.background),
-  color: getColor(props.textColor),
+  color: getColor(props.textcolor),
   fontWeight: props.fontWeight,
   padding: props.padding ?? 10,
   fontFamily: 'Poppins',
@@ -20,7 +20,7 @@ export const StyledButton = styled(Button)<ButtonProps>((props) => ({
   borderRadius: '10px',
 
   '&:hover': {
-    color: getColor(props.hoverColor ?? props.textColor),
+    color: getColor(props.hovercolor ?? props.textcolor),
   }
 }))
 

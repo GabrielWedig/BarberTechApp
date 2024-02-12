@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 interface ImageProps {
-  url: string
+  $url: string
 }
 
 export const Establishment = styled.div`
@@ -12,7 +12,7 @@ export const Establishment = styled.div`
 `
 
 export const Image = styled.div<ImageProps>`
-  background: url(${(props) => props.url}) center / cover no-repeat;
+  background: url(${(props) => props.$url}) center / cover no-repeat;
   border-radius: 10px;
   width: 100%;
   height: 100%;

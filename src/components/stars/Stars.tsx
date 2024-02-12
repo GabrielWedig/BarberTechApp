@@ -17,8 +17,8 @@ export const Stars = ({ rating }: StarsProps) => {
   return (
     <S.Stars>
       <span>{rating > 0 ? rating : ''}</span>
-      {qntStars.map((star) => (
-        <S.StyledStarIcon fillPercentage={getFill(star)} />
+      {qntStars.map((star, index) => (
+        <S.StyledStarIcon $fillPercentage={getFill(star)} key={index}/>
       ))}
     </S.Stars>
   )

@@ -19,8 +19,8 @@ export const Button = ({
   return (
     <S.StyledButton
       background={button.background}
-      textColor={button.textColor}
-      hoverColor={button.hoverColor}
+      textcolor={button.textColor}
+      hovercolor={button.hoverColor}
       fontWeight={button.fontWeight}
       padding={button.padding}
       onClick={onClick}

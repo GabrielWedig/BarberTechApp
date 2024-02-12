@@ -16,7 +16,7 @@ export const Establishment = ({
 }: EstablishmentProps) => {
   return (
     <S.Establishment>
-      <S.Image url={imageSource} />
+      <S.Image $url={imageSource} />
       <S.Infos>
         <span>{address}</span>
 

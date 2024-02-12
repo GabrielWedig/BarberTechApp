@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
 interface ImageProps {
-  url: string
+  $url: string
 }
 
 interface BarberMaskProps {
-  showInfos: boolean
+  $showInfos: string
 }
 
 export const Barber = styled.div`
@@ -61,7 +61,7 @@ export const BarberMask = styled.div<BarberMaskProps>`
   flex-direction: column;
   justify-content: flex-end;
   transition: opacity 0.5s ease;
-  opacity: ${(props) => props.showInfos ? 1 : 0};
+  opacity: ${(props) => props.$showInfos ? 1 : 0};
 `
 
 export const Image = styled.div<ImageProps>`
@@ -69,5 +69,5 @@ export const Image = styled.div<ImageProps>`
   width: 100%;
   height: 500px;
   border-radius: 10px;
-  background: url(${(props) => props.url}) center / cover no-repeat;
+  background: url(${(props) => props.$url}) center / cover no-repeat;
 `

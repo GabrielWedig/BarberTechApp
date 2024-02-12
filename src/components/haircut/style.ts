@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 
 interface ImageProps {
-  url: string
+  $url: string
 }
 
 interface HaircutMaskProps {
-  showInfos: boolean
+  $showInfos: string
 }
 
 export const Haircut = styled.button`
@@ -81,7 +81,7 @@ export const HaircutMask = styled.div<HaircutMaskProps>`
   flex-direction: column;
   justify-content: flex-end;
   transition: opacity 0.5s ease;
-  opacity: ${(props) => (props.showInfos ? 1 : 0)};
+  opacity: ${(props) => (props.$showInfos ? 1 : 0)};
 
   span {
     color: var(--white);
@@ -89,7 +89,7 @@ export const HaircutMask = styled.div<HaircutMaskProps>`
 `
 
 export const Image = styled.div<ImageProps>`
-  background: url(${(props) => props.url}) center / cover no-repeat;
+  background: url(${(props) => props.$url}) center / cover no-repeat;
   width: 100%;
   height: 80%;
   border-radius: 10px 10px 0 0;

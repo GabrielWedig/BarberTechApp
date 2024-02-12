@@ -2,7 +2,7 @@ import StarIcon from '@mui/icons-material/Star'
 import styled from 'styled-components'
 
 interface StarProps {
-  fillPercentage: number
+  $fillPercentage: number
 }
 
 export const Stars = styled.div`
@@ -16,5 +16,5 @@ export const Stars = styled.div`
 
 export const StyledStarIcon = styled(StarIcon)<StarProps>`
   color: gold;
-  clip-path: ${({ fillPercentage }) => `inset(0 ${fillPercentage}% 0 0)`};
+  clip-path: ${({ $fillPercentage }) => `inset(0 ${$fillPercentage}% 0 0)`};
 `

@@ -11,21 +11,21 @@ interface BarberProps {
 }
 
 export const Barber = ({ name, rating, about, imageSource }: BarberProps) => {
-  const [showInfos, setShowInfos] = useState(false)
+  const [showInfos, setShowInfos] = useState<boolean>(false)
 
   return (
     <S.Barber
       onMouseEnter={() => setShowInfos(true)}
       onMouseLeave={() => setShowInfos(false)}
     >
-      <S.BarberMask showInfos={showInfos}>
+      <S.BarberMask $showInfos={showInfos ? 'true' : 'false'}>
         <div className="barber-header">
           <span>{name}</span>
           <Stars rating={rating} />
         </div>
         <p>{about}</p>
       </S.BarberMask>
-      <S.Image url={imageSource} />
+      <S.Image $url={imageSource} />
       <div className="social-box">
         <button>
           <Instagram fontSize="large" />
