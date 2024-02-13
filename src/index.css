@@ -4,11 +4,12 @@
 }
 
 body,
-button {
+button,
+input {
   font-family: 'Poppins';
 }
 
-button {
+button, a {
   cursor: pointer;
 }
 
@@ -24,8 +25,6 @@ html {
   --white: #ffffff;
   --orange: #f0b35b;
   --blue: #0d121e;
-  --blue50: rgba(13, 18, 30, 0.5);
-  --blue80: rgba(13, 18, 30, 0.8);
   --transparent: transparent;
   --gray: #c0c0c0;
   --shadow50: 3px 3px 8px var(--black50);
