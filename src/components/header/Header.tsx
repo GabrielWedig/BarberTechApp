@@ -3,9 +3,12 @@ import { Button, LoginModal } from '..'
 import { ReactComponent as Logo } from '../../img/logo.svg'
 import { scrollToSection } from '../../utils'
 import * as S from './style'
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 
 export const Header = () => {
   const [openModal, setOpenModal] = useState<boolean>(false)
+
+  const isAuthenticated = useIsAuthenticated()
 
   return (
     <S.Header>
@@ -30,7 +33,9 @@ export const Header = () => {
           Depoimentos
         </Button>
       </nav>
-      <Button onClick={() => setOpenModal(true)}>Login</Button>
+      {!isAuthenticated() && (
+        <Button onClick={() => setOpenModal(true)}>Login</Button>
+      )}
       <LoginModal open={openModal} onClose={() => setOpenModal(false)} />
     </S.Header>
   )

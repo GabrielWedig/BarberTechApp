@@ -13,8 +13,12 @@ export const LoginModal = ({ open, onClose }: LoginModalProps) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      {modalType === 'login' && <Login setModalType={setModalType} />}
-      {modalType === 'register' && <Register setModalType={setModalType} />}
+      {modalType === 'login' && (
+        <Login setModalType={setModalType} onClose={onClose} />
+      )}
+      {modalType === 'register' && (
+        <Register setModalType={setModalType} onClose={onClose} />
+      )}
     </Modal>
   )
 }

@@ -9,7 +9,7 @@ interface TextFieldProps<TFieldValues extends FieldValues> {
   disabled?: boolean
 }
 
-export function TextField<TFieldValues extends FieldValues = FieldValues>({
+export function PasswordField<TFieldValues extends FieldValues = FieldValues>({
   name,
   control,
   label,
@@ -22,6 +22,7 @@ export function TextField<TFieldValues extends FieldValues = FieldValues>({
         {...control.register(name)}
         placeholder={placeholder ?? label}
         disabled={disabled}
+        type="password"
       />
     </BaseField>
   )

@@ -1,9 +1,12 @@
 import { FieldValues, useForm } from 'react-hook-form'
 import { Button, ModalTypes, TextField } from '..'
 import * as S from './style'
+import { useEffect } from 'react'
+import { useUsers, usingTryCatch } from '../../hooks'
 
 interface RegisterProps {
   setModalType: (type: ModalTypes) => void
+  onClose: () => void
 }
 
 interface RegisterFormData {
@@ -13,18 +16,38 @@ interface RegisterFormData {
   confirmPassword: string
 }
 
-export const Register = ({ setModalType }: RegisterProps) => {
+export const Register = ({ setModalType, onClose }: RegisterProps) => {
   const { handleSubmit, control } = useForm<RegisterFormData>()
 
-  const handleRegisterSubmit = (data: FieldValues) => {
+  const { register } = useUsers()
+
+  useEffect(() => {
+    return () => setModalType('login')
+  })
+
+  const handleRegisterSubmit = async (values: FieldValues) => {
+    const request = {
+      email: values.email,
+      password: values.password,
+      name: values.name
+    }
+
+    const { error, data } = await usingTryCatch(register(request))
+
     console.log(data)
+
+    if (error) {
+      return
+      // chama modal
+    }
+    onClose()
   }
 
   return (
     <S.RegisterBox>
       <h3>Cadastro</h3>
       <form>
-      <TextField
+        <TextField
           name="name"
           control={control}
           label="Nome completo:"

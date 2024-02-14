@@ -1,9 +1,11 @@
 import { FieldValues, useForm } from 'react-hook-form'
 import { Button, ModalTypes, TextField } from '..'
 import * as S from './style'
+import { useUsers, usingTryCatch } from '../../hooks'
 
 interface LoginProps {
   setModalType: (type: ModalTypes) => void
+  onClose: () => void
 }
 
 interface LoginFormData {
@@ -11,11 +13,26 @@ interface LoginFormData {
   password: string
 }
 
-export const Login = ({ setModalType }: LoginProps) => {
+export const Login = ({ setModalType, onClose }: LoginProps) => {
   const { handleSubmit, control } = useForm<LoginFormData>()
 
-  const handleLoginSubmit = (data: FieldValues) => {
+  const { login } = useUsers()
+
+  const handleLoginSubmit = async (values: FieldValues) => {
+    const request = {
+      email: values.email,
+      password: values.password
+    }
+
+    const { error, data } = await usingTryCatch(login(request))
+
     console.log(data)
+
+    if (error) {
+      return
+      // chama modal
+    }
+    onClose()
   }
 
   return (
@@ -34,10 +51,7 @@ export const Login = ({ setModalType }: LoginProps) => {
           label="Senha:"
           placeholder="Digite sua senha"
         />
-        <a
-          onClick={() => setModalType('forgot')}
-          className="forgot-password"
-        >
+        <a onClick={() => setModalType('forgot')} className="forgot-password">
           Esqueceu a senha?
         </a>
         <Button type="primary" onClick={handleSubmit(handleLoginSubmit)}>
