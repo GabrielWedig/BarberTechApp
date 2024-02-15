@@ -1,5 +1,5 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, ModalTypes, TextField } from '..'
+import { Button, ModalTypes, PasswordField, TextField } from '..'
 import * as S from './style'
 import { useEffect } from 'react'
 import { useUsers, usingTryCatch } from '../../hooks'
@@ -59,13 +59,13 @@ export const Register = ({ setModalType, onClose }: RegisterProps) => {
           label="E-mail:"
           placeholder="Digite seu e-mail"
         />
-        <TextField
+        <PasswordField
           name="password"
           control={control}
           label="Senha:"
           placeholder="Digite sua senha"
         />
-        <TextField
+        <PasswordField
           name="confirmPassword"
           control={control}
           label="Confirme senha:"

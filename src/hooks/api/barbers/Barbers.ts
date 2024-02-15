@@ -11,9 +11,14 @@ export interface BarberData {
 
 export interface EventScheduleData {
   id: string
-  dateTime: Date,
-  name: string,
+  dateTime: Date
+  name: string
   status: EventStatus
 }
 
 type EventStatus = 'Active' | 'Completed' | 'Canceled'
+
+export interface BarberOption {
+  id: string
+  name: string
+}

@@ -1,9 +1,14 @@
 import axios, { AxiosResponse } from 'axios'
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader'
 
 export const useRequest = (baseURL: string) => {
+  const authHeader = useAuthHeader()
+
   const instance = axios.create({
-    baseURL: `https://barber-tech-api.onrender.com/api/`
-    //headers,
+    baseURL: `https://barber-tech-api.onrender.com/api/`,
+    headers: {
+      Authorization: authHeader
+    }
   })
 
   const buildUrl = (url: string) => {

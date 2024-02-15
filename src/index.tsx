@@ -10,7 +10,7 @@ const App = () => {
     authName: '_auth',
     authType: 'cookie',
     cookieDomain: window.location.hostname,
-    cookieSecure: window.location.protocol === 'https:'
+    cookieSecure: false
   })
 
   return (

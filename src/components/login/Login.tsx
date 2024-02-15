@@ -1,5 +1,5 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, ModalTypes, TextField } from '..'
+import { Button, ModalTypes, PasswordField, TextField } from '..'
 import * as S from './style'
 import { useUsers, usingTryCatch } from '../../hooks'
 
@@ -45,7 +45,7 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
           label="E-mail"
           placeholder="Digite seu e-mail"
         />
-        <TextField
+        <PasswordField
           name="password"
           control={control}
           label="Senha:"

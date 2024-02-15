@@ -9,21 +9,5 @@ export interface RegisterRequest extends LoginRequest {
 
 export interface LoginResponse {
   token: string
-  user: UserResponse
+  userId: string
 }
-
-export interface UserResponse {
-  id: string
-  email: string
-  name: string
-  eventSchedules: EventScheduleResponse[]
-}
-
-interface EventScheduleResponse {
-  id: string
-  dateTime: Date
-  name: string
-  status: StatusType
-}
-
-type StatusType = 'Active' | 'Canceled' | 'Completed'
