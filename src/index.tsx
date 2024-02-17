@@ -17,6 +17,7 @@ const App = () => {
     <AuthProvider store={store}>
       <BrowserRouter>
         <Routes>
+          <Route path="/depo" element={<Home />} />
           <Route path="/" element={<Home />}>
             <Route index element={<Home />} />
             {/* <Route path="*" element={<NoPage />} /> */}

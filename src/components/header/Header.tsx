@@ -4,11 +4,13 @@ import { ReactComponent as Logo } from '../../img/logo.svg'
 import { scrollToSection } from '../../utils'
 import * as S from './style'
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+import { useNavigate } from 'react-router-dom'
 
 export const Header = () => {
   const [openModal, setOpenModal] = useState<boolean>(false)
 
   const isAuthenticated = useIsAuthenticated()
+  const navigate = useNavigate()
 
   return (
     <S.Header>
@@ -28,7 +30,7 @@ export const Header = () => {
         </Button>
         <Button
           type="transparent"
-          onClick={() => console.log('navega depoimentos')}
+          onClick={() => navigate('/depo')}
         >
           Depoimentos
         </Button>
