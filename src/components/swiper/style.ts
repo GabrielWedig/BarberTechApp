@@ -1,39 +1,42 @@
 import styled from 'styled-components'
 
-export const SwiperBox = styled.div`
-  position: relative;
+interface SwiperBoxProps {
+  borderColor: string
+}
 
+export const SwiperBox = styled.div<SwiperBoxProps>`
   .slick-list {
     padding: 20px;
   }
 
-  .border-right {
+  .slick-slide {
+    margin: 0 5px;
+  }
+
+  .border-right,
+  .border-left {
     position: absolute;
-    width: 80px;
+    width: 50px;
     height: 100%;
-    left: 0;
     top: 0;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(254, 254, 254, 1) 20%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    z-index: 2;
+    z-index: 1;
   }
 
   .border-left {
-    position: absolute;
-    width: 80px;
-    height: 100%;
-    right: 0;
-    top: 0;
+    left: 0;
     background: linear-gradient(
-      270deg,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(254, 254, 254, 1) 20%,
-      rgba(255, 255, 255, 0) 100%
+      to right,
+      ${(props) => props.borderColor},
+      transparent
     );
-    z-index: 2;
+  }
+
+  .border-right {
+    right: 0;
+    background: linear-gradient(
+      to left,
+      ${(props) => props.borderColor},
+      transparent
+    );
   }
 `

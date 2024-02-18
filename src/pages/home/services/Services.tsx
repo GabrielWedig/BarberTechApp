@@ -36,9 +36,8 @@ export const Services = () => {
       <p>{content.text}</p>
 
       <div style={{ width: '100%', position: 'relative' }}>
-        <Swiper>
+        <Swiper qntSlides={4} borderColor="white" arrowColor="orange">
           {haircuts.map((h) => (
-            // <SwiperSlide key={h.id}>
             <Haircut
               about={h.description}
               imageSource={h.imageSource}
@@ -47,7 +46,6 @@ export const Services = () => {
               rating={h.qntStars}
               key={h.id}
             />
-            // </SwiperSlide>
           ))}
         </Swiper>
       </div>

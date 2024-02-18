@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 
 export const ButtonGroupBox = styled.div`
-  display: flex;
-  gap: 10px;
+  position: relative;
 
   button {
     padding: 8px 30px;

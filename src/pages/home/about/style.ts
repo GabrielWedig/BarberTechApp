@@ -33,7 +33,7 @@ export const BadgeBox = styled.div`
   gap: 30px;
 
   button {
-    background-color: var(--transparent);
+    background-color: transparent;
     border: none;
     cursor: pointer;
   }

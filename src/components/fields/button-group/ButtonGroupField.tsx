@@ -2,6 +2,7 @@ import { Control, FieldValues, Path, UseFormSetValue } from 'react-hook-form'
 import { BaseField } from '../base/BaseField'
 import { Option } from '../select/SelectField'
 import * as S from './style'
+import { Swiper } from '../../swiper/Swiper'
 
 interface ButtonGroupFieldProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>
@@ -25,17 +26,24 @@ export function ButtonGroupField<
   return (
     <BaseField label={label} disabled={disabled}>
       <S.ButtonGroupBox>
-        {options.map((o) => (
-          <button
-            type="button"
-            onClick={() => setValue(name, o.value)}
-            disabled={disabled}
-          >
-            {o.name}
-          </button>
-        ))}
-        <input type="hidden" {...control.register(name)} />
+        <Swiper
+          arrowColor="white"
+          borderColor="blue"
+          qntSlides={4}
+          infinite={false}
+        >
+          {options.map((o) => (
+            <button
+              type="button"
+              onClick={() => setValue(name, o.value)}
+              disabled={disabled}
+            >
+              {o.name}
+            </button>
+          ))}
+        </Swiper>
       </S.ButtonGroupBox>
+      <input type="hidden" {...control.register(name)} />
     </BaseField>
   )
 }

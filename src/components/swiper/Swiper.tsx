@@ -4,50 +4,46 @@ import 'slick-carousel/slick/slick-theme.css'
 import * as S from './style'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+import { ColorType, getColor } from '../../utils'
 
 interface SwiperProps {
   children: React.ReactNode
+  qntSlides: number
+  borderColor: ColorType
+  arrowColor: ColorType
+  infinite?: boolean
 }
 
-export const Swiper = ({ children }: SwiperProps) => {
+export const Swiper = ({
+  children,
+  qntSlides,
+  borderColor,
+  arrowColor,
+  infinite = true
+}: SwiperProps) => {
   const settings = {
-    infinite: true,
-    slidesToShow: 4,
+    infinite: infinite,
+    slidesToShow: qntSlides,
     swipeToSlide: true,
     nextArrow: (
-      <ArrowForwardIosIcon sx={{ color: 'var(--orange)' }} fontSize="large" />
+      <ArrowForwardIosIcon
+        sx={{ fill: getColor(arrowColor), right: '-70px' }}
+        fontSize="large"
+      />
     ),
     prevArrow: (
-      <ArrowBackIosNewIcon sx={{ color: 'var(--orange)' }} fontSize="large" />
+      <ArrowBackIosNewIcon
+        sx={{ fill: getColor(arrowColor), left: '-70px' }}
+        fontSize="large"
+      />
     )
   }
 
   return (
-    <S.SwiperBox>
+    <S.SwiperBox borderColor={getColor(borderColor)}>
       <div className="border-left"></div>
       <Slider {...settings}>{children}</Slider>
       <div className="border-right"></div>
     </S.SwiperBox>
-  )
-}
-function SampleNextArrow(props: any) {
-  const { className, style, onClick } = props
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: 'block', background: 'red' }}
-      onClick={onClick}
-    />
-  )
-}
-
-function SamplePrevArrow(props: any) {
-  const { className, style, onClick } = props
-  return (
-    <div
-      className={className}
-      style={{ ...style, display: 'block', background: 'green' }}
-      onClick={onClick}
-    />
   )
 }
