@@ -26,5 +26,6 @@ export const ServicesContainer = styled(Container)`
   .haircuts-box {
     display: flex;
     gap: 30px;
+    max-width: 100%;
   }
 `

@@ -1,30 +1,40 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import {
-  Button,
-  Modal,
-  Option,
-  SelectField,
-  TextField,
-  ButtonGroupField
-} from '../..'
+import { Button, Modal, Option, SelectField, TextField } from '../..'
 import * as S from './style'
-import { useBarbers, usingTryCatch } from '../../../hooks'
+import { useBarbers, useSnackbarContext, usingTryCatch } from '../../../hooks'
 import { useEffect, useState } from 'react'
 
 interface ScheduleModalProps {
+  haircutId: string
   open: boolean
   onClose: () => void
 }
 
-export const ScheduleModal = ({ open, onClose }: ScheduleModalProps) => {
+interface ScheduleFormData {
+  name: string
+  barber: string
+  date: string
+  schedule: string
+}
+
+export const ScheduleModal = ({
+  haircutId,
+  open,
+  onClose
+}: ScheduleModalProps) => {
   const [barberOptions, setBarberOptions] = useState<Option[]>([])
   const [dateOptions, setDateOptions] = useState<Option[]>([])
   const [scheduleOptions, setScheduleOptions] = useState<Option[]>([])
 
-  const { handleSubmit, control, watch, setValue } = useForm() //<LoginFormData>()
+  const { handleSubmit, control, watch, reset } = useForm<ScheduleFormData>()
+  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
-  const { getBarberOptions, getAvaliableDates, getAvaliableTimes } =
-    useBarbers()
+  const {
+    getBarberOptions,
+    getAvaliableDates,
+    getAvaliableTimes,
+    scheduleHaircut
+  } = useBarbers()
 
   const barberField = watch('barber')
   const dateField = watch('date')
@@ -33,6 +43,7 @@ export const ScheduleModal = ({ open, onClose }: ScheduleModalProps) => {
     if (open) {
       fetchBarberOptions()
     }
+    return () => reset()
   }, [open])
 
   useEffect(() => {
@@ -85,7 +96,7 @@ export const ScheduleModal = ({ open, onClose }: ScheduleModalProps) => {
     }
 
     const options = data.map((schedule) => ({
-      name: schedule.slice(0, -3),
+      name: schedule,
       value: schedule
     }))
     setScheduleOptions(options)
@@ -93,18 +104,20 @@ export const ScheduleModal = ({ open, onClose }: ScheduleModalProps) => {
 
   const handleScheduleSubmit = async (values: FieldValues) => {
     const request = {
-      email: values.email,
-      password: values.password
+      haircutId: haircutId,
+      name: values.name,
+      dateTime: `${values.date} ${values.schedule}`//.slice(0, -3)}`
     }
 
-    //const { error, data } = await usingTryCatch(login(request))
+    const { error } = await usingTryCatch(
+      scheduleHaircut(values.barber, request)
+    )
 
-    console.log(values)
-
-    // if (error) {
-    //   return
-    //   // chama modal
-    // }
+    if (error) {
+      showErrorSnackbar('teste carai')
+      return
+      // chama modal
+    }
     onClose()
   }
 
@@ -125,22 +138,22 @@ export const ScheduleModal = ({ open, onClose }: ScheduleModalProps) => {
             label="Selecione um profissional:"
             options={barberOptions}
           />
-          <ButtonGroupField
-            name="date"
-            control={control}
-            label="Selecione a data:"
-            options={dateOptions}
-            disabled={!barberField}
-            setValue={setValue}
-          />
-          <ButtonGroupField
-            name="schedule"
-            control={control}
-            label="Selecione um horário:"
-            options={scheduleOptions}
-            setValue={setValue}
-            disabled={!dateField}
-          />
+          <div className="date-box">
+            <SelectField
+              name="date"
+              control={control}
+              label="Selecione a data:"
+              options={dateOptions}
+              disabled={!barberField}
+            />
+            <SelectField
+              name="schedule"
+              control={control}
+              label="Selecione um horário:"
+              options={scheduleOptions}
+              disabled={!dateField}
+            />
+          </div>
           <Button type="primary" onClick={handleSubmit(handleScheduleSubmit)}>
             Agendar horário
           </Button>

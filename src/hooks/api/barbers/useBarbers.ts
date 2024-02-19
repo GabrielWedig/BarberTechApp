@@ -1,8 +1,8 @@
 import { useRequest } from '../base/useRequest'
-import { BarberData, BarberOption } from './Barbers'
+import { BarberData, BarberOption, ScheduleHaircutRequest } from './Barbers'
 
 export const useBarbers = () => {
-  const { get } = useRequest('barbers')
+  const { get, post } = useRequest('barbers')
 
   const getAllBarbers = async (): Promise<BarberData[]> => {
     const { data } = await get()
@@ -27,10 +27,18 @@ export const useBarbers = () => {
     return data
   }
 
+  const scheduleHaircut = async (
+    barberId: string,
+    request: ScheduleHaircutRequest
+  ): Promise<void> => {
+    await post(`${barberId}/schedule-haircut`, request)
+  }
+
   return {
     getAllBarbers,
     getBarberOptions,
     getAvaliableDates,
-    getAvaliableTimes
+    getAvaliableTimes,
+    scheduleHaircut
   }
 }

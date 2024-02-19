@@ -6,6 +6,7 @@ import { formatPrice } from '../../utils'
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
 
 interface HaircutProps {
+  id: string
   rating: number
   about?: string
   imageSource: string
@@ -14,6 +15,7 @@ interface HaircutProps {
 }
 
 export const Haircut = ({
+  id,
   rating,
   about,
   imageSource,
@@ -60,6 +62,7 @@ export const Haircut = ({
         open={openLoginModal}
       />
       <ScheduleModal
+        haircutId={id}
         onClose={() => setOpenScheduleModal(false)}
         open={openScheduleModal}
       />

@@ -4,6 +4,7 @@ import './index.css'
 import { Home } from './pages'
 import createStore from 'react-auth-kit/createStore'
 import AuthProvider from 'react-auth-kit'
+import { SnackbarProvider } from './hooks'
 
 const App = () => {
   const store = createStore<object>({
@@ -14,18 +15,19 @@ const App = () => {
   })
 
   return (
-    <AuthProvider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/depo" element={<Home />} />
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-            {/* <Route path="*" element={<NoPage />} /> */}
-            {/* <Route element={<AuthOutlet fallbackPath='/login' />}></Route> // Private route example*/}
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <SnackbarProvider>
+      <AuthProvider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />}/>
+              {/* <Route index element={<Home />} /> */}
+              {/* <Route path="*" element={<NoPage />} /> */}
+              {/* <Route element={<AuthOutlet fallbackPath='/login' />}></Route> // Private route example*/}
+            {/* </Route> */}
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </SnackbarProvider>
   )
 }
 

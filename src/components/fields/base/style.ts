@@ -9,6 +9,11 @@ export const FieldBox = styled.div<FieldProps>`
   flex-direction: column;
   gap: 5px;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  width: 100%;
+
+  .MuiMenuItem-root {
+    font-family: 'Poppins';
+  }
 
   input {
     padding: 10px 20px;
@@ -23,6 +28,10 @@ export const FieldBox = styled.div<FieldProps>`
 
   input:disabled {
     background-color: var(--white);
+  }
+
+  fieldset {
+    border: none;
   }
 `
 

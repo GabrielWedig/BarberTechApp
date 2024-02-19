@@ -1,7 +1,7 @@
 import * as S from './style'
 import contentJson from '../../../content.json'
 import { useEffect } from 'react'
-import { Haircut, Swiper } from '../../../components'
+import { Haircut } from '../../../components'
 import {
   useHaircuts,
   HaircutData,
@@ -34,20 +34,18 @@ export const Services = () => {
     <S.ServicesContainer id="services">
       <h2>{content.title}</h2>
       <p>{content.text}</p>
-
-      <div style={{ width: '100%', position: 'relative' }}>
-        <Swiper qntSlides={4} borderColor="white" arrowColor="orange">
-          {haircuts.map((h) => (
-            <Haircut
-              about={h.description}
-              imageSource={h.imageSource}
-              name={h.name}
-              price={h.price}
-              rating={h.qntStars}
-              key={h.id}
-            />
-          ))}
-        </Swiper>
+      <div className="haircuts-box">
+        {haircuts.map((h) => (
+          <Haircut
+            id={h.id}
+            about={h.description}
+            imageSource={h.imageSource}
+            name={h.name}
+            price={h.price}
+            rating={h.qntStars}
+            key={h.id}
+          />
+        ))}
       </div>
     </S.ServicesContainer>
   )

@@ -1,5 +1,5 @@
 import { Title, About, Services, Team, Localization } from '.'
-import { Footer, Header } from '../../components'
+import { Footer, Header, Snackbar } from '../../components'
 
 export const Home = () => {
   return (
@@ -11,6 +11,7 @@ export const Home = () => {
       <Team />
       <Localization />
       <Footer />
+      <Snackbar />
     </>
   )
 }

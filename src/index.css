@@ -9,7 +9,8 @@ input {
   font-family: 'Poppins';
 }
 
-button, a {
+button,
+a {
   cursor: pointer;
 }
 

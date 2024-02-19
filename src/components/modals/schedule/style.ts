@@ -7,6 +7,11 @@ export const ScheduleBox = styled.div`
   gap: 20px;
   position: relative;
 
+  .date-box {
+    display: flex;
+    gap: 20px;
+  }
+
   h3 {
     color: var(--white);
     font-size: 28px;
