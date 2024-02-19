@@ -1,9 +1,14 @@
-//import { isError, toString } from 'lodash'
+import { AxiosError } from 'axios'
+
+interface ErrorResponse {
+  Title: string
+  Status: number
+  Errors: string[]
+}
 
 export interface DataResponse<T> {
   data: T | null
-  error: unknown //Error | null
-  success: boolean
+  error: string | null
 }
 
 export async function usingTryCatch<T>(
@@ -11,12 +16,14 @@ export async function usingTryCatch<T>(
 ): Promise<DataResponse<T>> {
   try {
     const data = await promise
-    return { data, error: null, success: true }
+    return { data, error: null }
   } catch (error: unknown) {
+    const axiosError = error as AxiosError
+    const data = axiosError?.response?.data as ErrorResponse
+
     return {
       data: null,
-      error: error, //isError(error) ? error : new Error(toString(error)) // ver se precisa do lodash
-      success: false
+      error: data.Errors[0]
     }
   }
 }

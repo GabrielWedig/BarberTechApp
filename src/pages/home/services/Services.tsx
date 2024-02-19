@@ -1,19 +1,21 @@
 import * as S from './style'
 import contentJson from '../../../content.json'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Haircut } from '../../../components'
 import {
   useHaircuts,
   HaircutData,
-  useArrayState,
-  usingTryCatch
+  usingTryCatch,
+  useSnackbarContext
 } from '../../../hooks'
 
 export const Services = () => {
   const content = contentJson.home.services
 
   const { getAllHaircuts } = useHaircuts()
-  const { state: haircuts, set: setHaircuts } = useArrayState<HaircutData>()
+  const { showErrorSnackbar } = useSnackbarContext()
+  
+  const [haircuts, setHaircuts] = useState<HaircutData[]>([])
 
   useEffect(() => {
     fetchHaircuts()
@@ -23,10 +25,9 @@ export const Services = () => {
     const { data, error } = await usingTryCatch(getAllHaircuts())
 
     if (error || !data) {
+      showErrorSnackbar(error)
       return
-      // chama modal
     }
-
     setHaircuts(data)
   }
 

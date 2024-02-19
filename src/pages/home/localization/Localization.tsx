@@ -1,21 +1,21 @@
 import * as S from './style'
 import contentJson from '../../../content.json'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Establishment } from '../../../components'
 import {
   useEstablishments,
   EstablishmentData,
-  useArrayState,
-  usingTryCatch
+  usingTryCatch,
+  useSnackbarContext
 } from '../../../hooks'
 
 export const Localization = () => {
   const content = contentJson.home.localization
 
   const { getAllEstablishments } = useEstablishments()
+  const { showErrorSnackbar } = useSnackbarContext()
 
-  const { state: establishments, set: setEstablishments } =
-    useArrayState<EstablishmentData>()
+  const [establishments, setEstablishments] = useState<EstablishmentData[]>([])
 
   useEffect(() => {
     fetchEstablishments()
@@ -25,10 +25,9 @@ export const Localization = () => {
     const { data, error } = await usingTryCatch(getAllEstablishments())
 
     if (error || !data) {
+      showErrorSnackbar(error)
       return
-      // chama modal
     }
-
     setEstablishments(data)
   }
 

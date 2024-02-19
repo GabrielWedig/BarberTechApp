@@ -2,7 +2,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { Button, ModalTypes, PasswordField, TextField } from '..'
 import * as S from './style'
 import { useEffect } from 'react'
-import { useUsers, usingTryCatch } from '../../hooks'
+import { useSnackbarContext, useUsers, usingTryCatch } from '../../hooks'
 
 interface RegisterProps {
   setModalType: (type: ModalTypes) => void
@@ -18,6 +18,7 @@ interface RegisterFormData {
 
 export const Register = ({ setModalType, onClose }: RegisterProps) => {
   const { handleSubmit, control } = useForm<RegisterFormData>()
+  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   const { register } = useUsers()
 
@@ -34,12 +35,11 @@ export const Register = ({ setModalType, onClose }: RegisterProps) => {
 
     const { error, data } = await usingTryCatch(register(request))
 
-    console.log(data)
-
-    if (error) {
+    if (error || !data) {
+      showErrorSnackbar(error)
       return
-      // chama modal
     }
+    showSuccessSnackbar('Cadastro realizado!')
     onClose()
   }
 

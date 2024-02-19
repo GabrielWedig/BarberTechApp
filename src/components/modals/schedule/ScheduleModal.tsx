@@ -62,8 +62,8 @@ export const ScheduleModal = ({
     const { data, error } = await usingTryCatch(getBarberOptions())
 
     if (error || !data) {
+      showErrorSnackbar(error)
       return
-      // chama modal
     }
 
     const options = data.map((d) => ({ name: d.name, value: d.id }))
@@ -74,8 +74,8 @@ export const ScheduleModal = ({
     const { data, error } = await usingTryCatch(getAvaliableDates(barberId))
 
     if (error || !data) {
+      showErrorSnackbar(error)
       return
-      // chama modal
     }
 
     const options = data.map((date) => ({
@@ -91,8 +91,8 @@ export const ScheduleModal = ({
     )
 
     if (error || !data) {
+      showErrorSnackbar(error)
       return
-      // chama modal
     }
 
     const options = data.map((schedule) => ({
@@ -106,7 +106,7 @@ export const ScheduleModal = ({
     const request = {
       haircutId: haircutId,
       name: values.name,
-      dateTime: `${values.date} ${values.schedule}`//.slice(0, -3)}`
+      dateTime: `${values.date} ${values.schedule.slice(0, -3)}`
     }
 
     const { error } = await usingTryCatch(
@@ -114,10 +114,10 @@ export const ScheduleModal = ({
     )
 
     if (error) {
-      showErrorSnackbar('teste carai')
+      showErrorSnackbar(error)
       return
-      // chama modal
     }
+    showSuccessSnackbar('Corte agendado com sucesso!')
     onClose()
   }
 

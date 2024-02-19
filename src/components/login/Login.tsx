@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from 'react-hook-form'
 import { Button, ModalTypes, PasswordField, TextField } from '..'
 import * as S from './style'
-import { useUsers, usingTryCatch } from '../../hooks'
+import { useSnackbarContext, useUsers, usingTryCatch } from '../../hooks'
 
 interface LoginProps {
   setModalType: (type: ModalTypes) => void
@@ -15,6 +15,7 @@ interface LoginFormData {
 
 export const Login = ({ setModalType, onClose }: LoginProps) => {
   const { handleSubmit, control } = useForm<LoginFormData>()
+  const { showErrorSnackbar } = useSnackbarContext()
 
   const { login } = useUsers()
 
@@ -24,13 +25,11 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
       password: values.password
     }
 
-    const { error, data } = await usingTryCatch(login(request))
-
-    console.log(data)
+    const { error } = await usingTryCatch(login(request))
 
     if (error) {
+      showErrorSnackbar(error)
       return
-      // chama modal
     }
     onClose()
   }

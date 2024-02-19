@@ -2,8 +2,8 @@ import { createContext, useContext, useState } from 'react'
 
 interface ContextProps {
   snackbar: SnackbarProps
-  showSuccessSnackbar(message: string): void
-  showErrorSnackbar(message: string): void
+  showSuccessSnackbar(message?: string): void
+  showErrorSnackbar(message: string | null): void
 }
 
 interface ProviderProps {
@@ -23,13 +23,13 @@ export const SnackbarContext = createContext<ContextProps>({} as ContextProps)
 export const SnackbarProvider = ({ children }: ProviderProps) => {
   const [snackbar, setSnackbar] = useState<SnackbarProps>({} as SnackbarProps)
 
-  const showSuccessSnackbar = (message: string) => {
-    setSnackbar({ type: 'success', message: message, open: true })
+  const showSuccessSnackbar = (message?: string) => {
+    setSnackbar({ type: 'success', message: message ?? 'Sucesso!', open: true })
     delay()
   }
 
-  const showErrorSnackbar = (message: string) => {
-    setSnackbar({ type: 'error', message: message, open: true })
+  const showErrorSnackbar = (message: string | null) => {
+    setSnackbar({ type: 'error', message: message ?? 'Error', open: true })
     delay()
   }
 

@@ -1,18 +1,20 @@
 import * as S from './style'
 import contentJson from '../../../content.json'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Barber } from '../../../components'
 import {
   useBarbers,
   BarberData,
-  useArrayState,
-  usingTryCatch
+  usingTryCatch,
+  useSnackbarContext
 } from '../../../hooks'
 
 export const Team = () => {
   const content = contentJson.home.team
 
-  const { state: barbers, set: setBarbers } = useArrayState<BarberData>()
+  const [barbers, setBarbers] = useState<BarberData[]>([])
+
+  const { showErrorSnackbar } = useSnackbarContext()
 
   const { getAllBarbers } = useBarbers()
 
@@ -24,10 +26,9 @@ export const Team = () => {
     const { data, error } = await usingTryCatch(getAllBarbers())
 
     if (error || !data) {
+      showErrorSnackbar(error)
       return
-      // chama modal
     }
-
     setBarbers(data)
   }
 
