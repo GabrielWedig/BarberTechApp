@@ -2,6 +2,8 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { Button, ModalTypes, PasswordField, TextField } from '..'
 import * as S from './style'
 import { useSnackbarContext, useUsers, usingTryCatch } from '../../hooks'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { loginSchema } from './schema'
 
 interface LoginProps {
   setModalType: (type: ModalTypes) => void
@@ -14,7 +16,10 @@ interface LoginFormData {
 }
 
 export const Login = ({ setModalType, onClose }: LoginProps) => {
-  const { handleSubmit, control } = useForm<LoginFormData>()
+  const { handleSubmit, control } = useForm<LoginFormData>({
+    resolver: yupResolver(loginSchema)
+  })
+
   const { showErrorSnackbar } = useSnackbarContext()
 
   const { login } = useUsers()

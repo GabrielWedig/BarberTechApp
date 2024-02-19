@@ -21,7 +21,7 @@ export const LoginBox = styled.div`
   form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     width: 100%;
   }
 

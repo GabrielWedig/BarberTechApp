@@ -15,11 +15,17 @@ export const FieldBox = styled.div<FieldProps>`
     font-family: 'Poppins';
   }
 
+  .error {
+    border: 1px solid var(--red);
+    margin-bottom: 0;
+  }
+
   input {
     padding: 10px 20px;
     border-radius: 8px;
     border: none;
     font-size: 17px;
+    margin-bottom: 27px;
   }
 
   input:focus {

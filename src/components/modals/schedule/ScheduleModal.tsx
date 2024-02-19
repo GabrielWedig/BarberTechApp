@@ -3,6 +3,8 @@ import { Button, Modal, Option, SelectField, TextField } from '../..'
 import * as S from './style'
 import { useBarbers, useSnackbarContext, usingTryCatch } from '../../../hooks'
 import { useEffect, useState } from 'react'
+import { scheduleSchema } from './schema'
+import { yupResolver } from '@hookform/resolvers/yup'
 
 interface ScheduleModalProps {
   haircutId: string
@@ -11,7 +13,7 @@ interface ScheduleModalProps {
 }
 
 interface ScheduleFormData {
-  name: string
+  name?: string
   barber: string
   date: string
   schedule: string
@@ -26,7 +28,9 @@ export const ScheduleModal = ({
   const [dateOptions, setDateOptions] = useState<Option[]>([])
   const [scheduleOptions, setScheduleOptions] = useState<Option[]>([])
 
-  const { handleSubmit, control, watch, reset } = useForm<ScheduleFormData>()
+  const { handleSubmit, control, watch, reset } = useForm<ScheduleFormData>({
+    resolver: yupResolver(scheduleSchema)
+  })
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   const {
@@ -96,8 +100,8 @@ export const ScheduleModal = ({
     }
 
     const options = data.map((schedule) => ({
-      name: schedule,
-      value: schedule
+      name: schedule.slice(0, -3),
+      value: schedule.slice(0, -3)
     }))
     setScheduleOptions(options)
   }
@@ -106,7 +110,7 @@ export const ScheduleModal = ({
     const request = {
       haircutId: haircutId,
       name: values.name,
-      dateTime: `${values.date} ${values.schedule.slice(0, -3)}`
+      dateTime: `${values.date} ${values.schedule}`
     }
 
     const { error } = await usingTryCatch(

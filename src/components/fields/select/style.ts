@@ -3,6 +3,7 @@ export const selectStyle = {
   border: 'none',
   fontSize: '17px',
   backgroundColor: 'var(--white)',
+  marginBottom: '27px',
   '& .MuiInputBase-input': {
     padding: '10px 20px',
     fontFamily: 'Poppins'

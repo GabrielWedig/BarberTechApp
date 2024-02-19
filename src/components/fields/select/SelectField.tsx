@@ -1,7 +1,8 @@
-import { Control, FieldValues, Path } from 'react-hook-form'
+import { Control, FieldValues, Path, useController } from 'react-hook-form'
 import { BaseField } from '../base/BaseField'
 import { MenuItem, Select } from '@mui/material'
 import { itemStyle, selectStyle } from './style'
+import { FieldError } from '..'
 
 interface SelectFieldProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>
@@ -23,15 +24,23 @@ export function SelectField<TFieldValues extends FieldValues = FieldValues>({
   disabled,
   options
 }: SelectFieldProps<TFieldValues>) {
+  const { fieldState, field } = useController({ name, control })
+
   return (
     <BaseField label={label} disabled={disabled}>
-      <Select {...control.register(name)} disabled={disabled} sx={selectStyle}>
+      <Select
+        {...field}
+        disabled={disabled}
+        sx={selectStyle}
+        className={fieldState.error ? 'error' : ''}
+      >
         {options.map((o) => (
           <MenuItem sx={itemStyle} value={o.value}>
             {o.name}
           </MenuItem>
         ))}
       </Select>
+      <FieldError message={fieldState.error?.message} />
     </BaseField>
   )
 }

@@ -3,6 +3,8 @@ import { Button, ModalTypes, PasswordField, TextField } from '..'
 import * as S from './style'
 import { useEffect } from 'react'
 import { useSnackbarContext, useUsers, usingTryCatch } from '../../hooks'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { registerSchema } from './schema'
 
 interface RegisterProps {
   setModalType: (type: ModalTypes) => void
@@ -17,7 +19,9 @@ interface RegisterFormData {
 }
 
 export const Register = ({ setModalType, onClose }: RegisterProps) => {
-  const { handleSubmit, control } = useForm<RegisterFormData>()
+  const { handleSubmit, control } = useForm<RegisterFormData>({
+    resolver: yupResolver(registerSchema)
+  })
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   const { register } = useUsers()

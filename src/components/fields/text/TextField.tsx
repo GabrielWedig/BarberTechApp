@@ -1,5 +1,6 @@
-import { Control, FieldValues, Path } from 'react-hook-form'
+import { Control, FieldValues, Path, useController } from 'react-hook-form'
 import { BaseField } from '../base/BaseField'
+import { FieldError } from '..'
 
 interface TextFieldProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>
@@ -16,13 +17,17 @@ export function TextField<TFieldValues extends FieldValues = FieldValues>({
   placeholder,
   disabled
 }: TextFieldProps<TFieldValues>) {
+  const { fieldState, field } = useController({ name, control })
+  
   return (
     <BaseField label={label} disabled={disabled}>
       <input
-        {...control.register(name)}
+        {...field}
         placeholder={placeholder ?? label}
         disabled={disabled}
+        className={fieldState.error ? 'error' : ''}
       />
+      <FieldError message={fieldState.error?.message} />
     </BaseField>
   )
 }
