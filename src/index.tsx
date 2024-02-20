@@ -7,7 +7,7 @@ import AuthProvider from 'react-auth-kit'
 import { SnackbarProvider } from './hooks'
 
 const App = () => {
-  const store = createStore<object>({
+  const store = createStore<{}>({
     authName: '_auth',
     authType: 'cookie',
     cookieDomain: window.location.hostname,

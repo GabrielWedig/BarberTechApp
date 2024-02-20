@@ -19,7 +19,6 @@ export const Establishment = ({
       <S.Image $url={imageSource} />
       <S.Infos>
         <span>{address}</span>
-
         <span>{businessTime}</span>
         <Stars rating={rating} />
       </S.Infos>
