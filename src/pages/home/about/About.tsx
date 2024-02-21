@@ -9,7 +9,7 @@ export const About = () => {
 
   return (
     <S.AboutContainer id='about'>
-      <img src={aboutImage} alt="images" />
+      <img src={aboutImage} alt="image" />
       <S.ContentBox>
         <h2>{content.title}</h2>
         <p>{content.text1}</p>

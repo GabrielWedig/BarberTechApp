@@ -1,7 +1,6 @@
 import * as S from './style'
-import { Button } from '..'
+import { Button, Navigation } from '..'
 import { ReactComponent as Logo } from '../../img/logo.svg'
-import { scrollToSection } from '../../utils'
 import contentJson from '../../content.json'
 import {
   Phone,
@@ -17,7 +16,7 @@ export const Footer = () => {
   const content = contentJson.footer
 
   return (
-    <S.Footer id='footer'>
+    <S.Footer id="footer">
       <div className="column">
         <Logo className="logo" />
         <p>{content.description}</p>
@@ -38,32 +37,7 @@ export const Footer = () => {
       </div>
       <div className="column">
         <h3>{content.fastLinks}</h3>
-        <nav>
-          <Button type="transparent" onClick={() => scrollToSection('home')}>
-            Home
-          </Button>
-          <Button
-            type="transparent"
-            onClick={() => scrollToSection('services')}
-          >
-            Serviços
-          </Button>
-          <Button type="transparent" onClick={() => scrollToSection('about')}>
-            Sobre
-          </Button>
-          <Button
-            type="transparent"
-            onClick={() => scrollToSection('footer')}
-          >
-            Contatos
-          </Button>
-          <Button
-            type="transparent"
-            onClick={() => console.log('navega depoimentos')}
-          >
-            Depoimentos
-          </Button>
-        </nav>
+        <Navigation />
       </div>
       <div className="column">
         <h3>{content.downloads}</h3>

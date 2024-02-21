@@ -23,6 +23,11 @@
       "title": "Nossos estabelecimentos"
     }
   },
+  "feedback": {
+    "tab": "DEPOIMENTOS",
+    "title": "Veja o que nossos cliente dizem",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga fugit beatae soluta quisquam labore, explicabo commodi, aspernatur aliquid iusto mollitia est blanditiis tempore itaque. Nemo, voluptatibus! Commodi voluptas expedita autem?"
+  },
   "footer": {
     "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga fugit beatae soluta quisquam labore, explicabo commodi, aspernatur aliquid iusto mollitia est blanditiis tempore itaque. Nemo, voluptatibus! Commodi voluptas expedita autem?",
     "fastLinks": "Links rápidos",

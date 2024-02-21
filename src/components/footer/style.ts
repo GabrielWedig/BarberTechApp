@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const Footer = styled.footer`
   padding: 100px 200px;
-  background-color: var(--blue);
+  background-color: var(--black);
   color: var(--white);
   display: flex;
   justify-content: space-between;
