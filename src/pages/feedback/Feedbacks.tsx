@@ -8,7 +8,7 @@ import {
   useSnackbarContext,
   usingTryCatch
 } from '../../hooks'
-import feedbacksImage from '../../img/feedbacks-image.jpg'
+import feedbacksImage from '../../img/feedbacks.jpg'
 import { scrollToSection } from '../../utils'
 import { useLocation } from 'react-router-dom'
 

@@ -1,8 +1,8 @@
 import * as S from './style'
 import contentJson from '../../../content.json'
-import googlePlay from '../../../img/google-play-badge.png'
-import appStore from '../../../img/app-store-badge.svg'
-import aboutImage from '../../../img/about-image.png'
+import googlePlay from '../../../img/google-play.png'
+import appStore from '../../../img/app-store.svg'
+import aboutImage from '../../../img/about.png'
 
 export const About = () => {
   const content = contentJson.home.about

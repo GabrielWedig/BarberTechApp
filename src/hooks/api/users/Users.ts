@@ -9,7 +9,7 @@ export interface RegisterRequest extends LoginRequest {
 
 export interface LoginResponse {
   token: string
-  userId: string
+  user: UserData
 }
 
 export interface UserData {

@@ -1,13 +1,11 @@
 import { UserData } from '../../hooks'
 import * as S from './style'
 import { MenuType } from '..'
-
-const urlPhotoUserDefault =
-  'https://9jnq7ntowayxhgea.public.blob.vercel-storage.com/default-user-gQxqscw5gJhOM1lWE7Qeph9C9hX0ox'
+import userImage from '../../img/user.png'
 
 interface UserMenuProps {
   setShowMenu: (param: MenuType) => void
-  user?: UserData
+  user: UserData | null
 }
 
 export const UserMenu = ({ setShowMenu, user }: UserMenuProps) => {
@@ -17,7 +15,7 @@ export const UserMenu = ({ setShowMenu, user }: UserMenuProps) => {
         <span>Bem vindo!</span>
         <span>{user?.name}</span>
       </div>
-      <S.UserPhoto url={user?.photo ?? urlPhotoUserDefault} />
+      <S.UserPhoto url={user?.photo ?? userImage} />
     </S.UserMenuBox>
   )
 }

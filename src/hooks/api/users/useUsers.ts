@@ -27,7 +27,7 @@ export const useUsers = () => {
         token: data.token,
         type: 'Bearer'
       },
-      userState: data.userId
+      userState: data.user
     })
 
   return {

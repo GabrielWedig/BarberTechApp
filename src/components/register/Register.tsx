@@ -37,12 +37,13 @@ export const Register = ({ setModalType, onClose }: RegisterProps) => {
       name: values.name
     }
 
-    const { error, data } = await usingTryCatch(register(request))
+    const { error } = await usingTryCatch(register(request))
 
-    if (error || !data) {
+    if (error) {
       showErrorSnackbar(error)
       return
     }
+
     showSuccessSnackbar('Cadastro realizado!')
     onClose()
   }

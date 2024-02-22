@@ -21,7 +21,6 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
   })
 
   const { showErrorSnackbar } = useSnackbarContext()
-
   const { login } = useUsers()
 
   const handleLoginSubmit = async (values: FieldValues) => {
@@ -36,6 +35,7 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
       showErrorSnackbar(error)
       return
     }
+
     onClose()
   }
 

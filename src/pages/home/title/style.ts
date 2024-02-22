@@ -1,20 +1,14 @@
 import styled from 'styled-components'
-import contentJson from '../../../content.json'
+import titleImage from '../../../img/title.png'
+import { Container } from '../../../components'
 
-export const TitleImg = styled.div`
+export const TitleContainer = styled(Container)`
   width: 100%;
   margin-top: 98px;
   height: calc(100vh - 98px);
   background: linear-gradient(to top, var(--blue), transparent),
     linear-gradient(to bottom, var(--blue), transparent),
-    url(${contentJson.home.title.image}) center / cover no-repeat;
-`
-
-export const TitleBox = styled.section`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+    url(${titleImage}) center / cover no-repeat;
   display: flex;
   flex-direction: column;
   justify-content: center;

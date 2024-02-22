@@ -11,7 +11,7 @@ import * as S from './style'
 import useSignOut from 'react-auth-kit/hooks/useSignOut'
 
 interface MenuProps {
-  user?: UserData
+  user: UserData | null
   showMenu: MenuType
   setShowMenu: (param: MenuType) => void
 }

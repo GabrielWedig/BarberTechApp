@@ -1,44 +1,19 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button, LoginModal, Menu, Navigation, UserMenu } from '..'
 import { ReactComponent as Logo } from '../../img/logo.svg'
 import * as S from './style'
 import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
-import {
-  UserData,
-  useSnackbarContext,
-  useUsers,
-  usingTryCatch
-} from '../../hooks'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
+import { UserData } from '../../hooks'
 
 export type MenuType = 'initial' | 'active' | 'inactive'
 
 export const Header = () => {
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [showMenu, setShowMenu] = useState<MenuType>('initial')
-  const [user, setUser] = useState<UserData>()
 
   const isAuthenticated = useIsAuthenticated()
-  const userId = useAuthUser<string>()
-
-  const { getById } = useUsers()
-  const { showErrorSnackbar } = useSnackbarContext()
-
-  useEffect(() => {
-    if (isAuthenticated()) {
-      fetchUser()
-    }
-  }, [])
-
-  const fetchUser = async () => {
-    const { data, error } = await usingTryCatch(getById(userId ?? ''))
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-    setUser(data)
-  }
+  const user = useAuthUser<UserData>()
 
   return (
     <>
