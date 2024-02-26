@@ -1,7 +1,7 @@
 export interface FeedbackData {
   id: string
   comment: string
-  qntStarsAverage: number
+  ratingAverage: number
   userName: string
   at: string
 }

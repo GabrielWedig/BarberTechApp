@@ -19,11 +19,10 @@ interface MenuProps {
 export const Menu = ({ user, showMenu, setShowMenu }: MenuProps) => {
   const signOut = useSignOut()
 
-  // TODO: tirar trues quando back tiver pronto
   const canShow = {
-    reviews: user?.status === 'Client' || true,
-    haircuts: user?.status === 'Barber' || user?.status === 'Client' || true,
-    calendar: user?.status === 'Barber' || true
+    reviews: user?.type === 'Client',
+    haircuts: user?.type === 'Barber' || user?.type === 'Client',
+    calendar: user?.type === 'Barber'
   }
 
   const handleLogout = () => {

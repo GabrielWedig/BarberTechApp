@@ -17,16 +17,7 @@ export interface UserData {
   email: string
   name: string
   photo: string | null
-  eventSchedules: EventScheduleData[]
-  status: UserStatus
+  type: UserType
 }
 
-interface EventScheduleData {
-  id: string
-  dateTime: string
-  name: string
-  status: EventScheduleStatus
-}
-
-type EventScheduleStatus = 'Active' | 'Canceled' | 'Completed'
-type UserStatus = 'Admin' | 'Barber' | 'Client'
+type UserType = 'Admin' | 'Barber' | 'Client'

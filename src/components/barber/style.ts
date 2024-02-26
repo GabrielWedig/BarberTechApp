@@ -34,7 +34,7 @@ export const Barber = styled.div`
     font-weight: 500;
   }
 
-  button {
+  a {
     transition: color 0.5s ease;
     background-color: transparent;
     border: none;
@@ -43,7 +43,7 @@ export const Barber = styled.div`
     margin: 0 5px;
   }
 
-  button:hover {
+  a:hover {
     color: var(--orange);
   }
 `

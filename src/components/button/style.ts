@@ -1,9 +1,10 @@
 import { Button, styled } from '@mui/material'
+import { ColorType, getColor } from '../../utils'
 
 interface ButtonProps {
-  background: string
-  textcolor: string
-  hovercolor: string | null,
+  background: ColorType
+  textcolor: ColorType
+  hovercolor: ColorType | null,
   fontWeight: number,
   padding: string | null
 }
@@ -23,7 +24,3 @@ export const StyledButton = styled(Button)<ButtonProps>((props) => ({
     color: getColor(props.hovercolor ?? props.textcolor),
   }
 }))
-
-const getColor = (color: string) => {
-  return `var(--${color})`
-}

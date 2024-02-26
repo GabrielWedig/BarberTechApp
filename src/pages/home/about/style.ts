@@ -32,13 +32,15 @@ export const BadgeBox = styled.div`
   display: flex;
   gap: 30px;
 
-  button {
+  a {
     background-color: transparent;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
   }
 
-  button > img {
+  a > img {
     width: 220px;
   }
 

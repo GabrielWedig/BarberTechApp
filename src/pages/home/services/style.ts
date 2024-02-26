@@ -4,11 +4,12 @@ import { Container } from '../../../components'
 export const ServicesContainer = styled(Container)`
   height: calc(100vh - 98px);
   background-color: var(--white);
-  padding-top: 110px;
+  padding-top: 100px;
   padding-bottom: 110px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 25px;
 
   h2 {
     color: var(--blue);
@@ -19,8 +20,6 @@ export const ServicesContainer = styled(Container)`
   p {
     width: 70%;
     color: var(--black);
-    margin-top: 15px;
-    margin-bottom: 50px;
   }
 
   .haircuts-box {

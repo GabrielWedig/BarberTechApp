@@ -8,19 +8,19 @@ export const About = () => {
   const content = contentJson.home.about
 
   return (
-    <S.AboutContainer id='about'>
+    <S.AboutContainer id="about">
       <img src={aboutImage} alt="image" />
       <S.ContentBox>
         <h2>{content.title}</h2>
         <p>{content.text1}</p>
         <p>{content.text2}</p>
         <S.BadgeBox>
-          <button>
+          <a href="https://play.google.com/">
             <img src={googlePlay} alt="google-play" />
-          </button>
-          <button>
-            <img src={appStore} alt="app-store" className='app-store-badge'/>
-          </button>
+          </a>
+          <a href="https://www.apple.com/">
+            <img src={appStore} alt="app-store" className="app-store-badge" />
+          </a>
         </S.BadgeBox>
       </S.ContentBox>
     </S.AboutContainer>

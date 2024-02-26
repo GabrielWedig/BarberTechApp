@@ -1,11 +1,12 @@
+import { PagedResponse } from './../base/Pagination';
 import { useRequest } from '../base/useRequest'
 import { BarberData, BarberOption, ScheduleHaircutRequest } from './Barbers'
 
 export const useBarbers = () => {
   const { get, post } = useRequest('barbers')
 
-  const getAllBarbers = async (): Promise<BarberData[]> => {
-    const { data } = await get()
+  const getAllBarbers = async (page: number, pageSize: number): Promise<PagedResponse<BarberData[]>> => {
+    const { data } = await get(`?Page=${page}&PageSize=${pageSize}`)
     return data
   }
 

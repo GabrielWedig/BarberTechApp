@@ -1,4 +1,16 @@
-export const buttonTypes = {
+import { ColorType } from '../../utils'
+
+interface ButtonTypes {
+  [name: string]: {
+    background: ColorType
+    textColor: ColorType
+    hoverColor: ColorType | null
+    fontWeight: number
+    padding: string | null
+  }
+}
+
+export const buttonTypes: ButtonTypes = {
   primary: {
     background: 'orange',
     textColor: 'black',

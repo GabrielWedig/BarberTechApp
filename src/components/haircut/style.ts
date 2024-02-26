@@ -9,7 +9,7 @@ interface HaircutMaskProps {
 }
 
 export const Haircut = styled.button`
-  width: 325px;
+  width: 300px;
   height: 450px;
   background-color: var(--white);
   filter: var(--dropShadow);

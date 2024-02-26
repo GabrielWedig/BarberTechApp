@@ -1,8 +1,8 @@
 export interface HaircutData {
   id: string
   name: string
-  description?: string
+  about?: string
   price: number
   imageSource: string
-  qntStars: number
+  rating: number
 }

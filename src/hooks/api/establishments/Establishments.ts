@@ -5,5 +5,5 @@ export interface EstablishmentData {
   latitude: number
   longitude: number
   businessTime: string
-  qntStars: number
+  rating: number
 }

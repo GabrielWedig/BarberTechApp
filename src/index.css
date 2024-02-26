@@ -27,6 +27,7 @@ html {
   --blue: #0d121e;
   --gray: #c0c0c0;
   --red: #f44336;
+  --transparent: transparent;
   --shadow50: 3px 3px 8px var(--black50);
   --shadow80: 3px 3px 8px var(--black80);
   --dropShadow: drop-shadow(4px 5px 8px var(--black50));

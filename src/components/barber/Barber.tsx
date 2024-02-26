@@ -1,16 +1,24 @@
 import * as S from './style'
-import { Instagram, Facebook } from '@mui/icons-material'
+import { Instagram, Facebook, Twitter } from '@mui/icons-material'
 import { useState } from 'react'
-import { Stars } from '..'
+import { Stars, Visible } from '..'
+import { SocialData } from '../../hooks'
 
 interface BarberProps {
   name: string
   rating: number
   about: string
   imageSource: string
+  social: SocialData
 }
 
-export const Barber = ({ name, rating, about, imageSource }: BarberProps) => {
+export const Barber = ({
+  name,
+  rating,
+  about,
+  imageSource,
+  social
+}: BarberProps) => {
   const [showInfos, setShowInfos] = useState<boolean>(false)
 
   return (
@@ -27,12 +35,21 @@ export const Barber = ({ name, rating, about, imageSource }: BarberProps) => {
       </S.BarberMask>
       <S.Image $url={imageSource} />
       <div className="social-box">
-        <button>
-          <Instagram fontSize="large" />
-        </button>
-        <button>
-          <Facebook fontSize="large" />
-        </button>
+        <Visible when={!!social.instagram}>
+          <a href={social.instagram}>
+            <Instagram fontSize="large" />
+          </a>
+        </Visible>
+        <Visible when={!!social.facebook}>
+          <a href={social.facebook}>
+            <Facebook fontSize="large" />
+          </a>
+        </Visible>
+        <Visible when={!!social.twitter}>
+          <a href={social.twitter}>
+            <Twitter fontSize="large" />
+          </a>
+        </Visible>
       </div>
     </S.Barber>
   )

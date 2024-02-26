@@ -54,7 +54,7 @@ export const Feedbacks = () => {
           {feedbacks.map((f) => (
             <FeedbackCard
               comment={f.comment}
-              stars={f.qntStarsAverage}
+              stars={f.ratingAverage}
               user={f.userName}
               at={f.at}
             />

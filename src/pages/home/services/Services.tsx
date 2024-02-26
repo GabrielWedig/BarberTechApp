@@ -1,28 +1,30 @@
 import * as S from './style'
 import contentJson from '../../../content.json'
 import { useEffect, useState } from 'react'
-import { Haircut } from '../../../components'
+import { Haircut, Pagination } from '../../../components'
 import {
   useHaircuts,
   HaircutData,
   usingTryCatch,
-  useSnackbarContext
+  useSnackbarContext,
+  PagedResponse
 } from '../../../hooks'
 
 export const Services = () => {
   const content = contentJson.home.services
+  const pageSize = 4
 
   const { getAllHaircuts } = useHaircuts()
   const { showErrorSnackbar } = useSnackbarContext()
-  
-  const [haircuts, setHaircuts] = useState<HaircutData[]>([])
+
+  const [haircuts, setHaircuts] = useState<PagedResponse<HaircutData[]>>()
 
   useEffect(() => {
-    fetchHaircuts()
+    fetchHaircuts(1)
   }, [])
 
-  const fetchHaircuts = async () => {
-    const { data, error } = await usingTryCatch(getAllHaircuts())
+  const fetchHaircuts = async (page: number) => {
+    const { data, error } = await usingTryCatch(getAllHaircuts(page, pageSize))
 
     if (error || !data) {
       showErrorSnackbar(error)
@@ -36,18 +38,23 @@ export const Services = () => {
       <h2>{content.title}</h2>
       <p>{content.text}</p>
       <div className="haircuts-box">
-        {haircuts.map((h) => (
+        {haircuts?.items.map((h) => (
           <Haircut
             id={h.id}
-            about={h.description}
+            about={h.about}
             imageSource={h.imageSource}
             name={h.name}
             price={h.price}
-            rating={h.qntStars}
+            rating={h.rating}
             key={h.id}
           />
         ))}
       </div>
+      <Pagination
+        totalCount={haircuts?.totalCount ?? 0}
+        pageSize={pageSize}
+        handleChange={fetchHaircuts}
+      />
     </S.ServicesContainer>
   )
 }

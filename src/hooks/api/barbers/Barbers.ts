@@ -1,11 +1,12 @@
 export interface BarberData {
   id: string
   name: string
+  contact: string
+  establishmentAddress: string
   about: string
   imageSource: string
-  contact: string
-  qntStars: number
-  establishmentAddress: string
+  rating: number
+  social: SocialData
   eventSchedules: EventScheduleData[]
 }
 
@@ -14,6 +15,12 @@ export interface EventScheduleData {
   dateTime: string
   name: string
   status: EventStatus
+}
+
+export interface SocialData {
+  facebook?: string
+  instagram?: string
+  twitter?: string
 }
 
 type EventStatus = 'Active' | 'Completed' | 'Canceled'
