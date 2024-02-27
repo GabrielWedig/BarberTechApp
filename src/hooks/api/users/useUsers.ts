@@ -1,5 +1,11 @@
 import { useRequest } from '../..'
-import { LoginRequest, LoginResponse, RegisterRequest, UserData } from './Users'
+import {
+  CompleteUserData,
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  UserData
+} from './Users'
 import useSignIn from 'react-auth-kit/hooks/useSignIn'
 
 export const useUsers = () => {
@@ -17,7 +23,7 @@ export const useUsers = () => {
   }
 
   const getById = async (id: string): Promise<UserData> => {
-    const { data } = await get<UserData>(id)
+    const { data } = await get<CompleteUserData>(id)
     return data
   }
 

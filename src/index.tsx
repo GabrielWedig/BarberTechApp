@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
-import { Home, Feedbacks } from './pages'
+import { Home, Feedbacks, Profile } from './pages'
 import createStore from 'react-auth-kit/createStore'
 import AuthProvider from 'react-auth-kit'
 import { SnackbarProvider } from './hooks'
@@ -21,6 +21,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/feedbacks" element={<Feedbacks />} />
+            <Route path="/profile/:id" element={<Profile />} />
             {/* <Route index element={<Home />} /> */}
             {/* <Route path="*" element={<NoPage />} /> */}
             {/* <Route element={<AuthOutlet fallbackPath='/login' />}></Route> // Private route example*/}

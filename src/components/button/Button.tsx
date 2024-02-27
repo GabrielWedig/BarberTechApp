@@ -7,7 +7,7 @@ interface ButtonProps {
   onClick: () => void
 }
 
-type ButtonType = 'primary' | 'transparent'
+type ButtonType = 'primary' | 'secondary' | 'transparent'
 
 export const Button = ({
   children,

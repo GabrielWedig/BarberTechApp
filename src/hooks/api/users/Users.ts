@@ -16,8 +16,20 @@ export interface UserData {
   id: string
   email: string
   name: string
-  photo: string | null
+  imageSource: string | null
   type: UserType
 }
 
-type UserType = 'Admin' | 'Barber' | 'Client'
+export interface CompleteUserData extends UserData {
+  eventSchedules: EventScheduleData[]
+}
+
+interface EventScheduleData {
+  id: string
+  dateTime: string
+  name: string
+  status: EventStatus
+}
+
+export type UserType = 'Admin' | 'Barber' | 'Client'
+type EventStatus = 'Active' | 'Completed' | 'Canceled'

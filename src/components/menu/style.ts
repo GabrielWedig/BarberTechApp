@@ -4,6 +4,7 @@ import { MenuType } from '..'
 interface UserPhotoProps {
   url: string
 }
+
 interface MenuProps {
   showMenu: MenuType
 }
@@ -59,7 +60,7 @@ export const Menu = styled.div<MenuProps>`
   position: fixed;
   padding: 25px;
   background-color: var(--blue);
-  top: -140px;
+  top: -30px;
   right: 0;
   animation: ${({ showMenu }) => animation(showMenu)} 0.5s ease forwards;
   z-index: 4;

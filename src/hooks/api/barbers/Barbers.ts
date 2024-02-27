@@ -10,7 +10,7 @@ export interface BarberData {
   eventSchedules: EventScheduleData[]
 }
 
-export interface EventScheduleData {
+interface EventScheduleData {
   id: string
   dateTime: string
   name: string
