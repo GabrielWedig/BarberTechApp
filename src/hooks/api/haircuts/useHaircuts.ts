@@ -1,10 +1,15 @@
 import { PagedResponse } from './../base/Pagination'
 import { useRequest } from '../base/useRequest'
-import { HaircutData } from './Haircuts'
+import {
+  CreateHaircutRequest,
+  HaircutData,
+  UpdateHaircutRequest
+} from './Haircuts'
 
 export const useHaircuts = () => {
-  const { get } = useRequest('haircuts')
+  const { get, post, put, del } = useRequest('haircuts')
 
+  // TODO: passar mais paremetros vindo da api
   const getAllHaircuts = async (
     page: number,
     pageSize: number
@@ -13,7 +18,28 @@ export const useHaircuts = () => {
     return data
   }
 
+  const createHaircut = async (
+    id: string,
+    request: CreateHaircutRequest
+  ): Promise<void> => {
+    await post(id, request)
+  }
+
+  const updateHaircut = async (
+    id: string,
+    request: UpdateHaircutRequest
+  ): Promise<void> => {
+    await put(id, request)
+  }
+
+  const deleteHaircut = async (id: string): Promise<void> => {
+    await del(id)
+  }
+
   return {
-    getAllHaircuts
+    getAllHaircuts,
+    createHaircut,
+    updateHaircut,
+    deleteHaircut
   }
 }

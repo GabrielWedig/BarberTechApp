@@ -7,7 +7,6 @@ export const Footer = styled.footer`
   display: flex;
   justify-content: space-between;
   position: absolute;
-  z-index: 2;
 
   .column {
     width: 20%;

@@ -83,7 +83,7 @@ export const ScheduleModal = ({
     }
 
     const options = data.map((date) => ({
-      name: date.slice(0, -5),
+      name: date,
       value: date
     }))
     setDateOptions(options)
@@ -100,8 +100,8 @@ export const ScheduleModal = ({
     }
 
     const options = data.map((schedule) => ({
-      name: schedule.slice(0, -3),
-      value: schedule.slice(0, -3)
+      name: schedule,
+      value: schedule
     }))
     setScheduleOptions(options)
   }

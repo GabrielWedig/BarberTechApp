@@ -1,20 +1,11 @@
 export interface BarberData {
   id: string
-  name: string
   contact: string
   establishmentAddress: string
   about: string
   imageSource: string
   rating: number
   social: SocialData
-  eventSchedules: EventScheduleData[]
-}
-
-interface EventScheduleData {
-  id: string
-  dateTime: string
-  name: string
-  status: EventStatus
 }
 
 export interface SocialData {
@@ -23,7 +14,22 @@ export interface SocialData {
   twitter?: string
 }
 
-type EventStatus = 'Active' | 'Completed' | 'Canceled'
+export interface CreateBarberRequest {
+  establishmentId: string,
+  userId: string
+  about?: string,
+  social: SocialData,
+  contact: string,
+  imageSource: string,
+}
+
+export interface UpdateBarberRequest {
+  establishmentId?: string,
+  about?: string,
+  contact?: string,
+  imageSource?: string,
+  social: SocialData,
+}
 
 export interface BarberOption {
   id: string

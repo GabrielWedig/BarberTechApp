@@ -1,18 +1,46 @@
-import { PagedResponse } from './../base/Pagination';
+import { PagedResponse } from './../base/Pagination'
 import { useRequest } from '../base/useRequest'
-import { BarberData, BarberOption, ScheduleHaircutRequest } from './Barbers'
+import {
+  BarberData,
+  BarberOption,
+  CreateBarberRequest,
+  ScheduleHaircutRequest,
+  UpdateBarberRequest
+} from './Barbers'
 
 export const useBarbers = () => {
-  const { get, post } = useRequest('barbers')
+  const { get, post, put, del } = useRequest('barbers')
 
-  const getAllBarbers = async (page: number, pageSize: number): Promise<PagedResponse<BarberData[]>> => {
+  // TODO: passar mais paremetros vindo da api
+  const getAllBarbers = async (
+    page: number,
+    pageSize: number
+  ): Promise<PagedResponse<BarberData[]>> => {
     const { data } = await get(`?Page=${page}&PageSize=${pageSize}`)
     return data
+  }
+
+  const createBarber = async (
+    id: string,
+    request: CreateBarberRequest
+  ): Promise<void> => {
+    await post(id, request)
   }
 
   const getBarberOptions = async (): Promise<BarberOption[]> => {
     const { data } = await get('options')
     return data
+  }
+
+  const updateBarber = async (
+    id: string,
+    request: UpdateBarberRequest
+  ): Promise<void> => {
+    await put(id, request)
+  }
+
+  const deleteBarber = async (id: string): Promise<void> => {
+    await del(id)
   }
 
   const getAvaliableDates = async (barberId: string): Promise<string[]> => {
@@ -37,7 +65,10 @@ export const useBarbers = () => {
 
   return {
     getAllBarbers,
+    createBarber,
     getBarberOptions,
+    updateBarber,
+    deleteBarber,
     getAvaliableDates,
     getAvaliableTimes,
     scheduleHaircut

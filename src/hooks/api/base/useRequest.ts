@@ -24,12 +24,12 @@ export const useRequest = (baseURL: string) => {
 
     put: async <T = any>(
       url: string = '',
-      data: any
-    ): Promise<AxiosResponse<T>> => await instance.put(buildUrl(url), data),
+      request?: any
+    ): Promise<AxiosResponse<T>> => await instance.put(buildUrl(url), request),
 
     post: async <T = any>(
       url: string = '',
-      data: any
-    ): Promise<AxiosResponse<T>> => await instance.post(buildUrl(url), data)
+      request: any
+    ): Promise<AxiosResponse<T>> => await instance.post(buildUrl(url), request)
   }
 }

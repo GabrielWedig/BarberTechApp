@@ -3,8 +3,16 @@ export interface LoginRequest {
   password: string
 }
 
-export interface RegisterRequest extends LoginRequest {
+export interface RegisterUserRequest extends LoginRequest {
   name: string
+  imageSource?: string
+}
+
+export interface UpdateUserRequest {
+  email?: string
+  name?: string
+  imageSource?: string
+  password?: string
 }
 
 export interface LoginResponse {
@@ -20,7 +28,7 @@ export interface UserData {
   type: UserType
 }
 
-export interface CompleteUserData extends UserData {
+export interface UserDataDetailed extends UserData {
   eventSchedules: EventScheduleData[]
 }
 

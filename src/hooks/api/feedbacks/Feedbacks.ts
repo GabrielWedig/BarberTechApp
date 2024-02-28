@@ -5,3 +5,18 @@ export interface FeedbackData {
   userName: string
   at: string
 }
+
+export interface CreateFeedbackRequest {
+  comment?: string
+  eventScheduleId: string
+  ratingBarber: number
+  ratingHaircut: number
+  ratingEstablishment: number
+}
+
+export interface UpdateFeedbackRequest {
+  comment?: string
+  ratingBarber?: number
+  ratingHaircut?: number
+  ratingEstablishment?: number
+}

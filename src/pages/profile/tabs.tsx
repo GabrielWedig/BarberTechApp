@@ -1,60 +1,55 @@
-import { Profile } from './profile/Profile'
-import { Calendar } from './calendar/Calendar'
-import { Manage } from './manage/Manage'
-import { History } from './history/History'
+import { Calendar, Manage, History, Edit } from '.'
+import { UserData } from '../../hooks'
 
-export type TabValues = 'profile' | 'manage' | 'history' | 'calendar'
-type TabNames = 'perfil' | 'gerenciar' | 'histórico' | 'calendário'
-
-interface TabsTypeUsers {
-  [name: string]: {
-    header: Header[]
-    element: Element
-  }
+interface Tabs {
+  [name: string]: Tab
 }
 
-interface Element {
-  [name: string]: JSX.Element
+interface Tab {
+  header: Header
+  element: JSX.Element
 }
 
 interface Header {
-  name: TabNames
-  value: TabValues
+  label: string
+  value: string
 }
 
-export const tabs = {
-  profile: <Profile />,
-  manage: <Manage />,
-  calendar: <Calendar />,
-  history: <History />
-}
-
-export const tabsTypeUsers: TabsTypeUsers = {
-  Default: { header: [], element: {} },
-  Admin: {
-    header: [
-      { name: 'perfil', value: 'profile' },
-      { name: 'gerenciar', value: 'manage' }
-    ],
-    element: { profile: tabs.profile, manage: tabs.manage }
-  },
-  Barber: {
-    header: [
-      { name: 'perfil', value: 'profile' },
-      { name: 'histórico', value: 'history' },
-      { name: 'calendário', value: 'calendar' }
-    ],
-    element: {
-      profile: tabs.profile,
-      manage: tabs.manage,
-      history: tabs.history
+export const getTab = (
+  activeTab: string,
+  isEdit: boolean,
+  user?: UserData
+) => {
+  const tabs: Tabs = {
+    profile: {
+      header: { label: 'perfil', value: 'profile' },
+      element: <Edit isEdit={isEdit} user={user} />
+    },
+    manage: {
+      header: { label: 'gerenciar', value: 'manage' },
+      element: <Manage />
+    },
+    calendar: {
+      header: { label: 'calendário', value: 'calendar' },
+      element: <Calendar />
+    },
+    history: {
+      header: { label: 'histórico', value: 'history' },
+      element: <History user={user} />
     }
-  },
-  Client: {
-    header: [
-      { name: 'perfil', value: 'profile' },
-      { name: 'histórico', value: 'history' }
-    ],
-    element: { profile: tabs.profile, history: tabs.history }
+  }
+
+  const tabNames = {
+    Default: [],
+    Admin: ['profile', 'manage'],
+    Barber: ['profile', 'history', 'calendar'],
+    Client: ['profile', 'history']
+  }
+
+  const userTabs = tabNames[user?.type ?? 'Default']
+
+  return {
+    header: userTabs.map(tab => tabs[tab].header),
+    element: tabs[activeTab].element
   }
 }
