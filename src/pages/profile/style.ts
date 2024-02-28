@@ -4,43 +4,45 @@ interface UserPhotoProps {
   url: string
 }
 
-export const BackgroundOrange = styled.div`
-  height: 250px;
-  background-color: var(--orange);
+export const Background = styled.div`
+  height: 100%;
+  background: linear-gradient(
+    var(--orange) 0,
+    var(--orange) 300px,
+    var(--white) 300px,
+    var(--white) 100%
+  );
   margin-top: 98px;
-`
-
-export const BackgroundWhite = styled.div`
-  height: calc(100vh - 348px);
-  background-color: var(--white);
+  padding: 50px 0;
 `
 
 export const ProfileContainer = styled.section`
-  position: absolute;
-  top: 150px;
-  left: 7.5%;
-  z-index: 1;
   border: 2px solid var(--orange);
-  height: 100vh;
-  width: 85%;
+  height: auto;
+  width: 70%;
   background-color: var(--white);
+  margin: 0 auto;
 
   .header {
-    padding: 40px 100px;
+    width: 100%;
+    padding: 30px 100px;
     display: flex;
     align-items: center;
-    gap: 50px;
-    border-bottom: 1px solid var(--orange);
+    gap: 100px;
   }
 
-  .header > button {
-    margin-left: auto;
+  .content {
+    padding: 0 100px;
+  }
+
+  button > span {
+    margin-right: 10px;
   }
 `
 
 export const UserPhoto = styled.div<UserPhotoProps>`
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   border-radius: 100%;
   background: url(${(props) => props.url}) center / cover no-repeat;
 `

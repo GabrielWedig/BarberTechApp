@@ -9,15 +9,16 @@ import {
 } from '../../hooks'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import userImage from '../../img/user.png'
-import { TabValues, tabsTypeUsers } from './tabs'
+import { getTab } from './tabs'
+import { ArrowForward } from '@mui/icons-material'
 
 export const Profile = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false)
-  const [tab, setTab] = useState<TabValues>('profile')
+  const [activeTab, setActiveTab] = useState<string>('profile')
   const [user, setUser] = useState<UserData>()
 
   const userContext = useAuthUser<UserData>()
-  const { getById } = useUsers()
+  const { getUserById } = useUsers()
 
   const { showErrorSnackbar } = useSnackbarContext()
 
@@ -26,7 +27,9 @@ export const Profile = () => {
   }, [])
 
   const fecthUser = async () => {
-    const { data, error } = await usingTryCatch(getById(userContext?.id ?? ''))
+    const { data, error } = await usingTryCatch(
+      getUserById(userContext?.id ?? '')
+    )
 
     if (error || !data) {
       showErrorSnackbar(error)
@@ -35,36 +38,41 @@ export const Profile = () => {
     setUser(data)
   }
 
-  //   const handleEditClick = () => {
-  //     //vai pra tab configs se não estiver nela
-  //     setIsEdit(true)
-  //   }
-
-  const handleTabChange = (value: TabValues) => {
-    setTab(value)
+  const handleEditClick = () => {
+    if (activeTab !== 'profile') {
+      setActiveTab('profile')
+    }
+    setIsEdit((current) => !current)
   }
 
-  const tabs = tabsTypeUsers[user?.type ?? 'Default']
+  const tab = getTab(activeTab, isEdit, user)
 
   return (
     <>
       <Header />
-      <S.BackgroundOrange />
-      <S.BackgroundWhite />
-      <S.ProfileContainer>
-        {/* <div className="header">
-          <S.UserPhoto url={user?.imageSource ?? userImage} />
-          <h2>{user?.name}</h2>
-          <Button onClick={handleEditClick} type="secondary">
-            Editar Perfil
-          </Button>
-        </div> */}
-        <Tabs items={tabs.header} tab={tab} onChange={handleTabChange} />
-        {tabs.element[tab]}
-        {/* <S.ProfileContent>
-          <h3>Configurações da conta</h3>
-        </S.ProfileContent> */}
-      </S.ProfileContainer>
+      <S.Background>
+        <S.ProfileContainer>
+          <div className="header">
+            <S.UserPhoto url={user?.imageSource ?? userImage} />
+            <div>
+              <h2>{user?.name}</h2>
+              <span>{user?.type}</span>
+            </div>
+            <Button onClick={handleEditClick} type="secondary">
+              <span>Editar Perfil</span>
+              <ArrowForward />
+            </Button>
+          </div>
+          <div className="content">
+            <Tabs
+              items={tab.header}
+              tab={activeTab}
+              onChange={(value: string) => setActiveTab(value)}
+            />
+            {tab.element}
+          </div>
+        </S.ProfileContainer>
+      </S.Background>
       <Footer />
     </>
   )
