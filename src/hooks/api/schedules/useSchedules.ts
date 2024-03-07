@@ -11,7 +11,7 @@ export const useSchedules = () => {
     searchTerm?: string
   ): Promise<PagedResponse<EventSchedulesData[]>> => {
     const { data } = await get(
-      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )
     return data
   }

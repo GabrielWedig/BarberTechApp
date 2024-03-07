@@ -19,7 +19,7 @@ export const useUsers = () => {
     searchTerm?: string
   ): Promise<PagedResponse<UsersData[]>> => {
     const { data } = await get(
-      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )
     return data
   }

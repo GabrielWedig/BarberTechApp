@@ -17,7 +17,7 @@ export const useBarbers = () => {
     searchTerm?: string
   ): Promise<PagedResponse<BarbersData[]>> => {
     const { data } = await get(
-      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )
     return data
   }

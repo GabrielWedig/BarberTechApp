@@ -16,7 +16,7 @@ export const useEstablishments = () => {
     searchTerm?: string
   ): Promise<PagedResponse<EstablishmentsData[]>> => {
     const { data } = await get(
-      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )
     return data
   }

@@ -16,7 +16,7 @@ export const useHaircuts = () => {
     searchTerm?: string
   ): Promise<PagedResponse<HaircutsData[]>> => {
     const { data } = await get(
-      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )
     return data
   }

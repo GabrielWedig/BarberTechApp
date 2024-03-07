@@ -15,7 +15,7 @@ export const useFeedbacks = () => {
     searchTerm?: string
   ): Promise<PagedResponse<FeedbacksData[]>> => {
     const { data } = await get(
-      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )
     return data
   }
