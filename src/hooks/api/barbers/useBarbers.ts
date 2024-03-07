@@ -3,28 +3,32 @@ import { useRequest } from '../base/useRequest'
 import {
   BarberData,
   BarberOption,
+  BarbersData,
   CreateBarberRequest,
-  ScheduleHaircutRequest,
   UpdateBarberRequest
 } from './Barbers'
 
 export const useBarbers = () => {
   const { get, post, put, del } = useRequest('barbers')
 
-  // TODO: passar mais paremetros vindo da api
   const getAllBarbers = async (
     page: number,
-    pageSize: number
-  ): Promise<PagedResponse<BarberData[]>> => {
-    const { data } = await get(`?Page=${page}&PageSize=${pageSize}`)
+    pageSize: number,
+    searchTerm?: string
+  ): Promise<PagedResponse<BarbersData[]>> => {
+    const { data } = await get(
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+    )
     return data
   }
 
-  const createBarber = async (
-    id: string,
-    request: CreateBarberRequest
-  ): Promise<void> => {
-    await post(id, request)
+  const getBarberById = async (id: string): Promise<BarberData> => {
+    const { data } = await get(id)
+    return data
+  }
+
+  const createBarber = async (request: CreateBarberRequest): Promise<void> => {
+    await post('', request)
   }
 
   const getBarberOptions = async (): Promise<BarberOption[]> => {
@@ -56,21 +60,14 @@ export const useBarbers = () => {
     return data
   }
 
-  const scheduleHaircut = async (
-    barberId: string,
-    request: ScheduleHaircutRequest
-  ): Promise<void> => {
-    await post(`${barberId}/schedule-haircut`, request)
-  }
-
   return {
     getAllBarbers,
+    getBarberById,
     createBarber,
     getBarberOptions,
     updateBarber,
     deleteBarber,
     getAvaliableDates,
-    getAvaliableTimes,
-    scheduleHaircut
+    getAvaliableTimes
   }
 }

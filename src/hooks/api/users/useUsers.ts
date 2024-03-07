@@ -1,11 +1,11 @@
 import { PagedResponse, useRequest } from '../..'
 import {
-  UserDataDetailed,
   LoginRequest,
   LoginResponse,
   RegisterUserRequest,
   UpdateUserRequest,
-  UserData
+  UserData,
+  UsersData
 } from './Users'
 import useSignIn from 'react-auth-kit/hooks/useSignIn'
 
@@ -13,16 +13,18 @@ export const useUsers = () => {
   const { post, get, put, del } = useRequest('users')
   const signIn = useSignIn()
 
-  // TODO: passar mais paremetros vindo da api
   const getAllUsers = async (
     page: number,
-    pageSize: number
-  ): Promise<PagedResponse<UserData[]>> => {
-    const { data } = await get(`?Page=${page}&PageSize=${pageSize}`)
+    pageSize: number,
+    searchTerm?: string
+  ): Promise<PagedResponse<UsersData[]>> => {
+    const { data } = await get(
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+    )
     return data
   }
 
-  const getUserById = async (id: string): Promise<UserDataDetailed> => {
+  const getUserById = async (id: string): Promise<UserData> => {
     const { data } = await get(id)
     return data
   }

@@ -4,6 +4,9 @@ export interface HaircutData {
   about?: string
   price: number
   imageSource: string
+}
+
+export interface HaircutsData extends HaircutData {
   rating: number
 }
 

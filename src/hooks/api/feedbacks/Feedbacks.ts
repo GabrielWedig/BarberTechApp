@@ -1,8 +1,11 @@
-export interface FeedbackData {
+export interface FeedbacksData {
   id: string
   comment: string
   ratingAverage: number
   userName: string
+  barberName: string
+  haircutName: string
+  establishmentName: string
   at: string
 }
 

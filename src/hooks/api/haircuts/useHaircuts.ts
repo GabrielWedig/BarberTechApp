@@ -3,26 +3,33 @@ import { useRequest } from '../base/useRequest'
 import {
   CreateHaircutRequest,
   HaircutData,
+  HaircutsData,
   UpdateHaircutRequest
 } from './Haircuts'
 
 export const useHaircuts = () => {
   const { get, post, put, del } = useRequest('haircuts')
 
-  // TODO: passar mais paremetros vindo da api
   const getAllHaircuts = async (
     page: number,
-    pageSize: number
-  ): Promise<PagedResponse<HaircutData[]>> => {
-    const { data } = await get(`?Page=${page}&PageSize=${pageSize}`)
+    pageSize: number,
+    searchTerm?: string
+  ): Promise<PagedResponse<HaircutsData[]>> => {
+    const { data } = await get(
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+    )
+    return data
+  }
+
+  const getHaircutById = async (id: string): Promise<HaircutData> => {
+    const { data } = await get(id)
     return data
   }
 
   const createHaircut = async (
-    id: string,
     request: CreateHaircutRequest
   ): Promise<void> => {
-    await post(id, request)
+    await post('', request)
   }
 
   const updateHaircut = async (
@@ -38,6 +45,7 @@ export const useHaircuts = () => {
 
   return {
     getAllHaircuts,
+    getHaircutById,
     createHaircut,
     updateHaircut,
     deleteHaircut

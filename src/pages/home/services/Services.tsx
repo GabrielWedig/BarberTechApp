@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Haircut, Pagination } from '../../../components'
 import {
   useHaircuts,
-  HaircutData,
+  HaircutsData,
   usingTryCatch,
   useSnackbarContext,
   PagedResponse
@@ -17,7 +17,7 @@ export const Services = () => {
   const { getAllHaircuts } = useHaircuts()
   const { showErrorSnackbar } = useSnackbarContext()
 
-  const [haircuts, setHaircuts] = useState<PagedResponse<HaircutData[]>>()
+  const [haircuts, setHaircuts] = useState<PagedResponse<HaircutsData[]>>()
 
   useEffect(() => {
     fetchHaircuts(1)
@@ -41,12 +41,11 @@ export const Services = () => {
         {haircuts?.items.map((h) => (
           <Haircut
             id={h.id}
-            about={h.about}
-            imageSource={h.imageSource}
             name={h.name}
+            about={h.about}
             price={h.price}
+            imageSource={h.imageSource}
             rating={h.rating}
-            key={h.id}
           />
         ))}
       </div>

@@ -20,23 +20,28 @@ export interface LoginResponse {
   user: UserData
 }
 
-export interface UserData {
+export interface UsersData {
   id: string
   email: string
   name: string
-  imageSource: string | null
   type: UserType
 }
 
-export interface UserDataDetailed extends UserData {
+interface LoginUser extends UsersData {
+  imageSource?: string
+}
+
+export interface UserData extends LoginUser {
   eventSchedules: EventScheduleData[]
 }
 
 interface EventScheduleData {
   id: string
   dateTime: string
-  name: string
+  userName: string
+  barberName: string
   status: EventStatus
+  feedbackId: string
 }
 
 export type UserType = 'Admin' | 'Barber' | 'Client'

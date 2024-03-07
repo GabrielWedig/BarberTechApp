@@ -3,26 +3,35 @@ import { useRequest } from '../base/useRequest'
 import {
   CreateEstablishmentRequest,
   EstablishmentData,
+  EstablishmentsData,
   UpdateEstablishmentRequest
 } from './Establishments'
 
 export const useEstablishments = () => {
   const { get, post, put, del } = useRequest('establishments')
 
-  // TODO: passar mais paremetros vindo da api
   const getAllEstablishments = async (
     page: number,
-    pageSize: number
-  ): Promise<PagedResponse<EstablishmentData[]>> => {
-    const { data } = await get(`?Page=${page}&PageSize=${pageSize}`)
+    pageSize: number,
+    searchTerm?: string
+  ): Promise<PagedResponse<EstablishmentsData[]>> => {
+    const { data } = await get(
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+    )
+    return data
+  }
+
+  const getEstablishmentById = async (
+    id: string
+  ): Promise<EstablishmentData> => {
+    const { data } = await get(id)
     return data
   }
 
   const createEstablishment = async (
-    id: string,
     request: CreateEstablishmentRequest
   ): Promise<void> => {
-    await post(id, request)
+    await post('', request)
   }
 
   const updateEstablishment = async (
@@ -38,6 +47,7 @@ export const useEstablishments = () => {
 
   return {
     getAllEstablishments,
+    getEstablishmentById,
     createEstablishment,
     updateEstablishment,
     deleteEstablishment

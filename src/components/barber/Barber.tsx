@@ -7,8 +7,8 @@ import { SocialData } from '../../hooks'
 interface BarberProps {
   name: string
   rating: number
-  about: string
-  imageSource: string
+  about?: string
+  imageSource?: string
   social: SocialData
 }
 
@@ -20,7 +20,7 @@ export const Barber = ({
   social
 }: BarberProps) => {
   const [showInfos, setShowInfos] = useState<boolean>(false)
-
+  
   return (
     <S.Barber
       onMouseEnter={() => setShowInfos(true)}
@@ -33,7 +33,7 @@ export const Barber = ({
         </div>
         <p>{about}</p>
       </S.BarberMask>
-      <S.Image $url={imageSource} />
+      <S.Image $url={imageSource ?? ''} />
       <div className="social-box">
         <Visible when={!!social.instagram}>
           <a href={social.instagram}>

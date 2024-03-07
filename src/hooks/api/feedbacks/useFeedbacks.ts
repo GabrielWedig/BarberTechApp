@@ -1,23 +1,29 @@
+import { PagedResponse } from './../base/Pagination'
 import { useRequest } from '../base/useRequest'
 import {
   CreateFeedbackRequest,
-  FeedbackData,
+  FeedbacksData,
   UpdateFeedbackRequest
 } from './Feedbacks'
 
 export const useFeedbacks = () => {
   const { get, post, put, del } = useRequest('feedbacks')
 
-  const getAllFeedbacks = async (): Promise<FeedbackData[]> => {
-    const { data } = await get()
+  const getAllFeedbacks = async (
+    page: number,
+    pageSize: number,
+    searchTerm?: string
+  ): Promise<PagedResponse<FeedbacksData[]>> => {
+    const { data } = await get(
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm}`
+    )
     return data
   }
 
   const createFeedback = async (
-    id: string,
     request: CreateFeedbackRequest
   ): Promise<void> => {
-    await post(id, request)
+    await post('', request)
   }
 
   const updateFeedback = async (

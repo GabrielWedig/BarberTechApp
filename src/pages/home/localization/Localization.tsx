@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Establishment, Pagination } from '../../../components'
 import {
   useEstablishments,
-  EstablishmentData,
+  EstablishmentsData,
   usingTryCatch,
   useSnackbarContext,
   PagedResponse
@@ -18,7 +18,7 @@ export const Localization = () => {
   const { showErrorSnackbar } = useSnackbarContext()
 
   const [establishments, setEstablishments] =
-    useState<PagedResponse<EstablishmentData[]>>()
+    useState<PagedResponse<EstablishmentsData[]>>()
 
   useEffect(() => {
     fetchEstablishments(1)
@@ -42,11 +42,11 @@ export const Localization = () => {
       <div className="establishments-box">
         {establishments?.items.map((e) => (
           <Establishment
-            address={e.address}
-            businessTime={e.businessTime}
-            imageSource={e.imageSource}
-            rating={e.rating}
             key={e.id}
+            address={e.address}
+            imageSource={e.imageSource}
+            businessTime={e.businessTime}
+            rating={e.rating}
           />
         ))}
       </div>

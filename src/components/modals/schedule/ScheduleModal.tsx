@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from 'react-hook-form'
 import { Button, Modal, Option, SelectField, TextField } from '../..'
 import * as S from './style'
-import { useBarbers, useSnackbarContext, usingTryCatch } from '../../../hooks'
+import { useBarbers, useSchedules, useSnackbarContext, usingTryCatch } from '../../../hooks'
 import { useEffect, useState } from 'react'
 import { scheduleSchema } from './schema'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -36,9 +36,10 @@ export const ScheduleModal = ({
   const {
     getBarberOptions,
     getAvaliableDates,
-    getAvaliableTimes,
-    scheduleHaircut
+    getAvaliableTimes
   } = useBarbers()
+
+  const { createSchedule } = useSchedules();
 
   const barberField = watch('barber')
   const dateField = watch('date')
@@ -108,13 +109,14 @@ export const ScheduleModal = ({
 
   const handleScheduleSubmit = async (values: FieldValues) => {
     const request = {
+      barberId: "", // TODO: melhorar
       haircutId: haircutId,
       name: values.name,
       dateTime: `${values.date} ${values.schedule}`
     }
 
     const { error } = await usingTryCatch(
-      scheduleHaircut(values.barber, request)
+      createSchedule(request)
     )
 
     if (error) {

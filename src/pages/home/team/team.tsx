@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { Barber, Pagination } from '../../../components'
 import {
   useBarbers,
-  BarberData,
+  BarbersData,
   usingTryCatch,
   useSnackbarContext,
   PagedResponse
@@ -14,7 +14,7 @@ export const Team = () => {
   const content = contentJson.home.team
   const pageSize = 3
 
-  const [barbers, setBarbers] = useState<PagedResponse<BarberData[]>>()
+  const [barbers, setBarbers] = useState<PagedResponse<BarbersData[]>>()
 
   const { showErrorSnackbar } = useSnackbarContext()
 
