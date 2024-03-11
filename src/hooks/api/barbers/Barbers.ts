@@ -8,6 +8,7 @@ export interface BarbersData extends CommonData {
   name: string
   imageSource?: string
   rating: number
+  contact: string
 }
 
 export interface BarberData extends CommonData {

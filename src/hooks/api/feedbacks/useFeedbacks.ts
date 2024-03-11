@@ -1,4 +1,4 @@
-import { PagedResponse } from './../base/Pagination'
+import { Paged } from './../base/Pagination'
 import { useRequest } from '../base/useRequest'
 import {
   CreateFeedbackRequest,
@@ -13,7 +13,7 @@ export const useFeedbacks = () => {
     page: number,
     pageSize: number,
     searchTerm?: string
-  ): Promise<PagedResponse<FeedbacksData[]>> => {
+  ): Promise<Paged<FeedbacksData[]>> => {
     const { data } = await get(
       `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )

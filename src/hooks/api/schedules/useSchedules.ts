@@ -1,4 +1,4 @@
-import { PagedResponse } from '../base/Pagination'
+import { Paged } from '../base/Pagination'
 import { useRequest } from '../base/useRequest'
 import { EventSchedulesData, CreateScheduleRequest } from './EventSchedules'
 
@@ -9,7 +9,7 @@ export const useSchedules = () => {
     page: number,
     pageSize: number,
     searchTerm?: string
-  ): Promise<PagedResponse<EventSchedulesData[]>> => {
+  ): Promise<Paged<EventSchedulesData[]>> => {
     const { data } = await get(
       `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )

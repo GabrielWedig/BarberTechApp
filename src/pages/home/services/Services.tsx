@@ -7,7 +7,7 @@ import {
   HaircutsData,
   usingTryCatch,
   useSnackbarContext,
-  PagedResponse
+  Paged
 } from '../../../hooks'
 
 export const Services = () => {
@@ -17,7 +17,7 @@ export const Services = () => {
   const { getAllHaircuts } = useHaircuts()
   const { showErrorSnackbar } = useSnackbarContext()
 
-  const [haircuts, setHaircuts] = useState<PagedResponse<HaircutsData[]>>()
+  const [haircuts, setHaircuts] = useState<Paged<HaircutsData[]>>()
 
   useEffect(() => {
     fetchHaircuts(1)

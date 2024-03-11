@@ -1,8 +1,9 @@
-import { PagedResponse } from './../base/Pagination'
+import { Paged } from './../base/Pagination'
 import { useRequest } from '../base/useRequest'
 import {
   CreateEstablishmentRequest,
   EstablishmentData,
+  EstablishmentOption,
   EstablishmentsData,
   UpdateEstablishmentRequest
 } from './Establishments'
@@ -14,7 +15,7 @@ export const useEstablishments = () => {
     page: number,
     pageSize: number,
     searchTerm?: string
-  ): Promise<PagedResponse<EstablishmentsData[]>> => {
+  ): Promise<Paged<EstablishmentsData[]>> => {
     const { data } = await get(
       `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )
@@ -25,6 +26,11 @@ export const useEstablishments = () => {
     id: string
   ): Promise<EstablishmentData> => {
     const { data } = await get(id)
+    return data
+  }
+
+  const getEstablishmentOptions = async (): Promise<EstablishmentOption[]> => {
+    const { data } = await get('options')
     return data
   }
 
@@ -48,6 +54,7 @@ export const useEstablishments = () => {
   return {
     getAllEstablishments,
     getEstablishmentById,
+    getEstablishmentOptions,
     createEstablishment,
     updateEstablishment,
     deleteEstablishment

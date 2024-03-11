@@ -1,4 +1,4 @@
-import { PagedResponse } from './../base/Pagination'
+import { Paged } from './../base/Pagination'
 import { useRequest } from '../base/useRequest'
 import {
   CreateHaircutRequest,
@@ -14,7 +14,7 @@ export const useHaircuts = () => {
     page: number,
     pageSize: number,
     searchTerm?: string
-  ): Promise<PagedResponse<HaircutsData[]>> => {
+  ): Promise<Paged<HaircutsData[]>> => {
     const { data } = await get(
       `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )

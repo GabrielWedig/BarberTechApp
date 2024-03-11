@@ -1,3 +1,3 @@
 import styled from 'styled-components'
 
-export const ManageBox = styled.div``
+export const ListBox = styled.div``

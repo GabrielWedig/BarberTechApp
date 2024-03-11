@@ -1,10 +1,11 @@
-import { PagedResponse, useRequest } from '../..'
+import { Paged, useRequest } from '../..'
 import {
   LoginRequest,
   LoginResponse,
   RegisterUserRequest,
   UpdateUserRequest,
   UserData,
+  UserOption,
   UsersData
 } from './Users'
 import useSignIn from 'react-auth-kit/hooks/useSignIn'
@@ -17,7 +18,7 @@ export const useUsers = () => {
     page: number,
     pageSize: number,
     searchTerm?: string
-  ): Promise<PagedResponse<UsersData[]>> => {
+  ): Promise<Paged<UsersData[]>> => {
     const { data } = await get(
       `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )
@@ -26,6 +27,11 @@ export const useUsers = () => {
 
   const getUserById = async (id: string): Promise<UserData> => {
     const { data } = await get(id)
+    return data
+  }
+
+  const getUserOptions = async (): Promise<UserOption[]> => {
+    const { data } = await get('options')
     return data
   }
 
@@ -65,6 +71,7 @@ export const useUsers = () => {
     updateUser,
     deleteUser,
     getUserById,
-    getAllUsers
+    getAllUsers,
+    getUserOptions
   }
 }

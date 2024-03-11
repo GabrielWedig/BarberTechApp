@@ -1,4 +1,4 @@
-import { PagedResponse } from './../base/Pagination'
+import { Paged } from './../base/Pagination'
 import { useRequest } from '../base/useRequest'
 import {
   BarberData,
@@ -15,7 +15,7 @@ export const useBarbers = () => {
     page: number,
     pageSize: number,
     searchTerm?: string
-  ): Promise<PagedResponse<BarbersData[]>> => {
+  ): Promise<Paged<BarbersData[]>> => {
     const { data } = await get(
       `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
     )

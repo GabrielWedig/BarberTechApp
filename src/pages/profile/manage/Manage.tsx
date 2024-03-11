@@ -1,3 +1,30 @@
+import { List } from '../../../components'
+import * as S from './style'
+
+export type ManageTypes =
+  | 'users'
+  | 'schedules'
+  | 'haircuts'
+  | 'feedbacks'
+  | 'establishments'
+  | 'barbers'
+
 export const Manage = () => {
-  return <p>Manage</p>
+  const types: ManageTypes[] = [
+    'users',
+    'schedules',
+    'haircuts',
+    'feedbacks',
+    'establishments',
+    'barbers'
+  ]
+
+  return (
+    <S.ManageBox>
+      <h2>Portal do Administrador</h2>
+      {types.map((type) => (
+        <List type={type} />
+      ))}
+    </S.ManageBox>
+  )
 }

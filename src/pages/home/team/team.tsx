@@ -7,14 +7,14 @@ import {
   BarbersData,
   usingTryCatch,
   useSnackbarContext,
-  PagedResponse
+  Paged
 } from '../../../hooks'
 
 export const Team = () => {
   const content = contentJson.home.team
   const pageSize = 3
 
-  const [barbers, setBarbers] = useState<PagedResponse<BarbersData[]>>()
+  const [barbers, setBarbers] = useState<Paged<BarbersData[]>>()
 
   const { showErrorSnackbar } = useSnackbarContext()
 

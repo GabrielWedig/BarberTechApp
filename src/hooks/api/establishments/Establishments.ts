@@ -33,3 +33,8 @@ export interface UpdateEstablishmentRequest {
   workInterval?: string
   lunchInterval?: string
 }
+
+export interface EstablishmentOption {
+  id: string,
+  name: string
+}

@@ -44,5 +44,10 @@ interface EventScheduleData {
   feedbackId: string
 }
 
+export interface UserOption {
+  id: string
+  name: string
+}
+
 export type UserType = 'Admin' | 'Barber' | 'Client'
 type EventStatus = 'Active' | 'Completed' | 'Canceled'

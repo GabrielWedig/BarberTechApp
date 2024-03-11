@@ -7,7 +7,7 @@ import {
   EstablishmentsData,
   usingTryCatch,
   useSnackbarContext,
-  PagedResponse
+  Paged
 } from '../../../hooks'
 
 export const Localization = () => {
@@ -18,7 +18,7 @@ export const Localization = () => {
   const { showErrorSnackbar } = useSnackbarContext()
 
   const [establishments, setEstablishments] =
-    useState<PagedResponse<EstablishmentsData[]>>()
+    useState<Paged<EstablishmentsData[]>>()
 
   useEffect(() => {
     fetchEstablishments(1)

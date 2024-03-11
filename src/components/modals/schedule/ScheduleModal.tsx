@@ -1,13 +1,18 @@
 import { FieldValues, useForm } from 'react-hook-form'
 import { Button, Modal, Option, SelectField, TextField } from '../..'
 import * as S from './style'
-import { useBarbers, useSchedules, useSnackbarContext, usingTryCatch } from '../../../hooks'
+import {
+  useBarbers,
+  useSchedules,
+  useSnackbarContext,
+  usingTryCatch
+} from '../../../hooks'
 import { useEffect, useState } from 'react'
 import { scheduleSchema } from './schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 interface ScheduleModalProps {
-  haircutId: string
+  haircutId?: string
   open: boolean
   onClose: () => void
 }
@@ -17,6 +22,7 @@ interface ScheduleFormData {
   barber: string
   date: string
   schedule: string
+  haircut: string
 }
 
 export const ScheduleModal = ({
@@ -33,13 +39,10 @@ export const ScheduleModal = ({
   })
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
-  const {
-    getBarberOptions,
-    getAvaliableDates,
-    getAvaliableTimes
-  } = useBarbers()
+  const { getBarberOptions, getAvaliableDates, getAvaliableTimes } =
+    useBarbers()
 
-  const { createSchedule } = useSchedules();
+  const { createSchedule } = useSchedules()
 
   const barberField = watch('barber')
   const dateField = watch('date')
@@ -109,15 +112,13 @@ export const ScheduleModal = ({
 
   const handleScheduleSubmit = async (values: FieldValues) => {
     const request = {
-      barberId: "", // TODO: melhorar
-      haircutId: haircutId,
+      barberId: '', // TODO: melhorar
+      haircutId: haircutId ?? values.haircut,
       name: values.name,
       dateTime: `${values.date} ${values.schedule}`
     }
 
-    const { error } = await usingTryCatch(
-      createSchedule(request)
-    )
+    const { error } = await usingTryCatch(createSchedule(request))
 
     if (error) {
       showErrorSnackbar(error)
