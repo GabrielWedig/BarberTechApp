@@ -1,9 +1,10 @@
+import { Visible } from '../..'
 import * as S from './style'
 
 interface BaseFieldProps {
-  label: string
-  disabled?: boolean
   children: React.ReactNode
+  label?: string
+  disabled?: boolean
 }
 
 export function BaseField({
@@ -13,7 +14,9 @@ export function BaseField({
 }: BaseFieldProps) {
   return (
     <S.FieldBox disabled={disabled}>
-      <S.Label>{label}</S.Label>
+      <Visible when={!!label}>
+        <S.Label>{label}</S.Label>
+      </Visible>
       {children}
     </S.FieldBox>
   )

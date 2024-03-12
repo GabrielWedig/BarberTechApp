@@ -22,8 +22,8 @@ export const Manage = () => {
   return (
     <S.ManageBox>
       <h2>Portal do Administrador</h2>
-      {types.map((type) => (
-        <List type={type} />
+      {types.map((type, index) => (
+        <List type={type} key={index} />
       ))}
     </S.ManageBox>
   )

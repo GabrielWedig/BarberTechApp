@@ -18,7 +18,8 @@ import {
   EstablishmentModal,
   GetResponse,
   HaircutModal,
-  LoginModal
+  LoginModal,
+  Visible
 } from '..'
 
 interface ItemProps {
@@ -54,10 +55,6 @@ export const Item = ({
 
   const { showErrorSnackbar } = useSnackbarContext()
 
-  useEffect(() => {
-    handleConfirm()
-  }, [!!confirm])
-
   const content = {
     users: {
       modal: (
@@ -69,7 +66,7 @@ export const Item = ({
         />
       ),
       columns: [data.name, data.email],
-      delete: deleteUser
+      delete: deleteUser,
     },
     schedules: {
       modal: null,
@@ -137,48 +134,51 @@ export const Item = ({
     closed: null
   }
 
-  const handleConfirm = async () => {
+  const handleConfirm = async (value: boolean) => {
     const action = actions[confirmationModal]
 
-    if (!action) return
+    if (!action || !value) return
 
     const { error } = await usingTryCatch(action(data.id ?? ''))
 
     if (error) {
       showErrorSnackbar(error)
     }
+
   }
 
   return (
     <S.ItemBox>
-      {content[type].columns.map((column) => (
-        <span>{column}</span>
-      ))}
-      {shouldEdit ?? (
-        <button onClick={() => setEditModal(true)}>
-          <Edit />
-        </button>
+      {content[type].columns.map((column) =>
+        column ? <span>{column}</span> : <span className="null">[Não informado.]</span>
       )}
-      {shouldDelete ?? (
-        <button onClick={() => setConfirmationModal('delete')}>
-          <Delete />
-        </button>
-      )}
-      {shouldCancel ?? (
-        <button onClick={() => setConfirmationModal('complete')}>
-          <Check />
-        </button>
-      )}
-      {shouldComplete ?? (
-        <button onClick={() => setConfirmationModal('cancel')}>
-          <Close />
-        </button>
-      )}
+      <div className="buttons-box">
+        <Visible when={!!shouldEdit}>
+          <button onClick={() => setEditModal(true)}>
+            <Edit />
+          </button>
+        </Visible>
+        <Visible when={!!shouldDelete}>
+          <button onClick={() => setConfirmationModal('delete')}>
+            <Delete />
+          </button>
+        </Visible>
+        <Visible when={!!shouldComplete}>
+          <button onClick={() => setConfirmationModal('complete')}>
+            <Check />
+          </button>
+        </Visible>
+        <Visible when={!!shouldCancel}>
+          <button onClick={() => setConfirmationModal('cancel')}>
+            <Close />
+          </button>
+        </Visible>
+      </div>
       {content[type].modal}
       <ConfirmationModal
         open={confirmationModal !== 'closed'}
         onClose={() => setConfirmationModal('closed')}
-        setConfirm={setConfirm}
+        handleConfirm={handleConfirm}
       />
     </S.ItemBox>
   )

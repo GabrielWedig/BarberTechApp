@@ -25,7 +25,6 @@ export const FieldBox = styled.div<FieldProps>`
     border-radius: 8px;
     border: 1px solid var(--gray);
     font-size: 17px;
-    margin-bottom: 27px;
   }
 
   input:focus {

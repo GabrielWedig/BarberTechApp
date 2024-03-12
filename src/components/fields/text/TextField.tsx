@@ -6,7 +6,7 @@ import { ChangeEvent } from 'react'
 interface TextFieldProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>
   control: Control<TFieldValues>
-  label: string
+  label?: string
   placeholder?: string
   disabled?: boolean
   onChange?: (

@@ -23,10 +23,12 @@ import {
   EstablishmentModal,
   HaircutModal,
   LoginModal,
-  ScheduleModal,
-  UserModal
+  ScheduleModal
 } from '../modals'
 import { ManageTypes } from '../../pages/profile'
+import { Button } from '../button/Button'
+import { TextField } from '../fields'
+import { useForm } from 'react-hook-form'
 
 interface ListProps {
   type: ManageTypes
@@ -99,6 +101,8 @@ export function List({ type }: ListProps) {
 
   const { showErrorSnackbar } = useSnackbarContext()
   const pageSize = 5
+
+  const { control } = useForm()
 
   const content: ContentType = {
     users: {
@@ -203,7 +207,12 @@ export function List({ type }: ListProps) {
   return (
     <S.ListBox>
       <h3>{content[type].name}</h3>
-      <button onClick={() => setOpenCreateModal(true)}>Novo</button>
+      <div className="filter-box">
+        <TextField control={control} name="filter" placeholder="Pesquisar" />
+        <Button type="secondary" onClick={() => setOpenCreateModal(true)}>
+          Novo
+        </Button>
+      </div>
       <div className="header">
         {content[type].header.map((item) => (
           <span>{item}</span>
@@ -211,6 +220,7 @@ export function List({ type }: ListProps) {
       </div>
       {data[type].items.map((item) => (
         <Item
+          key={item.id}
           type={type}
           data={item}
           shouldCancel={content[type].should.cancel}
