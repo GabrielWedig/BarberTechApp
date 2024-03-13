@@ -4,10 +4,8 @@ export const ScheduleBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  position: relative;
 
-  .date-box {
+  .box {
     display: flex;
     gap: 20px;
   }
@@ -22,15 +20,6 @@ export const ScheduleBox = styled.div`
     flex-direction: column;
     gap: 10px;
     width: 100%;
-  }
-
-  div > span {
-    color: var(--gray);
-    margin-right: 10px;
-  }
-
-  div > a {
-    color: var(--orange);
-    text-decoration: underline;
+    margin: 20px 0;
   }
 `

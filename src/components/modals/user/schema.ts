@@ -1,7 +1,7 @@
 import * as yup from 'yup'
 
-export const getUserSchema = (isCreate: boolean) =>
-  yup.object().shape(isCreate ? createSchema : commomSchema)
+export const getUserSchema = (isEdit: boolean) =>
+  yup.object().shape(isEdit ? commomSchema : createSchema)
 
 const commomSchema = {
   name: yup.string(),
@@ -18,7 +18,6 @@ const commomSchema = {
 }
 
 const createSchema = {
-  ...commomSchema,
   name: commomSchema.name.required(),
   email: commomSchema.email.required(),
   password: commomSchema.password.required(),

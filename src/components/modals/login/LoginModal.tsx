@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Login, Modal, UserModal } from '../..'
+import { Login, Modal, UserModal, Visible } from '../..'
 
 interface LoginModalProps {
   open: boolean
@@ -8,28 +8,35 @@ interface LoginModalProps {
   userId?: string
 }
 
-export type ModalTypes = 'login' | 'register' | 'forgot'
+export type ModalTypes =
+  | 'login'
+  | 'register'
+  | 'register-client'
+  | 'edit'
+  | 'forgot'
 
 export const LoginModal = ({
   open,
   onClose,
-  type,
+  type = 'login',
   userId
 }: LoginModalProps) => {
-  const [modalType, setModalType] = useState<ModalTypes>(type ?? 'login')
+  const [modalType, setModalType] = useState<ModalTypes>(type)
+  const registerTypes = ['register', 'register-client', 'edit']
 
   return (
     <Modal open={open} onClose={onClose}>
-      {modalType === 'login' && (
+      <Visible when={modalType === 'login'}>
         <Login setModalType={setModalType} onClose={onClose} />
-      )}
-      {modalType === 'register' && (
+      </Visible>
+      <Visible when={registerTypes.some((t) => t === type)}>
         <UserModal
           setModalType={setModalType}
           onClose={onClose}
           userId={userId}
+          type={modalType}
         />
-      )}
+      </Visible>
     </Modal>
   )
 }

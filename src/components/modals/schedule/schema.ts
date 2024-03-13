@@ -2,6 +2,7 @@ import * as yup from 'yup'
 
 export const scheduleSchema = yup.object().shape({
   name: yup.string(),
+  establishment: yup.string().required('Obrigatório'),
   barber: yup.string().required('Obrigatório'),
   haircut: yup.string().required('Obrigatório'),
   date: yup

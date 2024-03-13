@@ -23,7 +23,7 @@ export const buttonTypes: ButtonTypes = {
     textColor: 'orange',
     hoverColor: null,
     fontWeight: 600,
-    padding: '15px 30px'
+    padding: '0 30px'
   },
   transparent: {
     background: 'transparent',

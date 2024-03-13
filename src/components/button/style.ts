@@ -4,8 +4,8 @@ import { ColorType, getColor } from '../../utils'
 interface ButtonProps {
   background: ColorType
   textcolor: ColorType
-  hovercolor: ColorType | null,
-  fontWeight: number,
+  hovercolor: ColorType | null
+  fontWeight: number
   padding: string | null
 }
 
@@ -21,6 +21,6 @@ export const StyledButton = styled(Button)<ButtonProps>((props) => ({
   borderRadius: '10px',
 
   '&:hover': {
-    color: getColor(props.hovercolor ?? props.textcolor),
+    color: getColor(props.hovercolor ?? props.textcolor)
   }
 }))

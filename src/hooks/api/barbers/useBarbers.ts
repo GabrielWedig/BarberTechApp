@@ -2,7 +2,6 @@ import { Paged } from './../base/Pagination'
 import { useRequest } from '../base/useRequest'
 import {
   BarberData,
-  BarberOption,
   BarbersData,
   CreateBarberRequest,
   UpdateBarberRequest
@@ -29,11 +28,6 @@ export const useBarbers = () => {
 
   const createBarber = async (request: CreateBarberRequest): Promise<void> => {
     await post('', request)
-  }
-
-  const getBarberOptions = async (): Promise<BarberOption[]> => {
-    const { data } = await get('options')
-    return data
   }
 
   const updateBarber = async (
@@ -64,7 +58,6 @@ export const useBarbers = () => {
     getAllBarbers,
     getBarberById,
     createBarber,
-    getBarberOptions,
     updateBarber,
     deleteBarber,
     getAvaliableDates,

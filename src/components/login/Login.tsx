@@ -35,7 +35,6 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
       showErrorSnackbar(error)
       return
     }
-
     onClose()
   }
 
@@ -64,7 +63,7 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
       </form>
       <div>
         <span>Não tem uma conta?</span>
-        <a onClick={() => setModalType('register')}>Registre-se</a>
+        <a onClick={() => setModalType('register-client')}>Registre-se</a>
       </div>
     </S.LoginBox>
   )

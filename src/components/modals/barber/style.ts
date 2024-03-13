@@ -1,3 +1,5 @@
 import styled from 'styled-components'
 
-export const BarberBox = styled.div``
+export const BarberBox = styled.div`
+    width: 30%;
+`

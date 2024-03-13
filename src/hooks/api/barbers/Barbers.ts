@@ -36,8 +36,3 @@ export interface UpdateBarberRequest {
   contact?: string
   social: SocialData
 }
-
-export interface BarberOption {
-  id: string
-  name: string
-}

@@ -25,22 +25,26 @@ import {
 interface ItemProps {
   type: ManageTypes
   data: GetResponse
-  shouldEdit?: boolean
-  shouldDelete?: boolean
-  shouldCancel?: boolean
-  shouldComplete?: boolean
+  fetchData: (page: number, searchTerm?: string) => Promise<void>
+}
+
+type ContentType = {
+  [K in ManageTypes]: {
+    columns: any[]
+    delete?: (id: string) => Promise<void>
+    modal?: JSX.Element
+    should: {
+      edit?: boolean
+      delete?: boolean
+      cancel?: boolean
+      complete?: boolean
+    }
+  }
 }
 
 type ConfirmationModal = 'delete' | 'complete' | 'cancel' | 'closed'
 
-export const Item = ({
-  type,
-  data,
-  shouldEdit,
-  shouldDelete,
-  shouldCancel,
-  shouldComplete
-}: ItemProps) => {
+export const Item = ({ type, data, fetchData }: ItemProps) => {
   const [editModal, setEditModal] = useState<boolean>(false)
   const [confirmationModal, setConfirmationModal] =
     useState<ConfirmationModal>('closed')
@@ -55,23 +59,23 @@ export const Item = ({
 
   const { showErrorSnackbar } = useSnackbarContext()
 
-  const content = {
+  const content: ContentType = {
     users: {
       modal: (
         <LoginModal
           open={editModal}
           onClose={() => setEditModal(false)}
-          type="register"
+          type="edit"
           userId={data.id}
         />
       ),
       columns: [data.name, data.email],
       delete: deleteUser,
+      should: { edit: true, delete: true }
     },
     schedules: {
-      modal: null,
       columns: [data.name, data.barberName, data.haircutName],
-      delete: null
+      should: { cancel: true, complete: true }
     },
     haircuts: {
       modal: (
@@ -82,10 +86,10 @@ export const Item = ({
         />
       ),
       columns: [data.name, data.about, data.price],
-      delete: deleteHaircut
+      delete: deleteHaircut,
+      should: { edit: true, delete: true }
     },
     feedbacks: {
-      modal: null,
       columns: [
         data.name,
         data.comment,
@@ -94,7 +98,8 @@ export const Item = ({
         data.haircutName,
         data.barberName
       ],
-      delete: deleteFeedback
+      delete: deleteFeedback,
+      should: { delete: true }
     },
     establishments: {
       modal: (
@@ -105,7 +110,8 @@ export const Item = ({
         />
       ),
       columns: [data.address],
-      delete: deleteEstablishment
+      delete: deleteEstablishment,
+      should: { edit: true, delete: true }
     },
     barbers: {
       modal: (
@@ -123,7 +129,8 @@ export const Item = ({
         data.social?.facebook,
         data.social?.twitter
       ],
-      delete: deleteBarber
+      delete: deleteBarber,
+      should: { edit: true, delete: true }
     }
   }
 
@@ -144,31 +151,35 @@ export const Item = ({
     if (error) {
       showErrorSnackbar(error)
     }
-
+    fetchData(1)
   }
 
   return (
     <S.ItemBox>
       {content[type].columns.map((column) =>
-        column ? <span>{column}</span> : <span className="null">[Não informado.]</span>
+        column ? (
+          <span>{column}</span>
+        ) : (
+          <span className="null">[Não informado.]</span>
+        )
       )}
       <div className="buttons-box">
-        <Visible when={!!shouldEdit}>
+        <Visible when={!!content[type].should.edit}>
           <button onClick={() => setEditModal(true)}>
             <Edit />
           </button>
         </Visible>
-        <Visible when={!!shouldDelete}>
+        <Visible when={!!content[type].should.delete}>
           <button onClick={() => setConfirmationModal('delete')}>
             <Delete />
           </button>
         </Visible>
-        <Visible when={!!shouldComplete}>
+        <Visible when={!!content[type].should.complete}>
           <button onClick={() => setConfirmationModal('complete')}>
             <Check />
           </button>
         </Visible>
-        <Visible when={!!shouldCancel}>
+        <Visible when={!!content[type].should.cancel}>
           <button onClick={() => setConfirmationModal('cancel')}>
             <Close />
           </button>

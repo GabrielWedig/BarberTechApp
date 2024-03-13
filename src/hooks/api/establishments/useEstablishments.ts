@@ -34,6 +34,11 @@ export const useEstablishments = () => {
     return data
   }
 
+  const getBarberOptions = async (establishmentId: string): Promise<EstablishmentOption[]> => {
+    const { data } = await get(`${establishmentId}/barbers`)
+    return data
+  }
+
   const createEstablishment = async (
     request: CreateEstablishmentRequest
   ): Promise<void> => {
@@ -55,6 +60,7 @@ export const useEstablishments = () => {
     getAllEstablishments,
     getEstablishmentById,
     getEstablishmentOptions,
+    getBarberOptions,
     createEstablishment,
     updateEstablishment,
     deleteEstablishment

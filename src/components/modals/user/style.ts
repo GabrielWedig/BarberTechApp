@@ -17,6 +17,7 @@ export const UserModalBox = styled.div`
     flex-direction: column;
     gap: 10px;
     width: 100%;
+    margin: 20px 0;
   }
 
   div > span {
@@ -27,9 +28,5 @@ export const UserModalBox = styled.div`
   div > a {
     color: var(--orange);
     text-decoration: underline;
-  }
-
-  button {
-    margin-top: 10px
   }
 `

@@ -1,30 +1,19 @@
 import { FieldValues, useForm } from 'react-hook-form'
 import { Button, ModalTypes, PasswordField, TextField, Visible } from '../..'
 import * as S from './style'
-import { useEffect, useState } from 'react'
-import {
-  UserData,
-  useSnackbarContext,
-  useUsers,
-  usingTryCatch
-} from '../../../hooks'
+import { useEffect } from 'react'
+import { useSnackbarContext, useUsers, usingTryCatch } from '../../../hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getUserSchema } from './schema'
 
 interface UserModalProps {
+  type: ModalTypes
   onClose: () => void
   setModalType?: (type: ModalTypes) => void
   userId?: string
 }
 
-interface CreateFormData {
-  name: string
-  email: string
-  password: string
-  confirmPassword: string
-}
-
-interface UpdateFormData {
+interface FormData {
   name?: string
   email?: string
   password?: string
@@ -32,36 +21,27 @@ interface UpdateFormData {
 }
 
 export const UserModal = ({
+  type,
   onClose,
   setModalType,
   userId
 }: UserModalProps) => {
-  const isClientModal = !!setModalType
-  const isNew = !userId
+  const isClientModal = type === 'register-client' && !!setModalType
+  const isEdit = type === 'edit' && !!userId
 
-  const [user, setUser] = useState<UserData>()
-
-  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
   const { register, updateUser, getUserById } = useUsers()
-
-  const { handleSubmit, control } = useForm<CreateFormData | UpdateFormData>({
-    resolver: yupResolver(getUserSchema(isNew)),
-    defaultValues: user
-  })
+  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   const invokeSetModalType = (type: ModalTypes) =>
     isClientModal ? setModalType(type) : undefined
 
   useEffect(() => {
-    return () => invokeSetModalType('login')
-  })
-
-  useEffect(() => {
     fetchData()
+    return () => invokeSetModalType('login')
   }, [])
 
   const fetchData = async () => {
-    if (isNew) return
+    if (!isEdit) return
 
     const { data, error } = await usingTryCatch(getUserById(userId ?? ''))
 
@@ -69,8 +49,12 @@ export const UserModal = ({
       showErrorSnackbar(error)
       return
     }
-    setUser(data)
+    reset({ name: data.name, email: data.email })
   }
+
+  const { handleSubmit, control, reset } = useForm<FormData>({
+    resolver: yupResolver(getUserSchema(isEdit))
+  })
 
   const handleUserSubmit = async (values: FieldValues) => {
     const request = {
@@ -79,7 +63,7 @@ export const UserModal = ({
       name: values.name
     }
 
-    const action = isNew ? register(request) : updateUser(userId, request)
+    const action = isEdit ? updateUser(userId, request) : register(request)
 
     const { error } = await usingTryCatch(action)
 
@@ -120,10 +104,10 @@ export const UserModal = ({
           label="Confirme senha:"
           placeholder="Confirme a senha"
         />
-        <Button type="primary" onClick={handleSubmit(handleUserSubmit)}>
-          Concluir cadastro
-        </Button>
       </form>
+      <Button type="primary" onClick={handleSubmit(handleUserSubmit)}>
+        Concluir cadastro
+      </Button>
       <Visible when={isClientModal}>
         <div>
           <span>Já tem uma conta?</span>

@@ -29,6 +29,7 @@ import { ManageTypes } from '../../pages/profile'
 import { Button } from '../button/Button'
 import { TextField } from '../fields'
 import { useForm } from 'react-hook-form'
+import { Pagination } from '..'
 
 interface ListProps {
   type: ManageTypes
@@ -54,16 +55,8 @@ type ContentType = {
     name: string
     header: string[]
     get: Get
-    should: ShouldType
     modal?: JSX.Element
   }
-}
-
-type ShouldType = {
-  edit?: boolean
-  delete?: boolean
-  cancel?: boolean
-  complete?: boolean
 }
 
 type Data = {
@@ -109,7 +102,6 @@ export function List({ type }: ListProps) {
       name: 'Usuários',
       header: ['Nome', 'Email'],
       get: getAllUsers,
-      should: { edit: true, delete: true },
       modal: (
         <LoginModal
           open={openCreateModal}
@@ -122,7 +114,6 @@ export function List({ type }: ListProps) {
       name: 'Eventos',
       header: ['Nome', 'Barbeiro', 'Corte'],
       get: getAllSchedules,
-      should: { cancel: true, complete: true },
       modal: (
         <ScheduleModal
           open={openCreateModal}
@@ -134,7 +125,6 @@ export function List({ type }: ListProps) {
       name: 'Cortes',
       header: ['Nome', 'Sobre', 'Preço'],
       get: getAllHaircuts,
-      should: { edit: true, delete: true },
       modal: (
         <HaircutModal
           open={openCreateModal}
@@ -152,14 +142,12 @@ export function List({ type }: ListProps) {
         'Corte',
         'Barbeiro'
       ],
-      get: getAllFeedbacks,
-      should: { delete: true }
+      get: getAllFeedbacks
     },
     establishments: {
       name: 'Estabelecimentos',
       header: ['Endereço'],
       get: getAllEstablishments,
-      should: { edit: true, delete: true },
       modal: (
         <EstablishmentModal
           open={openCreateModal}
@@ -178,7 +166,6 @@ export function List({ type }: ListProps) {
         'Twitter'
       ],
       get: getAllBarbers,
-      should: { edit: true, delete: true },
       modal: (
         <BarberModal
           open={openCreateModal}
@@ -192,10 +179,10 @@ export function List({ type }: ListProps) {
     fetchData(1)
   }, [])
 
-  const fetchData = async (page: number) => {
+  const fetchData = async (page: number, searchTerm?: string) => {
     const get = content[type].get
 
-    const { data, error } = await usingTryCatch(get(page, pageSize))
+    const { data, error } = await usingTryCatch(get(page, pageSize, searchTerm))
 
     if (error || !data) {
       showErrorSnackbar(error)
@@ -205,30 +192,34 @@ export function List({ type }: ListProps) {
   }
 
   return (
-    <S.ListBox>
+    <S.ListBox minHeigth={data[type].totalCount < 5 ? 'max-content' : '280px'}>
       <h3>{content[type].name}</h3>
       <div className="filter-box">
-        <TextField control={control} name="filter" placeholder="Pesquisar" />
+        <TextField
+          control={control}
+          name="filter"
+          placeholder="Pesquisar"
+          onChange={(value) => fetchData(1, value)}
+        />
         <Button type="secondary" onClick={() => setOpenCreateModal(true)}>
           Novo
         </Button>
       </div>
-      <div className="header">
+      <div className="table-header">
         {content[type].header.map((item) => (
           <span>{item}</span>
         ))}
       </div>
-      {data[type].items.map((item) => (
-        <Item
-          key={item.id}
-          type={type}
-          data={item}
-          shouldCancel={content[type].should.cancel}
-          shouldComplete={content[type].should.complete}
-          shouldDelete={content[type].should.delete}
-          shouldEdit={content[type].should.edit}
-        />
-      ))}
+      <div className="table-content">
+        {data[type].items.map((item) => (
+          <Item key={item.id} type={type} data={item} fetchData={fetchData} />
+        ))}
+      </div>
+      <Pagination
+        totalCount={data[type].totalCount ?? 0}
+        pageSize={pageSize}
+        handleChange={fetchData}
+      />
       {content[type].modal}
     </S.ListBox>
   )

@@ -1,7 +1,11 @@
 import styled from 'styled-components'
 
-export const ListBox = styled.div`
-  margin: 40px 0;
+interface ListBoxProps {
+  minHeigth: string
+}
+
+export const ListBox = styled.div<ListBoxProps>`
+  margin: 30px 0;
 
   h3 {
     margin-bottom: 10px;
@@ -18,12 +22,16 @@ export const ListBox = styled.div`
     width: 50%;
   }
 
-  .header {
-    gap: 0;
+  .table-header {
     padding: 0 20px;
+    display: flex;
   }
 
-  .header > span {
+  .table-header > span {
     width: 160px;
+  }
+
+  .table-content {
+    min-height: ${(props) => props.minHeigth};
   }
 `

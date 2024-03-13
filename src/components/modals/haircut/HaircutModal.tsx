@@ -102,10 +102,10 @@ export const HaircutModal = ({
           <TextField control={control} label="Sobre" name="about" />
           <TextField control={control} label="Preço" name="price" />
           <TextField control={control} label="Imagem URL" name="imageSource" />
-          <Button type="primary" onClick={handleSubmit(handleModalSubmit)}>
-            Enviar
-          </Button>
         </form>
+        <Button type="primary" onClick={handleSubmit(handleModalSubmit)}>
+          Enviar
+        </Button>
       </S.HaircutBox>
     </Modal>
   )
