@@ -20,14 +20,15 @@ export const FieldBox = styled.div<FieldProps>`
     margin-bottom: 0;
   }
 
-  input {
+  input, textarea {
+    font-family: 'Poppins';
     padding: 10px 20px;
     border-radius: 8px;
     border: 1px solid var(--gray);
     font-size: 17px;
   }
 
-  input:focus {
+  input:focus, textarea {
     outline: none;
   }
 

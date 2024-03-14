@@ -1,8 +1,7 @@
 import * as yup from 'yup'
-import { EstablishmentData } from '../../../hooks'
 
-export const getEstablishmentSchema = (isNew: boolean) =>
-  yup.object().shape(isNew ? createSchema : commomSchema)
+export const getEstablishmentSchema = (isEdit: boolean) =>
+  yup.object().shape(isEdit ? commomSchema : createSchema)
 
 const commomSchema = {
   address: yup.string(),
@@ -21,17 +20,4 @@ const createSchema = {
   lunchTime: commomSchema.lunchTime.required(),
   workInterval: commomSchema.workInterval.required(),
   lunchInterval: commomSchema.lunchInterval.required()
-}
-
-export const getDefaultEstablishmentValues = (
-  establishment?: EstablishmentData
-) => {
-  return {
-    address: establishment?.address ?? '',
-    imageSource: establishment?.imageSource ?? '',
-    openTime: establishment?.openTime ?? '',
-    lunchTime: establishment?.lunchTime ?? '',
-    workInterval: establishment?.workInterval ?? '',
-    lunchInterval: establishment?.lunchInterval ?? ''
-  }
 }

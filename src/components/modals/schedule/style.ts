@@ -4,6 +4,7 @@ export const ScheduleBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
 
   .box {
     display: flex;
@@ -20,6 +21,9 @@ export const ScheduleBox = styled.div`
     flex-direction: column;
     gap: 10px;
     width: 100%;
-    margin: 20px 0;
+  }
+
+  button {
+    margin-top: 20px;
   }
 `

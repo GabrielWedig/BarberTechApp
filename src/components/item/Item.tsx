@@ -48,7 +48,6 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
   const [editModal, setEditModal] = useState<boolean>(false)
   const [confirmationModal, setConfirmationModal] =
     useState<ConfirmationModal>('closed')
-  const [confirm, setConfirm] = useState<boolean>(false) // TODO: talvez juntar com o state de cima se precisar fazer um para cada
 
   const { deleteUser } = useUsers()
   const { cancelSchedule, completeSchedule } = useSchedules()

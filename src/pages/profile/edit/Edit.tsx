@@ -1,5 +1,5 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, PasswordField, TextField } from '../../../components'
+import { Button, InputField } from '../../../components'
 import { UserData } from '../../../hooks'
 import * as S from './style'
 import { updateUserSchema } from './schema'
@@ -46,29 +46,31 @@ export const Edit = ({ isEdit, user }: EditProps) => {
         <p>O tamanho da imagem deve ser inferior a 10 MB</p>
       </div>
       <div className="rigth-column">
-        <TextField
+        <InputField
           disabled={!isEdit}
           control={control}
           label="Nome completo"
           name="name"
         />
-        <TextField
+        <InputField
           disabled={!isEdit}
           control={control}
           label="Email"
           name="email"
         />
-        <PasswordField
+        <InputField
           disabled={!isEdit}
           control={control}
           label="Senha"
           name="password"
+          type="password"
         />
-        <PasswordField
+        <InputField
           disabled={!isEdit}
           control={control}
           label="Confirmar senha"
           name="confirmPassword"
+          type="password"
         />
         <Button
           disabled={!isEdit}

@@ -1,7 +1,9 @@
-import { Control, ControllerRenderProps, FieldValues, Path, PathValue, useController } from 'react-hook-form'
+import { Control, FieldValues, Path, useController } from 'react-hook-form'
 import { BaseField } from '../base/BaseField'
 import { FieldError } from '..'
 import { ChangeEvent } from 'react'
+
+type InputTypes = 'text' | 'number' | 'password'
 
 interface TextFieldProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>
@@ -9,32 +11,26 @@ interface TextFieldProps<TFieldValues extends FieldValues> {
   label?: string
   placeholder?: string
   disabled?: boolean
-  onChange?: (
-    value: string,
-    field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>
-  ) => void
+  onChange?: (value: string | number) => void
+  type?: InputTypes
 }
 
-export function TextField<TFieldValues extends FieldValues = FieldValues>({
+export function InputField<TFieldValues extends FieldValues = FieldValues>({
   name,
   control,
   label,
   placeholder,
   disabled,
-  onChange
+  onChange,
+  type = 'text'
 }: TextFieldProps<TFieldValues>) {
   const { fieldState, field } = useController({ name, control })
 
-  // TODO: revisar e aplicar para os outros campos
-  const changeEventHandler = (
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const changeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
     try {
-      onChange?.call(null, event.target.value, field)
+      onChange?.call(null, event.target.value)
     } finally {
-      field.onChange(
-        event.target.value as PathValue<TFieldValues, Path<TFieldValues>>
-      )
+      field.onChange(event.target.value)
     }
   }
 
@@ -46,6 +42,7 @@ export function TextField<TFieldValues extends FieldValues = FieldValues>({
         disabled={disabled}
         className={fieldState.error ? 'error' : ''}
         onChange={changeEventHandler}
+        type={type}
       />
       <FieldError message={fieldState.error?.message} />
     </BaseField>

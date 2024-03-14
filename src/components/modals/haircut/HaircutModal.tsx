@@ -1,16 +1,17 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { TextField } from '../../fields'
+import { FileField, InputField, TextareaField } from '../../fields'
 import { Modal } from '../base/Modal'
 import * as S from './style'
 import { useEffect, useState } from 'react'
 import {
   HaircutData,
   useHaircuts,
+  useRequest,
   useSnackbarContext,
   usingTryCatch
 } from '../../../hooks'
 import { Button } from '../..'
-import { getDefaultHaircutValues, getHaircutSchema } from './schema'
+import { getHaircutSchema } from './schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 interface HaircutModalProps {
@@ -38,22 +39,22 @@ export const HaircutModal = ({
   onClose,
   haircutId
 }: HaircutModalProps) => {
-  const isNew = !haircutId
+  const isEdit = !!haircutId
 
-  const [haircut, setHaircut] = useState<HaircutData>()
+  const [file, setFile] = useState<File>()
 
+  const { uploadImage } = useRequest('')
   const { createHaircut, updateHaircut, getHaircutById } = useHaircuts()
-
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   useEffect(() => {
     if (open) {
       fetchData()
     }
-  }, [])
+  }, [open])
 
   const fetchData = async () => {
-    if (isNew) return
+    if (!isEdit) return
 
     const { data, error } = await usingTryCatch(getHaircutById(haircutId ?? ''))
 
@@ -61,25 +62,41 @@ export const HaircutModal = ({
       showErrorSnackbar(error)
       return
     }
-    setHaircut(data)
+    reset({
+      name: data.name,
+      about: data.about,
+      price: data.price
+    })
   }
 
-  const { control, handleSubmit } = useForm<CreateFormData | UpdateFormData>({
-    resolver: yupResolver(getHaircutSchema(isNew)),
-    defaultValues: getDefaultHaircutValues(haircut)
+  const { control, handleSubmit, reset } = useForm<
+    CreateFormData | UpdateFormData
+  >({
+    resolver: yupResolver(getHaircutSchema(isEdit))
   })
 
   const handleModalSubmit = async (values: FieldValues) => {
+    if (!file) return
+
+    const { data: fileName, error: fileError } = await usingTryCatch(
+      uploadImage(file)
+    )
+
+    if (fileError || !fileName) {
+      showErrorSnackbar(fileError)
+      return
+    }
+
     const request = {
       name: values.name,
       about: values.about,
       price: values.price,
-      imageSource: values.imageSource
+      imageSource: fileName
     }
 
-    const action = isNew
-      ? createHaircut(request)
-      : updateHaircut(haircutId, request)
+    const action = isEdit
+      ? updateHaircut(haircutId, request)
+      : createHaircut(request)
 
     const { error } = await usingTryCatch(action)
 
@@ -91,21 +108,31 @@ export const HaircutModal = ({
     onClose()
   }
 
-  // TODO: upar imagem no vercel e depois passar o link para imageSource sem campo de texto / campo de imagem
-  // criar campo de número
   return (
     <Modal open={open} onClose={onClose}>
       <S.HaircutBox>
-        <h3>{isNew ? 'Criar novo corte' : 'Editar corte'}</h3>
+        <h3>{isEdit ? 'Editar corte' : 'Criar novo corte'}</h3>
         <form>
-          <TextField control={control} label="Nome" name="name" />
-          <TextField control={control} label="Sobre" name="about" />
-          <TextField control={control} label="Preço" name="price" />
-          <TextField control={control} label="Imagem URL" name="imageSource" />
+          <InputField control={control} label="Nome" name="name" />
+          <TextareaField control={control} label="Sobre" name="about" />
+          <div className="box">
+            <InputField
+              control={control}
+              label="Preço"
+              name="price"
+              type="number"
+            />
+            <FileField
+              control={control}
+              label="Imagem"
+              name="imageSource"
+              onChange={(file) => setFile(file)}
+            />
+          </div>
+          <Button type="primary" onClick={handleSubmit(handleModalSubmit)}>
+            Enviar
+          </Button>
         </form>
-        <Button type="primary" onClick={handleSubmit(handleModalSubmit)}>
-          Enviar
-        </Button>
       </S.HaircutBox>
     </Modal>
   )

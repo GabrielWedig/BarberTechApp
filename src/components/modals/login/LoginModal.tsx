@@ -11,7 +11,7 @@ interface LoginModalProps {
 export type ModalTypes =
   | 'login'
   | 'register'
-  | 'register-client'
+  | 'registerClient'
   | 'edit'
   | 'forgot'
 
@@ -22,7 +22,7 @@ export const LoginModal = ({
   userId
 }: LoginModalProps) => {
   const [modalType, setModalType] = useState<ModalTypes>(type)
-  const registerTypes = ['register', 'register-client', 'edit']
+  const registerTypes = ['register', 'registerClient', 'edit']
 
   return (
     <Modal open={open} onClose={onClose}>

@@ -1,17 +1,17 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { TextField } from '../../fields'
+import { FileField, InputField, SelectField } from '../../fields'
 import { Modal } from '../base/Modal'
 import * as S from './style'
 import { useEffect, useState } from 'react'
 import {
-  EstablishmentData,
   useEstablishments,
   useSnackbarContext,
   usingTryCatch
 } from '../../../hooks'
 import { Button } from '../..'
-import { getDefaultEstablishmentValues, getEstablishmentSchema } from './schema'
+import { getEstablishmentSchema } from './schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { intervalOptions, timeOptions } from './options'
 
 interface EstablishmentModalProps {
   open: boolean
@@ -42,9 +42,9 @@ export const EstablishmentModal = ({
   onClose,
   establishmentId
 }: EstablishmentModalProps) => {
-  const isNew = !establishmentId
+  const isEdit = !!establishmentId
 
-  const [establishment, setEstablishment] = useState<EstablishmentData>()
+  const [file, setFile] = useState<File>()
 
   const { createEstablishment, updateEstablishment, getEstablishmentById } =
     useEstablishments()
@@ -55,10 +55,10 @@ export const EstablishmentModal = ({
     if (open) {
       fetchData()
     }
-  }, [])
+  }, [open])
 
   const fetchData = async () => {
-    if (isNew) return
+    if (!isEdit) return
 
     const { data, error } = await usingTryCatch(
       getEstablishmentById(establishmentId ?? '')
@@ -68,12 +68,20 @@ export const EstablishmentModal = ({
       showErrorSnackbar(error)
       return
     }
-    setEstablishment(data)
+
+    reset({
+      address: data.address,
+      lunchInterval: data.lunchInterval,
+      lunchTime: data.lunchTime,
+      openTime: data.openTime,
+      workInterval: data.workInterval
+    })
   }
 
-  const { control, handleSubmit } = useForm<CreateFormData | UpdateFormData>({
-    resolver: yupResolver(getEstablishmentSchema(isNew)),
-    defaultValues: getDefaultEstablishmentValues(establishment)
+  const { control, handleSubmit, reset } = useForm<
+    CreateFormData | UpdateFormData
+  >({
+    resolver: yupResolver(getEstablishmentSchema(isEdit))
   })
 
   const handleModalSubmit = async (values: FieldValues) => {
@@ -86,9 +94,9 @@ export const EstablishmentModal = ({
       lunchInterval: values.lunchInterval
     }
 
-    const action = isNew
-      ? createEstablishment(request)
-      : updateEstablishment(establishmentId, request)
+    const action = isEdit
+      ? updateEstablishment(establishmentId, request)
+      : createEstablishment(request)
 
     const { error } = await usingTryCatch(action)
 
@@ -100,37 +108,48 @@ export const EstablishmentModal = ({
     onClose()
   }
 
-  // TODO: upar imagem no vercel e depois passar o link para imageSource sem campo de texto / campo de imagem
-  // horários vai ser um select com as opções
   return (
     <Modal open={open} onClose={onClose}>
       <S.EstablishmentBox>
         <h3>
-          {isNew ? 'Criar novo estabelecimento' : 'Editar estabelecimento'}
+          {isEdit ? 'Editar estabelecimento' : 'Criar novo estabelecimento'}
         </h3>
         <form>
-          <TextField control={control} label="Endereço" name="address" />
-          <TextField control={control} label="Imagem URL" name="imageSource" />
-          <TextField
+          <InputField control={control} label="Endereço" name="address" />
+          <FileField
+            label="Imagem"
             control={control}
-            label="Horário de abertura"
-            name="openTime"
+            name="imageSource"
+            onChange={(file) => setFile(file)}
           />
-          <TextField
-            control={control}
-            label="Horário de almoço"
-            name="lunchTime"
-          />
-          <TextField
-            control={control}
-            label="Intervalo de trabalho"
-            name="workInterval"
-          />
-          <TextField
-            control={control}
-            label="Intervalo de almoço"
-            name="lunchInterval"
-          />
+          <div className="box">
+            <SelectField
+              control={control}
+              options={timeOptions}
+              label="Horário de abertura"
+              name="openTime"
+            />
+            <SelectField
+              control={control}
+              options={timeOptions}
+              label="Horário de almoço"
+              name="lunchTime"
+            />
+          </div>
+          <div className="box">
+            <SelectField
+              control={control}
+              options={intervalOptions}
+              label="Intervalo de trabalho"
+              name="workInterval"
+            />
+            <SelectField
+              control={control}
+              options={intervalOptions}
+              label="Intervalo de almoço"
+              name="lunchInterval"
+            />
+          </div>
           <Button type="primary" onClick={handleSubmit(handleModalSubmit)}>
             Enviar
           </Button>

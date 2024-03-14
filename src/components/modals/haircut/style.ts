@@ -17,4 +17,17 @@ export const HaircutBox = styled.div`
     width: 100%;
     margin: 20px 0;
   }
+
+  button {
+    margin-top: 20px;
+  }
+
+  .box {
+    display: flex;
+    gap: 10px;
+  }
+
+  .box > div {
+    width: 50%;
+  }
 `

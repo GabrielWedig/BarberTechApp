@@ -1,5 +1,5 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, ModalTypes, PasswordField, TextField, Visible } from '../..'
+import { Button, InputField, ModalTypes, Visible } from '../..'
 import * as S from './style'
 import { useEffect } from 'react'
 import { useSnackbarContext, useUsers, usingTryCatch } from '../../../hooks'
@@ -26,7 +26,7 @@ export const UserModal = ({
   setModalType,
   userId
 }: UserModalProps) => {
-  const isClientModal = type === 'register-client' && !!setModalType
+  const isClientModal = type === 'registerClient' && !!setModalType
   const isEdit = type === 'edit' && !!userId
 
   const { register, updateUser, getUserById } = useUsers()
@@ -80,34 +80,36 @@ export const UserModal = ({
     <S.UserModalBox>
       <h3>Cadastro</h3>
       <form>
-        <TextField
+        <InputField
           name="name"
           control={control}
-          label="Nome completo:"
+          label="Nome completo"
           placeholder="Digite seu nome"
         />
-        <TextField
+        <InputField
           name="email"
           control={control}
-          label="E-mail:"
+          label="E-mail"
           placeholder="Digite seu e-mail"
         />
-        <PasswordField
+        <InputField
           name="password"
           control={control}
-          label="Senha:"
+          label="Senha"
           placeholder="Digite sua senha"
+          type="password"
         />
-        <PasswordField
+        <InputField
           name="confirmPassword"
           control={control}
-          label="Confirme senha:"
+          label="Confirme senha"
           placeholder="Confirme a senha"
+          type="password"
         />
+        <Button type="primary" onClick={handleSubmit(handleUserSubmit)}>
+          Concluir cadastro
+        </Button>
       </form>
-      <Button type="primary" onClick={handleSubmit(handleUserSubmit)}>
-        Concluir cadastro
-      </Button>
       <Visible when={isClientModal}>
         <div>
           <span>Já tem uma conta?</span>

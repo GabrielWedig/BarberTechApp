@@ -1,10 +1,9 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { SelectField, TextField, Option } from '../../fields'
+import { SelectField, InputField, Option, TextareaField } from '../../fields'
 import { Modal } from '../base/Modal'
 import * as S from './style'
 import { useEffect, useState } from 'react'
 import {
-  BarberData,
   CreateBarberRequest,
   UpdateBarberRequest,
   useBarbers,
@@ -14,7 +13,7 @@ import {
   usingTryCatch
 } from '../../../hooks'
 import { Button, Visible } from '../..'
-import { getBarberSchema, getDefaultBarberValues } from './schema'
+import { getBarberSchema } from './schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 interface BarberModalProps {
@@ -49,13 +48,12 @@ interface UpdateFormData {
 }
 
 export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
-  const isNew = !barberId
+  const isEdit = !!barberId
 
   const [options, setOptions] = useState<Options>({
     establishments: [],
     users: []
   })
-  const [barber, setBarber] = useState<BarberData>()
 
   const { getEstablishmentOptions } = useEstablishments()
   const { getUserOptions } = useUsers()
@@ -64,14 +62,14 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   useEffect(() => {
-    if(!open) return
+    if (!open) return
 
     fetchOptions()
-    
-    if (!isNew) {
+
+    if (isEdit) {
       fetchData()
     }
-  }, [])
+  }, [open])
 
   const fetchOptions = async () => {
     const { data, error } = await usingTryCatch(
@@ -104,12 +102,20 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
       showErrorSnackbar(error)
       return
     }
-    setBarber(data)
+    reset({
+      about: data.about,
+      contact: data.contact,
+      establishmentId: data.establishmentId,
+      facebook: data.social.facebook,
+      instagram: data.social.instagram,
+      twitter: data.social.twitter
+    })
   }
 
-  const { control, handleSubmit } = useForm<CreateFormData | UpdateFormData>({
-    resolver: yupResolver(getBarberSchema(isNew)),
-    defaultValues: getDefaultBarberValues(barber)
+  const { control, handleSubmit, reset } = useForm<
+    CreateFormData | UpdateFormData
+  >({
+    resolver: yupResolver(getBarberSchema(isEdit))
   })
 
   const handleModalSubmit = async (values: FieldValues) => {
@@ -133,9 +139,9 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
       userId: values.userId ?? ''
     }
 
-    const action = isNew
-      ? createBarber(createRequest)
-      : updateBarber(barberId, updateRequest)
+    const action = isEdit
+      ? updateBarber(barberId, updateRequest)
+      : createBarber(createRequest)
 
     const { error } = await usingTryCatch(action)
 
@@ -143,34 +149,36 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
       showErrorSnackbar(error)
       return
     }
-    showSuccessSnackbar('Corte agendado com sucesso!')
+    showSuccessSnackbar()
     onClose()
   }
 
   return (
     <Modal open={open} onClose={onClose}>
       <S.BarberBox>
-        <h3>{isNew ? 'Criar novo barbeiro' : 'Editar barbeiro'}</h3>
+        <h3>{isEdit ? 'Editar barbeiro' : 'Criar novo barbeiro'}</h3>
         <form>
-          <SelectField
-            control={control}
-            label="Estabelecimento"
-            name="establishmentId"
-            options={options?.establishments}
-          />
-          <Visible when={isNew}>
+          <div className="box">
             <SelectField
               control={control}
-              label="Usuário"
-              name="userId"
-              options={options?.users}
+              label="Estabelecimento"
+              name="establishmentId"
+              options={options?.establishments}
             />
-          </Visible>
-          <TextField control={control} label="Sobre" name="about" />
-          <TextField control={control} label="Instagram" name="instagram" />
-          <TextField control={control} label="Twitter" name="twitter" />
-          <TextField control={control} label="Facebook" name="facebook" />
-          <TextField control={control} label="Contato" name="contact" />
+            <Visible when={!isEdit}>
+              <SelectField
+                control={control}
+                label="Usuário"
+                name="userId"
+                options={options?.users}
+              />
+            </Visible>
+          </div>
+          <TextareaField control={control} label="Sobre" name="about" />
+          <InputField control={control} label="Instagram" name="instagram" />
+          <InputField control={control} label="Twitter" name="twitter" />
+          <InputField control={control} label="Facebook" name="facebook" />
+          <InputField control={control} label="Contato" name="contact" />
           <Button type="primary" onClick={handleSubmit(handleModalSubmit)}>
             Enviar
           </Button>

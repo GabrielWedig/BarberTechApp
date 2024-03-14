@@ -1,10 +1,6 @@
 import styled from 'styled-components'
 
-interface ListBoxProps {
-  minHeigth: string
-}
-
-export const ListBox = styled.div<ListBoxProps>`
+export const ListBox = styled.div`
   margin: 30px 0;
 
   h3 {
@@ -32,6 +28,6 @@ export const ListBox = styled.div<ListBoxProps>`
   }
 
   .table-content {
-    min-height: ${(props) => props.minHeigth};
+    min-height: 280px;
   }
 `

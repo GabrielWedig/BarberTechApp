@@ -1,5 +1,5 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, Modal, Option, SelectField, TextField, Visible } from '../..'
+import { Button, InputField, Modal, Option, SelectField, Visible } from '../..'
 import * as S from './style'
 import {
   useBarbers,
@@ -173,7 +173,7 @@ export const ScheduleModal = ({
       <S.ScheduleBox>
         <h3>Agendar horário</h3>
         <form>
-          <TextField
+          <InputField
             name="name"
             control={control}
             label="Nome completo"
@@ -219,10 +219,10 @@ export const ScheduleModal = ({
               disabled={!scheduleField}
             />
           </Visible>
+          <Button type="primary" onClick={handleSubmit(handleScheduleSubmit)}>
+            Agendar horário
+          </Button>
         </form>
-        <Button type="primary" onClick={handleSubmit(handleScheduleSubmit)}>
-          Agendar horário
-        </Button>
       </S.ScheduleBox>
     </Modal>
   )
