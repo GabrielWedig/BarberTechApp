@@ -5,13 +5,13 @@ export interface LoginRequest {
 
 export interface RegisterUserRequest extends LoginRequest {
   name: string
-  imageSource?: string
+  imageSource?: string | null
 }
 
 export interface UpdateUserRequest {
   email?: string
   name?: string
-  imageSource?: string
+  imageSource?: string | null
   password?: string
 }
 

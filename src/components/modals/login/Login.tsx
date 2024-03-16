@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, ModalTypes, InputField } from '..'
+import { Button, ModalTypes, InputField } from '../..'
 import * as S from './style'
-import { useSnackbarContext, useUsers, usingTryCatch } from '../../hooks'
+import { useSnackbarContext, useUsers, usingTryCatch } from '../../../hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { loginSchema } from './schema'
 

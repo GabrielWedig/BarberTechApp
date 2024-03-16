@@ -1,8 +1,13 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, InputField, ModalTypes, Visible } from '../..'
+import { Button, FileField, InputField, ModalTypes, Visible } from '../..'
 import * as S from './style'
-import { useEffect } from 'react'
-import { useSnackbarContext, useUsers, usingTryCatch } from '../../../hooks'
+import { useEffect, useState } from 'react'
+import {
+  useRequest,
+  useSnackbarContext,
+  useUsers,
+  usingTryCatch
+} from '../../../hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getUserSchema } from './schema'
 
@@ -16,6 +21,7 @@ interface UserModalProps {
 interface FormData {
   name?: string
   email?: string
+  image?: File
   password?: string
   confirmPassword?: string
 }
@@ -29,6 +35,9 @@ export const UserModal = ({
   const isClientModal = type === 'registerClient' && !!setModalType
   const isEdit = type === 'edit' && !!userId
 
+  const [file, setFile] = useState<File>()
+
+  const { uploadImage } = useRequest('')
   const { register, updateUser, getUserById } = useUsers()
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
@@ -57,13 +66,20 @@ export const UserModal = ({
   })
 
   const handleUserSubmit = async (values: FieldValues) => {
+    const fileName = await handleUploadImage()
+    
     const request = {
       email: values.email,
       password: values.password,
-      name: values.name
+      name: values.name,
+      imageSource: fileName
     }
 
-    const action = isEdit ? updateUser(userId, request) : register(request)
+    const signIn = type === 'registerClient'
+
+    const action = isEdit
+      ? updateUser(userId, request)
+      : register(request, signIn)
 
     const { error } = await usingTryCatch(action)
 
@@ -74,6 +90,17 @@ export const UserModal = ({
 
     showSuccessSnackbar('Cadastro realizado!')
     onClose()
+  }
+
+  const handleUploadImage = async () => {
+    if (!file) return
+
+    const { data, error } = await usingTryCatch(uploadImage(file))
+
+    if (!data || error) {
+      showErrorSnackbar(error)
+      return data
+    }
   }
 
   return (
@@ -91,6 +118,12 @@ export const UserModal = ({
           control={control}
           label="E-mail"
           placeholder="Digite seu e-mail"
+        />
+        <FileField
+          control={control}
+          name="image"
+          label="Imagem"
+          onChange={(file) => setFile(file)}
         />
         <InputField
           name="password"

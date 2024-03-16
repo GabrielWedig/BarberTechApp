@@ -5,7 +5,7 @@ export interface FeedbacksData {
   userName: string
   barberName: string
   haircutName: string
-  establishmentName: string
+  establishmentAddress: string
   at: string
 }
 

@@ -38,7 +38,7 @@ export const useRequest = (baseURL: string) => {
 
     uploadImage: async (file: File): Promise<string> => {
       const response = await uploadCareClient.uploadFile(file)
-      return response.name ?? ''
+      return `${response.cdnUrl}${response.name}`
     }
   }
 }

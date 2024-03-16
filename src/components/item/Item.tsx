@@ -1,6 +1,6 @@
 import { Check, Close, Delete, Edit } from '@mui/icons-material'
 import * as S from './style'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ManageTypes } from '../../pages/profile/manage/Manage'
 import {
   useBarbers,
@@ -90,10 +90,9 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
     },
     feedbacks: {
       columns: [
-        data.name,
         data.comment,
-        data.establishmentName,
         data.userName,
+        data.establishmentAddress,
         data.haircutName,
         data.barberName
       ],
@@ -122,7 +121,6 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
       ),
       columns: [
         data.name,
-        data.userName,
         data.contact,
         data.social?.instagram,
         data.social?.facebook,

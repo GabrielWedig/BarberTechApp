@@ -136,9 +136,8 @@ export function List({ type }: ListProps) {
       name: 'Avaliações',
       header: [
         'Comentário',
-        'Nome',
-        'Estabelecimento',
         'Cliente',
+        'Estabelecimento',
         'Corte',
         'Barbeiro'
       ],
@@ -158,8 +157,7 @@ export function List({ type }: ListProps) {
     barbers: {
       name: 'Barbeiros',
       header: [
-        'Nome',
-        'Cliente',
+        'Usuário',
         'Contato',
         'Instagram',
         'Facebook',

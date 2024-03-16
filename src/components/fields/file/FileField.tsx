@@ -54,6 +54,7 @@ export function FileField<TFieldValues extends FieldValues = FieldValues>({
         type="file"
         id="fileInput"
         disabled={disabled}
+        accept="image/*"
       />
       <FieldError message={fieldState.error?.message} />
     </S.FileInput>

@@ -51,9 +51,15 @@ export const useUsers = () => {
     signInUser(data)
   }
 
-  const register = async (request: RegisterUserRequest): Promise<void> => {
+  const register = async (
+    request: RegisterUserRequest,
+    signIn = true
+  ): Promise<void> => {
     const { data } = await post<LoginResponse>('register', request)
-    signInUser(data)
+
+    if (signIn) {
+      signInUser(data)
+    }
   }
 
   const signInUser = (data: LoginResponse) =>

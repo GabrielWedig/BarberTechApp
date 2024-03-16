@@ -22,6 +22,7 @@ export const LoginModal = ({
   userId
 }: LoginModalProps) => {
   const [modalType, setModalType] = useState<ModalTypes>(type)
+  
   const registerTypes = ['register', 'registerClient', 'edit']
 
   return (
@@ -29,7 +30,7 @@ export const LoginModal = ({
       <Visible when={modalType === 'login'}>
         <Login setModalType={setModalType} onClose={onClose} />
       </Visible>
-      <Visible when={registerTypes.some((t) => t === type)}>
+      <Visible when={registerTypes.some((t) => t === modalType)}>
         <UserModal
           setModalType={setModalType}
           onClose={onClose}
