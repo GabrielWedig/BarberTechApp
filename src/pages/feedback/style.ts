@@ -47,6 +47,5 @@ export const FeedbackContainer = styled(Container)`
   img {
     margin-top: 40px;
     width: 80%;
-    border-radius: 10px;
   }
 `

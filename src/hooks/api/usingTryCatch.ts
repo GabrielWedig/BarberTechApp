@@ -12,7 +12,7 @@ export interface DataResponse<T> {
 }
 
 export async function usingTryCatch<T>(
-  promise: Promise<T>
+  promise: Promise<T> //| Promise<T>[]
 ): Promise<DataResponse<T>> {
   try {
     const data = await promise

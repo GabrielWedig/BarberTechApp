@@ -3,8 +3,16 @@ export interface LoginRequest {
   password: string
 }
 
-export interface RegisterRequest extends LoginRequest {
+export interface RegisterUserRequest extends LoginRequest {
   name: string
+  imageSource?: string | null
+}
+
+export interface UpdateUserRequest {
+  email?: string
+  name?: string
+  imageSource?: string | null
+  password?: string
 }
 
 export interface LoginResponse {
@@ -12,12 +20,34 @@ export interface LoginResponse {
   user: UserData
 }
 
-export interface UserData {
+export interface UsersData {
   id: string
   email: string
   name: string
-  photo: string | null
   type: UserType
 }
 
-type UserType = 'Admin' | 'Barber' | 'Client'
+interface LoginUser extends UsersData {
+  imageSource?: string
+}
+
+export interface UserData extends LoginUser {
+  eventSchedules: EventScheduleData[]
+}
+
+interface EventScheduleData {
+  id: string
+  dateTime: string
+  userName: string
+  barberName: string
+  status: EventStatus
+  feedbackId: string
+}
+
+export interface UserOption {
+  id: string
+  name: string
+}
+
+export type UserType = 'Admin' | 'Barber' | 'Client'
+type EventStatus = 'Active' | 'Completed' | 'Canceled'

@@ -1,24 +1,43 @@
 import { useState } from 'react'
-import { Login, Modal, Register } from '../..'
+import { Login, Modal, UserModal, Visible } from '../..'
 
 interface LoginModalProps {
   open: boolean
   onClose: () => void
+  type?: ModalTypes
+  userId?: string
 }
 
-export type ModalTypes = 'login' | 'register' | 'forgot'
+export type ModalTypes =
+  | 'login'
+  | 'register'
+  | 'registerClient'
+  | 'edit'
+  | 'forgot'
 
-export const LoginModal = ({ open, onClose }: LoginModalProps) => {
-  const [modalType, setModalType] = useState<ModalTypes>('login')
+export const LoginModal = ({
+  open,
+  onClose,
+  type = 'login',
+  userId
+}: LoginModalProps) => {
+  const [modalType, setModalType] = useState<ModalTypes>(type)
+  
+  const registerTypes = ['register', 'registerClient', 'edit']
 
   return (
     <Modal open={open} onClose={onClose}>
-      {modalType === 'login' && (
+      <Visible when={modalType === 'login'}>
         <Login setModalType={setModalType} onClose={onClose} />
-      )}
-      {modalType === 'register' && (
-        <Register setModalType={setModalType} onClose={onClose} />
-      )}
+      </Visible>
+      <Visible when={registerTypes.some((t) => t === modalType)}>
+        <UserModal
+          setModalType={setModalType}
+          onClose={onClose}
+          userId={userId}
+          type={modalType}
+        />
+      </Visible>
     </Modal>
   )
 }

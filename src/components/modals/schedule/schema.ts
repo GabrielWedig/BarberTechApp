@@ -1,20 +1,17 @@
 import * as yup from 'yup'
 
-export const scheduleSchema = yup.object().shape({
+export const getScheduleSchema = (hasHaircut: boolean) =>
+  yup.object().shape(hasHaircut ? commonSchema : haircutSchema)
+
+const commonSchema = {
   name: yup.string(),
+  establishment: yup.string().required('Obrigatório'),
   barber: yup.string().required('Obrigatório'),
-  date: yup
-    .string()
-    .matches(
-      /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}$/,
-      'Formato inválido. Use o formato dd/mm/yyyy'
-    )
-    .required('Obrigatório'),
-  schedule: yup
-    .string()
-    .matches(
-      /^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/,
-      'Formato inválido. Use o formato hh:mm'
-    )
-    .required('Obrigatório')
-})
+  date: yup.string().required('Obrigatório'),
+  schedule: yup.string().required('Obrigatório')
+}
+
+const haircutSchema = {
+  ...commonSchema,
+  haircut: yup.string().required('Obrigatório')
+}

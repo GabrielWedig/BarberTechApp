@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, ModalTypes, PasswordField, TextField } from '..'
+import { Button, ModalTypes, InputField } from '../..'
 import * as S from './style'
-import { useSnackbarContext, useUsers, usingTryCatch } from '../../hooks'
+import { useSnackbarContext, useUsers, usingTryCatch } from '../../../hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { loginSchema } from './schema'
 
@@ -35,7 +35,6 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
       showErrorSnackbar(error)
       return
     }
-
     onClose()
   }
 
@@ -43,17 +42,18 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
     <S.LoginBox>
       <h3>Login</h3>
       <form>
-        <TextField
+        <InputField
           name="email"
           control={control}
           label="E-mail"
           placeholder="Digite seu e-mail"
         />
-        <PasswordField
+        <InputField
           name="password"
           control={control}
           label="Senha:"
           placeholder="Digite sua senha"
+          type="password"
         />
         <a onClick={() => setModalType('forgot')} className="forgot-password">
           Esqueceu a senha?
@@ -64,7 +64,7 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
       </form>
       <div>
         <span>Não tem uma conta?</span>
-        <a onClick={() => setModalType('register')}>Registre-se</a>
+        <a onClick={() => setModalType('registerClient')}>Registre-se</a>
       </div>
     </S.LoginBox>
   )

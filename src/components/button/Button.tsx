@@ -3,15 +3,17 @@ import { buttonTypes } from './types'
 
 interface ButtonProps {
   children: React.ReactNode
+  disabled?: boolean
   type?: ButtonType
   onClick: () => void
 }
 
-type ButtonType = 'primary' | 'transparent'
+type ButtonType = 'primary' | 'secondary' | 'transparent'
 
 export const Button = ({
   children,
   type = 'primary',
+  disabled = false,
   onClick
 }: ButtonProps) => {
   const button = buttonTypes[type]
@@ -24,6 +26,7 @@ export const Button = ({
       fontWeight={button.fontWeight}
       padding={button.padding}
       onClick={onClick}
+      disabled={disabled}
       sx={{
         '&:hover': {
           backgroundColor: button.background

@@ -24,7 +24,7 @@ export const Pagination = ({
     handleChange(page)
   }
 
-  const count = Math.floor(totalCount / pageSize)
+  const count = Math.floor(totalCount / pageSize) + 1
 
   return (
     <Visible when={totalCount > pageSize}>

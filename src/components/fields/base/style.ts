@@ -11,32 +11,53 @@ export const FieldBox = styled.div<FieldProps>`
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   width: 100%;
 
-  .MuiMenuItem-root {
-    font-family: 'Poppins';
-  }
-
   .error {
     border: 1px solid var(--red);
     margin-bottom: 0;
   }
 
-  input {
+  input,
+  textarea,
+  .MuiInputBase-root {
+    font-family: 'Poppins';
     padding: 10px 20px;
     border-radius: 8px;
-    border: none;
+    border: 1px solid var(--gray);
     font-size: 17px;
-    margin-bottom: 27px;
-  }
-
-  input:focus {
-    outline: none;
-  }
-
-  input:disabled {
     background-color: var(--white);
   }
 
-  fieldset {
+  .MuiSelect-select,
+  .MuiInputBase-root > input {
+    padding: 0 !important;
+  }
+
+  .MuiAutocomplete-noOptions {
+    font-family: 'Poppins';
+    background-color: red;
+  }
+
+  .MuiFormControl-root > div {
+    padding: 10px 20px;
+  }
+
+  .MuiAutocomplete-endAdornment {
+    top: -12px;
+    margin-left: 10px;
+  }
+
+  input:focus,
+  textarea {
+    outline: none;
+  }
+
+  input::placeholder {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  fieldset,
+  .MuiInputBase-input {
     border: none;
   }
 `

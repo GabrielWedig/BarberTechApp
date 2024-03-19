@@ -3,7 +3,7 @@ import { FeedbackCard, Footer, Header, Snackbar } from '../../components'
 import contentJson from '../../content.json'
 import * as S from './style'
 import {
-  FeedbackData,
+  FeedbacksData,
   useFeedbacks,
   useSnackbarContext,
   usingTryCatch
@@ -14,8 +14,9 @@ import { useLocation } from 'react-router-dom'
 
 export const Feedbacks = () => {
   const content = contentJson.feedback
+  const pageSize = 5
 
-  const [feedbacks, setFeedbacks] = useState<FeedbackData[]>([])
+  const [feedbacks, setFeedbacks] = useState<FeedbacksData[]>([])
 
   const { getAllFeedbacks } = useFeedbacks()
   const { showErrorSnackbar } = useSnackbarContext()
@@ -24,17 +25,17 @@ export const Feedbacks = () => {
 
   useEffect(() => {
     scrollToSection(location.state, false)
-    fetchFeedbacks()
+    fetchFeedbacks(1)
   }, [])
 
-  const fetchFeedbacks = async () => {
-    const { data, error } = await usingTryCatch(getAllFeedbacks())
+  const fetchFeedbacks = async (page: number) => {
+    const { data, error } = await usingTryCatch(getAllFeedbacks(page, pageSize))
 
     if (error || !data) {
       showErrorSnackbar(error)
       return
     }
-    setFeedbacks(data)
+    setFeedbacks(data.items)
   }
 
   return (

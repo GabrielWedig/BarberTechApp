@@ -1,23 +1,38 @@
 import { Control, FieldValues, Path, useController } from 'react-hook-form'
 import { BaseField } from '../base/BaseField'
 import { FieldError } from '..'
+import { ChangeEvent } from 'react'
+
+type InputTypes = 'text' | 'number' | 'password'
 
 interface TextFieldProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>
   control: Control<TFieldValues>
-  label: string
+  label?: string
   placeholder?: string
   disabled?: boolean
+  onChange?: (value: string | number) => void
+  type?: InputTypes
 }
 
-export function PasswordField<TFieldValues extends FieldValues = FieldValues>({
+export function InputField<TFieldValues extends FieldValues = FieldValues>({
   name,
   control,
   label,
   placeholder,
-  disabled
+  disabled,
+  onChange,
+  type = 'text'
 }: TextFieldProps<TFieldValues>) {
   const { fieldState, field } = useController({ name, control })
+
+  const changeEventHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    try {
+      onChange?.call(null, event.target.value)
+    } finally {
+      field.onChange(event.target.value)
+    }
+  }
 
   return (
     <BaseField label={label} disabled={disabled}>
@@ -25,8 +40,9 @@ export function PasswordField<TFieldValues extends FieldValues = FieldValues>({
         {...field}
         placeholder={placeholder ?? label}
         disabled={disabled}
-        type="password"
         className={fieldState.error ? 'error' : ''}
+        onChange={changeEventHandler}
+        type={type}
       />
       <FieldError message={fieldState.error?.message} />
     </BaseField>

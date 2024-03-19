@@ -2,27 +2,30 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { scrollToSection } from '../../utils'
 import { Button } from '..'
 
+type Tabs = 'home' | 'about' | 'services' | 'feedbacks'
+type Paths = '/' | '/feedbacks'
+
 export const Navigation = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const isHome = location.pathname === '/'
-
-  const handleClickHome = (path: string) =>
-    isHome ? scrollToSection(path) : navigate('/', { state: path })
-
-  const handleClickFeedbacks = (path: string) =>
-    isHome ? navigate('/feedbacks', { state: path }) : scrollToSection(path)
+  const handleNavigation = (path: Paths, tabName: Tabs) =>
+    location.pathname === path
+      ? scrollToSection(tabName)
+      : navigate(path, { state: tabName })
 
   return (
     <nav>
-      <Button type="transparent" onClick={() => handleClickHome('home')}>
+      <Button type="transparent" onClick={() => handleNavigation('/', 'home')}>
         Home
       </Button>
-      <Button type="transparent" onClick={() => handleClickHome('about')}>
+      <Button type="transparent" onClick={() => handleNavigation('/', 'about')}>
         Sobre
       </Button>
-      <Button type="transparent" onClick={() => handleClickHome('services')}>
+      <Button
+        type="transparent"
+        onClick={() => handleNavigation('/', 'services')}
+      >
         Serviços
       </Button>
       <Button type="transparent" onClick={() => scrollToSection('footer')}>
@@ -30,7 +33,7 @@ export const Navigation = () => {
       </Button>
       <Button
         type="transparent"
-        onClick={() => handleClickFeedbacks('feedbacks')}
+        onClick={() => handleNavigation('/feedbacks', 'feedbacks')}
       >
         Depoimentos
       </Button>

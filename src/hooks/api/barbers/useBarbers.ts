@@ -1,18 +1,44 @@
-import { PagedResponse } from './../base/Pagination';
+import { Paged } from './../base/Pagination'
 import { useRequest } from '../base/useRequest'
-import { BarberData, BarberOption, ScheduleHaircutRequest } from './Barbers'
+import {
+  BarberData,
+  BarbersData,
+  CreateBarberRequest,
+  UpdateBarberRequest
+} from './Barbers'
 
 export const useBarbers = () => {
-  const { get, post } = useRequest('barbers')
+  const { get, post, put, del } = useRequest('barbers')
 
-  const getAllBarbers = async (page: number, pageSize: number): Promise<PagedResponse<BarberData[]>> => {
-    const { data } = await get(`?Page=${page}&PageSize=${pageSize}`)
+  const getAllBarbers = async (
+    page: number,
+    pageSize: number,
+    searchTerm?: string
+  ): Promise<Paged<BarbersData[]>> => {
+    const { data } = await get(
+      `?Page=${page}&PageSize=${pageSize}&SearchTerm=${searchTerm ?? ''}`
+    )
     return data
   }
 
-  const getBarberOptions = async (): Promise<BarberOption[]> => {
-    const { data } = await get('options')
+  const getBarberById = async (id: string): Promise<BarberData> => {
+    const { data } = await get(id)
     return data
+  }
+
+  const createBarber = async (request: CreateBarberRequest): Promise<void> => {
+    await post('', request)
+  }
+
+  const updateBarber = async (
+    id: string,
+    request: UpdateBarberRequest
+  ): Promise<void> => {
+    await put(id, request)
+  }
+
+  const deleteBarber = async (id: string): Promise<void> => {
+    await del(id)
   }
 
   const getAvaliableDates = async (barberId: string): Promise<string[]> => {
@@ -24,22 +50,17 @@ export const useBarbers = () => {
     barberId: string,
     date: string
   ): Promise<string[]> => {
-    const { data } = await get(`${barberId}/avaliable-times?Date=${date}`)
+    const { data } = await get(`${barberId}/avaliable-times?date=${date}`)
     return data
-  }
-
-  const scheduleHaircut = async (
-    barberId: string,
-    request: ScheduleHaircutRequest
-  ): Promise<void> => {
-    await post(`${barberId}/schedule-haircut`, request)
   }
 
   return {
     getAllBarbers,
-    getBarberOptions,
+    getBarberById,
+    createBarber,
+    updateBarber,
+    deleteBarber,
     getAvaliableDates,
-    getAvaliableTimes,
-    scheduleHaircut
+    getAvaliableTimes
   }
 }

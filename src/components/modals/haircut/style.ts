@@ -1,11 +1,9 @@
 import styled from 'styled-components'
 
-export const RegisterBox = styled.div`
+export const HaircutBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  position: relative;
 
   h3 {
     color: var(--white);
@@ -17,19 +15,19 @@ export const RegisterBox = styled.div`
     flex-direction: column;
     gap: 10px;
     width: 100%;
-  }
-
-  div > span {
-    color: var(--gray);
-    margin-right: 10px;
-  }
-
-  div > a {
-    color: var(--orange);
-    text-decoration: underline;
+    margin: 20px 0;
   }
 
   button {
-    margin-top: 10px
+    margin-top: 20px;
+  }
+
+  .box {
+    display: flex;
+    gap: 10px;
+  }
+
+  .box > div {
+    width: 50%;
   }
 `
