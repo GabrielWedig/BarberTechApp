@@ -12,7 +12,7 @@ const commomSchema = {
 
 const createSchema = {
   ...commomSchema,
-  name: commomSchema.name.required(),
-  price: commomSchema.price.required(),
-  imageSource: commomSchema.imageSource.required()
+  name: commomSchema.name.required('Obrigatório'),
+  price: commomSchema.price.required('Obrigatório'),
+  imageSource: commomSchema.imageSource.required('Obrigatório')
 }

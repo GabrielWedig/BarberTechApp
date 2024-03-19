@@ -4,13 +4,15 @@ import * as S from './style'
 import {
   useBarbers,
   useEstablishments,
+  useHaircuts,
   useSchedules,
   useSnackbarContext,
   usingTryCatch
 } from '../../../hooks'
 import { useEffect, useState } from 'react'
-import { scheduleSchema } from './schema'
+import { getScheduleSchema } from './schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { AutocompleteField } from '../../fields/autocomplete/AutocompleteField'
 
 interface ScheduleModalProps {
   haircutId?: string
@@ -24,7 +26,7 @@ interface ScheduleFormData {
   barber: string
   date: string
   schedule: string
-  haircut: string
+  haircut?: string
 }
 
 type OptionTypes = 'establishment' | 'barber' | 'date' | 'schedule' | 'haircut'
@@ -46,77 +48,101 @@ export const ScheduleModal = ({
     haircut: []
   }
 
+  const defaultValues = {
+    barber: '',
+    date: '',
+    establishment: '',
+    haircut: '',
+    name: '',
+    schedule: ''
+  }
+
   const [options, setOptions] = useState<Options>(defaultOptions)
 
-  const { handleSubmit, control, watch, reset } = useForm<ScheduleFormData>({
-    resolver: yupResolver(scheduleSchema)
-  })
+  const { handleSubmit, control, watch, reset, resetField } =
+    useForm<ScheduleFormData>({
+      resolver: yupResolver(getScheduleSchema(!!haircutId)),
+      defaultValues
+    })
 
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
   const { getAvaliableDates, getAvaliableTimes } = useBarbers()
   const { createSchedule } = useSchedules()
   const { getEstablishmentOptions, getBarberOptions } = useEstablishments()
+  const { getHaircutOptions } = useHaircuts()
 
   const establishmentField = watch('establishment')
   const barberField = watch('barber')
   const dateField = watch('date')
-  const scheduleField = watch('schedule')
 
   useEffect(() => {
-    if (!open) return
-    fetchEstablishmentOptions()
     return () => reset()
-  }, [open])
+  }, [])
 
   useEffect(() => {
-    if (!establishmentField) return
-    fetchBarberOptions(establishmentField)
-  }, [establishmentField])
-
-  useEffect(() => {
-    if (!barberField) return
-    fetchAvaliableDates(barberField)
+    if (barberField) {
+      fetchAvaliableDates()
+    }
   }, [barberField])
 
   useEffect(() => {
-    if (!dateField) return
-    fetchAvaliableTimes(barberField, dateField)
+    if (dateField) {
+      fetchAvaliableTimes()
+    }
   }, [dateField])
 
-  const fetchEstablishmentOptions = async () => {
-    const { data, error } = await usingTryCatch(getEstablishmentOptions())
+  const fetchHaircutOptions = async (searchTerm?: string) => {
+    if (!!haircutId) return []
+
+    const { data, error } = await usingTryCatch(getHaircutOptions(searchTerm))
 
     if (error || !data) {
       showErrorSnackbar(error)
-      return
+      return []
     }
 
-    const options = data.map((establishment) => ({
-      name: establishment.name,
-      value: establishment.id
+    return data.map((haircut) => ({
+      name: haircut.name,
+      value: haircut.id
     }))
-    fillOptions('establishment', options)
   }
 
-  const fetchBarberOptions = async (establishmentId: string) => {
+  const fetchEstablishmentOptions = async (searchTerm?: string) => {
     const { data, error } = await usingTryCatch(
-      getBarberOptions(establishmentId)
+      getEstablishmentOptions(searchTerm)
     )
 
     if (error || !data) {
       showErrorSnackbar(error)
-      return
+      return []
     }
 
-    const options = data.map((barber) => ({
+    return data.map((establishment) => ({
+      name: establishment.name,
+      value: establishment.id
+    }))
+  }
+
+  const fetchBarberOptions = async (searchTerm?: string) => {
+    const { data, error } = await usingTryCatch(
+      getBarberOptions(establishmentField, searchTerm)
+    )
+
+    if (error || !data) {
+      showErrorSnackbar(error)
+      return []
+    }
+
+    resetFields(['barber', 'date', 'schedule'])
+
+    return data.map((barber) => ({
       name: barber.name,
       value: barber.id
     }))
-    fillOptions('barber', options)
   }
 
-  const fetchAvaliableDates = async (barberId: string) => {
-    const { data, error } = await usingTryCatch(getAvaliableDates(barberId))
+  const fetchAvaliableDates = async () => {
+    const { data, error } = await usingTryCatch(getAvaliableDates(barberField))
 
     if (error || !data) {
       showErrorSnackbar(error)
@@ -127,12 +153,14 @@ export const ScheduleModal = ({
       name: date,
       value: date
     }))
-    fillOptions('date', options)
+
+    resetFields(['date', 'schedule'])
+    setOptions((current) => ({ ...current, date: options }))
   }
 
-  const fetchAvaliableTimes = async (barberId: string, date: string) => {
+  const fetchAvaliableTimes = async () => {
     const { data, error } = await usingTryCatch(
-      getAvaliableTimes(barberId, date)
+      getAvaliableTimes(barberField, dateField)
     )
 
     if (error || !data) {
@@ -144,15 +172,25 @@ export const ScheduleModal = ({
       name: schedule,
       value: schedule
     }))
-    fillOptions('schedule', options)
+
+    resetFields(['schedule'])
+    setOptions((current) => ({ ...current, schedule: options }))
   }
 
-  const fillOptions = (type: OptionTypes, options: Option[]) =>
-    setOptions((current) => ({ ...current, [type]: options }))
+  const resetFields = (fields: OptionTypes[]) => {
+    const newOptions = fields.reduce(
+      (acc, field) => {
+        resetField(field)
+        return { ...acc, [field]: [] }
+      },
+      { ...options }
+    )
+    setOptions(newOptions)
+  }
 
   const handleScheduleSubmit = async (values: FieldValues) => {
     const request = {
-      barberId: '', // TODO: melhorar
+      barberId: values.barber,
       haircutId: haircutId ?? values.haircut,
       name: values.name,
       dateTime: `${values.date} ${values.schedule}`
@@ -164,6 +202,7 @@ export const ScheduleModal = ({
       showErrorSnackbar(error)
       return
     }
+
     showSuccessSnackbar('Corte agendado com sucesso!')
     onClose()
   }
@@ -177,21 +216,28 @@ export const ScheduleModal = ({
             name="name"
             control={control}
             label="Nome completo"
-            placeholder="Digite seu nome"
+            placeholder="Nome de quem irá cortar (opcional)"
           />
+          <Visible when={!haircutId}>
+            <AutocompleteField
+              name="haircut"
+              control={control}
+              label="Escolha um corte"
+              search={fetchHaircutOptions}
+            />
+          </Visible>
           <div className="box">
-            <SelectField
+            <AutocompleteField
               name="establishment"
               control={control}
               label="Estabelecimento"
-              options={options.establishment}
+              search={fetchEstablishmentOptions}
             />
-            <SelectField
+            <AutocompleteField
               name="barber"
               control={control}
               label="Profissional"
-              options={options.barber}
-              disabled={!establishmentField}
+              search={fetchBarberOptions}
             />
           </div>
           <div className="box">
@@ -200,25 +246,16 @@ export const ScheduleModal = ({
               control={control}
               label="Data"
               options={options.date}
-              disabled={!barberField}
+              disabled={!establishmentField || !barberField}
             />
             <SelectField
               name="schedule"
               control={control}
               label="Horário"
               options={options.schedule}
-              disabled={!dateField}
+              disabled={!establishmentField || !barberField || !dateField}
             />
           </div>
-          <Visible when={!haircutId}>
-            <SelectField
-              name="haircut"
-              control={control}
-              label="Escolha um corte"
-              options={options.haircut}
-              disabled={!scheduleField}
-            />
-          </Visible>
           <Button type="primary" onClick={handleSubmit(handleScheduleSubmit)}>
             Agendar horário
           </Button>

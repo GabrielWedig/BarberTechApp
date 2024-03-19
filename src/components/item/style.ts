@@ -19,6 +19,8 @@ export const ItemBox = styled.div`
     width: 160px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 5px;
   }
 
   button {

@@ -29,13 +29,20 @@ export const useEstablishments = () => {
     return data
   }
 
-  const getEstablishmentOptions = async (): Promise<EstablishmentOption[]> => {
-    const { data } = await get('options')
+  const getEstablishmentOptions = async (
+    searchTerm?: string
+  ): Promise<EstablishmentOption[]> => {
+    const { data } = await get(`options?SearchTerm=${searchTerm ?? ''}`)
     return data
   }
 
-  const getBarberOptions = async (establishmentId: string): Promise<EstablishmentOption[]> => {
-    const { data } = await get(`${establishmentId}/barbers`)
+  const getBarberOptions = async (
+    establishmentId: string,
+    searchTerm?: string
+  ): Promise<EstablishmentOption[]> => {
+    const { data } = await get(
+      `${establishmentId}/barbers?SearchTerm=${searchTerm ?? ''}`
+    )
     return data
   }
 

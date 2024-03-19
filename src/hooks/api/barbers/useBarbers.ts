@@ -50,7 +50,7 @@ export const useBarbers = () => {
     barberId: string,
     date: string
   ): Promise<string[]> => {
-    const { data } = await get(`${barberId}/avaliable-times?Date=${date}`)
+    const { data } = await get(`${barberId}/avaliable-times?date=${date}`)
     return data
   }
 

@@ -1,10 +1,9 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { FileField, InputField, TextareaField } from '../../fields'
+import { FileField, InputField, NumberField, TextareaField } from '../../fields'
 import { Modal } from '../base/Modal'
 import * as S from './style'
 import { useEffect, useState } from 'react'
 import {
-  HaircutData,
   useHaircuts,
   useRequest,
   useSnackbarContext,
@@ -34,14 +33,26 @@ interface UpdateFormData {
   imageSource?: string
 }
 
+interface FileData {
+  file: File | null
+  name: string | null
+}
+
 export const HaircutModal = ({
   open,
   onClose,
   haircutId
 }: HaircutModalProps) => {
+  const defaultValues = {
+    name: '',
+    about: '',
+    price: 0,
+    imageSource: ''
+  }
+
   const isEdit = !!haircutId
 
-  const [file, setFile] = useState<File>()
+  const [fileData, setFileData] = useState<FileData>({ name: null, file: null })
 
   const { uploadImage } = useRequest('')
   const { createHaircut, updateHaircut, getHaircutById } = useHaircuts()
@@ -51,7 +62,13 @@ export const HaircutModal = ({
     if (open) {
       fetchData()
     }
+    return () => resetAll()
   }, [open])
+
+  const resetAll = () => {
+    reset()
+    setFileData({ name: null, file: null })
+  }
 
   const fetchData = async () => {
     if (!isEdit) return
@@ -62,36 +79,32 @@ export const HaircutModal = ({
       showErrorSnackbar(error)
       return
     }
+
     reset({
       name: data.name,
       about: data.about,
       price: data.price
     })
+    setFileData((current) => ({ ...current, name: data.imageSource }))
   }
 
   const { control, handleSubmit, reset } = useForm<
     CreateFormData | UpdateFormData
   >({
-    resolver: yupResolver(getHaircutSchema(isEdit))
+    resolver: yupResolver(getHaircutSchema(isEdit)),
+    defaultValues
   })
 
   const handleModalSubmit = async (values: FieldValues) => {
-    if (!file) return
+    const fileName = await handleUploadImage()
 
-    const { data: fileName, error: fileError } = await usingTryCatch(
-      uploadImage(file)
-    )
-
-    if (fileError || !fileName) {
-      showErrorSnackbar(fileError)
-      return
-    }
+    if (!fileName) return
 
     const request = {
       name: values.name,
       about: values.about,
       price: values.price,
-      imageSource: fileName
+      imageSource: fileName ?? fileData.name
     }
 
     const action = isEdit
@@ -108,6 +121,18 @@ export const HaircutModal = ({
     onClose()
   }
 
+  const handleUploadImage = async () => {
+    if (!fileData.file) return
+
+    const { data, error } = await usingTryCatch(uploadImage(fileData.file))
+
+    if (!data || error) {
+      showErrorSnackbar(error)
+      return
+    }
+    return data
+  }
+
   return (
     <Modal open={open} onClose={onClose}>
       <S.HaircutBox>
@@ -116,17 +141,19 @@ export const HaircutModal = ({
           <InputField control={control} label="Nome" name="name" />
           <TextareaField control={control} label="Sobre" name="about" />
           <div className="box">
-            <InputField
+            <NumberField
               control={control}
               label="Preço"
               name="price"
-              type="number"
+              isCurency={true}
             />
             <FileField
               control={control}
               label="Imagem"
               name="imageSource"
-              onChange={(file) => setFile(file)}
+              onChange={(file) =>
+                setFileData((current) => ({ ...current, file }))
+              }
             />
           </div>
           <Button type="primary" onClick={handleSubmit(handleModalSubmit)}>

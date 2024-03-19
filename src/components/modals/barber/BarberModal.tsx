@@ -73,7 +73,7 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
 
   const fetchOptions = async () => {
     const { data, error } = await usingTryCatch(
-      Promise.all([getEstablishmentOptions(), getUserOptions()])
+      Promise.all([getEstablishmentOptions(''), getUserOptions()])
     )
 
     if (error || !data?.[0] || !data?.[1]) {

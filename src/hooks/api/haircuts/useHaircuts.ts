@@ -3,6 +3,7 @@ import { useRequest } from '../base/useRequest'
 import {
   CreateHaircutRequest,
   HaircutData,
+  HaircutOption,
   HaircutsData,
   UpdateHaircutRequest
 } from './Haircuts'
@@ -26,6 +27,13 @@ export const useHaircuts = () => {
     return data
   }
 
+  const getHaircutOptions = async (
+    searchTerm?: string
+  ): Promise<HaircutOption[]> => {
+    const { data } = await get(`options?SearchTerm=${searchTerm ?? ''}`)
+    return data
+  }
+
   const createHaircut = async (
     request: CreateHaircutRequest
   ): Promise<void> => {
@@ -46,6 +54,7 @@ export const useHaircuts = () => {
   return {
     getAllHaircuts,
     getHaircutById,
+    getHaircutOptions,
     createHaircut,
     updateHaircut,
     deleteHaircut

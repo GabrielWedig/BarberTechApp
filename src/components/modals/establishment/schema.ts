@@ -14,10 +14,10 @@ const commomSchema = {
 
 const createSchema = {
   ...commomSchema,
-  address: commomSchema.address.required(),
-  imageSource: commomSchema.imageSource.required(),
-  openTime: commomSchema.openTime.required(),
-  lunchTime: commomSchema.lunchTime.required(),
-  workInterval: commomSchema.workInterval.required(),
-  lunchInterval: commomSchema.lunchInterval.required()
+  address: commomSchema.address.required('Obrigatório'),
+  imageSource: commomSchema.imageSource.required('Obrigatório'),
+  openTime: commomSchema.openTime.required('Obrigatório'),
+  lunchTime: commomSchema.lunchTime.required('Obrigatório'),
+  workInterval: commomSchema.workInterval.required('Obrigatório'),
+  lunchInterval: commomSchema.lunchInterval.required('Obrigatório')
 }

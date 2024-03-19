@@ -33,10 +33,7 @@ export function FileField<TFieldValues extends FieldValues = FieldValues>({
     }
   }
 
-  const fileName =
-    field.value === '' || !field.value
-      ? 'Fazer upload'
-      : field.value.substring(12)
+  const fileName = !field.value ? 'Fazer upload' : field.value.substring(12)
 
   return (
     <S.FileInput disabled={disabled}>

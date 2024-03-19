@@ -23,3 +23,8 @@ export interface UpdateHaircutRequest {
   price?: number
   imageSource?: string
 }
+
+export interface HaircutOption {
+  id: string
+  name: string
+}

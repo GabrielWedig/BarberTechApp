@@ -26,6 +26,11 @@ interface FormData {
   confirmPassword?: string
 }
 
+interface FileData {
+  file: File | null
+  name?: string | null
+}
+
 export const UserModal = ({
   type,
   onClose,
@@ -35,7 +40,7 @@ export const UserModal = ({
   const isClientModal = type === 'registerClient' && !!setModalType
   const isEdit = type === 'edit' && !!userId
 
-  const [file, setFile] = useState<File>()
+  const [fileData, setFileData] = useState<FileData>({ name: null, file: null })
 
   const { uploadImage } = useRequest('')
   const { register, updateUser, getUserById } = useUsers()
@@ -58,6 +63,8 @@ export const UserModal = ({
       showErrorSnackbar(error)
       return
     }
+
+    setFileData((current) => ({ ...current, name: data.imageSource }))
     reset({ name: data.name, email: data.email })
   }
 
@@ -67,7 +74,7 @@ export const UserModal = ({
 
   const handleUserSubmit = async (values: FieldValues) => {
     const fileName = await handleUploadImage()
-    
+
     const request = {
       email: values.email,
       password: values.password,
@@ -87,20 +94,20 @@ export const UserModal = ({
       showErrorSnackbar(error)
       return
     }
-
     showSuccessSnackbar('Cadastro realizado!')
     onClose()
   }
 
   const handleUploadImage = async () => {
-    if (!file) return
+    if (!fileData.file) return
 
-    const { data, error } = await usingTryCatch(uploadImage(file))
+    const { data, error } = await usingTryCatch(uploadImage(fileData.file))
 
     if (!data || error) {
       showErrorSnackbar(error)
-      return data
+      return
     }
+    return data
   }
 
   return (
@@ -123,7 +130,7 @@ export const UserModal = ({
           control={control}
           name="image"
           label="Imagem"
-          onChange={(file) => setFile(file)}
+          onChange={(file) => setFileData((current) => ({ ...current, file }))}
         />
         <InputField
           name="password"

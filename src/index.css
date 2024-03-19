@@ -5,8 +5,9 @@
 
 body,
 button,
-input {
-  font-family: 'Poppins';
+input,
+li {
+  font-family: 'Poppins' !important;
 }
 
 button,

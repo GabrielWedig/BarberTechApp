@@ -24,10 +24,11 @@ export const Menu = ({ user, showMenu, setShowMenu }: MenuProps) => {
   const handleLogout = () => {
     signOut()
     setShowMenu('inactive')
+    navigate('/')
   }
 
   const handleProfile = () => {
-    navigate(`profile/${user?.id}`)
+    navigate(`/profile/${user?.id}`)
     setShowMenu('inactive')
   }
 

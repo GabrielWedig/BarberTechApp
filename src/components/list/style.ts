@@ -24,10 +24,11 @@ export const ListBox = styled.div`
   }
 
   .table-header > span {
+    padding: 0 5px;
     width: 160px;
   }
 
   .table-content {
-    min-height: 280px;
+    height: max-content;
   }
 `

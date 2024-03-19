@@ -5,6 +5,7 @@ import * as S from './style'
 import { useEffect, useState } from 'react'
 import {
   useEstablishments,
+  useRequest,
   useSnackbarContext,
   usingTryCatch
 } from '../../../hooks'
@@ -37,6 +38,11 @@ interface UpdateFormData {
   lunchInterval?: string
 }
 
+interface FileData {
+  file: File | null
+  name: string | null
+}
+
 export const EstablishmentModal = ({
   open,
   onClose,
@@ -44,8 +50,9 @@ export const EstablishmentModal = ({
 }: EstablishmentModalProps) => {
   const isEdit = !!establishmentId
 
-  const [file, setFile] = useState<File>()
+  const [fileData, setFileData] = useState<FileData>({ name: null, file: null })
 
+  const { uploadImage } = useRequest('')
   const { createEstablishment, updateEstablishment, getEstablishmentById } =
     useEstablishments()
 
@@ -55,7 +62,13 @@ export const EstablishmentModal = ({
     if (open) {
       fetchData()
     }
+    return () => resetAll()
   }, [open])
+
+  const resetAll = () => {
+    reset()
+    setFileData({ name: null, file: null })
+  }
 
   const fetchData = async () => {
     if (!isEdit) return
@@ -69,6 +82,7 @@ export const EstablishmentModal = ({
       return
     }
 
+    setFileData((current) => ({ ...current, name: data.imageSource }))
     reset({
       address: data.address,
       lunchInterval: data.lunchInterval,
@@ -85,13 +99,17 @@ export const EstablishmentModal = ({
   })
 
   const handleModalSubmit = async (values: FieldValues) => {
+    const fileName = await handleUploadImage()
+
+    if (!fileName) return
+
     const request = {
       address: values.address,
-      imageSource: values.imageSource,
       openTime: values.openTime,
       lunchTime: values.lunchTime,
       workInterval: values.workInterval,
-      lunchInterval: values.lunchInterval
+      lunchInterval: values.lunchInterval,
+      imageSource: fileName
     }
 
     const action = isEdit
@@ -108,6 +126,19 @@ export const EstablishmentModal = ({
     onClose()
   }
 
+  const handleUploadImage = async () => {
+    if (!fileData.file) return
+
+    const { data, error } = await usingTryCatch(uploadImage(fileData.file))
+
+    if (!data || error) {
+      showErrorSnackbar(error)
+      return
+    }
+
+    return data
+  }
+
   return (
     <Modal open={open} onClose={onClose}>
       <S.EstablishmentBox>
@@ -120,7 +151,9 @@ export const EstablishmentModal = ({
             label="Imagem"
             control={control}
             name="imageSource"
-            onChange={(file) => setFile(file)}
+            onChange={(file) =>
+              setFileData((current) => ({ ...current, file }))
+            }
           />
           <div className="box">
             <SelectField
