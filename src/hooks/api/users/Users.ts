@@ -42,6 +42,13 @@ interface EventScheduleData {
   barberName: string
   status: EventStatus
   feedbackId: string
+  haircut: HaircutData
+}
+
+interface HaircutData {
+  id: string
+  name: string
+  imageSource: string
 }
 
 export interface UserOption {

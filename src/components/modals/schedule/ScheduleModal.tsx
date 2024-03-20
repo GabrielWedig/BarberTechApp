@@ -79,18 +79,6 @@ export const ScheduleModal = ({
     return () => reset()
   }, [])
 
-  useEffect(() => {
-    if (barberField) {
-      fetchAvaliableDates()
-    }
-  }, [barberField])
-
-  useEffect(() => {
-    if (dateField) {
-      fetchAvaliableTimes()
-    }
-  }, [dateField])
-
   const fetchHaircutOptions = async (searchTerm?: string) => {
     if (!!haircutId) return []
 
@@ -117,6 +105,8 @@ export const ScheduleModal = ({
       return []
     }
 
+    resetFields(['barber', 'date', 'schedule'])
+
     return data.map((establishment) => ({
       name: establishment.name,
       value: establishment.id
@@ -124,6 +114,8 @@ export const ScheduleModal = ({
   }
 
   const fetchBarberOptions = async (searchTerm?: string) => {
+    if (!establishmentField) return []
+
     const { data, error } = await usingTryCatch(
       getBarberOptions(establishmentField, searchTerm)
     )
@@ -133,7 +125,7 @@ export const ScheduleModal = ({
       return []
     }
 
-    resetFields(['barber', 'date', 'schedule'])
+    resetFields(['date', 'schedule'])
 
     return data.map((barber) => ({
       name: barber.name,
@@ -141,8 +133,8 @@ export const ScheduleModal = ({
     }))
   }
 
-  const fetchAvaliableDates = async () => {
-    const { data, error } = await usingTryCatch(getAvaliableDates(barberField))
+  const fetchAvaliableDates = async (barberId: string) => {
+    const { data, error } = await usingTryCatch(getAvaliableDates(barberId))
 
     if (error || !data) {
       showErrorSnackbar(error)
@@ -154,13 +146,13 @@ export const ScheduleModal = ({
       value: date
     }))
 
-    resetFields(['date', 'schedule'])
+    resetFields(['schedule'])
     setOptions((current) => ({ ...current, date: options }))
   }
 
-  const fetchAvaliableTimes = async () => {
+  const fetchAvaliableTimes = async (date: string) => {
     const { data, error } = await usingTryCatch(
-      getAvaliableTimes(barberField, dateField)
+      getAvaliableTimes(barberField, date)
     )
 
     if (error || !data) {
@@ -173,20 +165,13 @@ export const ScheduleModal = ({
       value: schedule
     }))
 
-    resetFields(['schedule'])
     setOptions((current) => ({ ...current, schedule: options }))
   }
 
-  const resetFields = (fields: OptionTypes[]) => {
-    const newOptions = fields.reduce(
-      (acc, field) => {
-        resetField(field)
-        return { ...acc, [field]: [] }
-      },
-      { ...options }
-    )
-    setOptions(newOptions)
-  }
+  const resetFields = (fields: OptionTypes[]) =>
+    fields.forEach((field) => {
+      resetField(field)
+    })
 
   const handleScheduleSubmit = async (values: FieldValues) => {
     const request = {
@@ -232,12 +217,15 @@ export const ScheduleModal = ({
               control={control}
               label="Estabelecimento"
               search={fetchEstablishmentOptions}
+              onChange={fetchBarberOptions}
             />
             <AutocompleteField
               name="barber"
               control={control}
               label="Profissional"
               search={fetchBarberOptions}
+              disabled={!establishmentField}
+              onChange={(value) => fetchAvaliableDates(value)}
             />
           </div>
           <div className="box">
@@ -247,6 +235,7 @@ export const ScheduleModal = ({
               label="Data"
               options={options.date}
               disabled={!establishmentField || !barberField}
+              onChange={(value) => fetchAvaliableTimes(value)}
             />
             <SelectField
               name="schedule"

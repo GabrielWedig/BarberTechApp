@@ -1,6 +1,6 @@
 import { Control, FieldValues, Path, useController } from 'react-hook-form'
 import { BaseField } from '../base/BaseField'
-import { MenuItem, Select } from '@mui/material'
+import { MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import { FieldError } from '..'
 
 interface SelectFieldProps<TFieldValues extends FieldValues> {
@@ -9,6 +9,7 @@ interface SelectFieldProps<TFieldValues extends FieldValues> {
   label: string
   options: Option[]
   disabled?: boolean
+  onChange?: (value: string) => void
 }
 
 export interface Option {
@@ -21,9 +22,18 @@ export function SelectField<TFieldValues extends FieldValues = FieldValues>({
   control,
   label,
   options,
-  disabled
+  disabled,
+  onChange
 }: SelectFieldProps<TFieldValues>) {
   const { fieldState, field } = useController({ name, control })
+
+  const changeEventHandler = ({ target }: SelectChangeEvent<unknown>) => {
+    try {
+      onChange?.call(null, target.value as string)
+    } finally {
+      field.onChange(target.value)
+    }
+  }
 
   return (
     <BaseField label={label} disabled={disabled}>
@@ -32,6 +42,7 @@ export function SelectField<TFieldValues extends FieldValues = FieldValues>({
         disabled={disabled}
         className={fieldState.error ? 'error' : ''}
         defaultValue={options.find((o) => o.value === field.value)}
+        onChange={changeEventHandler}
       >
         {options.map((o) => (
           <MenuItem value={o.value}>{o.name}</MenuItem>

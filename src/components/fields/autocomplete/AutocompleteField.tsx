@@ -33,8 +33,10 @@ export function AutocompleteField<
   const { fieldState, field } = useController({ name, control })
 
   useEffect(() => {
-    searchEventHandler(null, '')
-  }, [])
+    if (!disabled) {
+      searchEventHandler(null, '')
+    }
+  }, [disabled])
 
   const changeEventHandler = (
     _: SyntheticEvent<Element, Event>,
@@ -55,15 +57,19 @@ export function AutocompleteField<
     setOptions(options)
   }
 
+  const defaultOption = { name: '', value: '' }
+
   return (
     <BaseField label={label} disabled={disabled}>
       <Autocomplete
+        {...field}
         onChange={changeEventHandler}
         onInputChange={searchEventHandler}
         options={options}
         getOptionLabel={(option) => option?.name}
         disabled={disabled}
         className={fieldState.error ? 'error' : ''}
+        value={options.find((o) => o.value === field.value) ?? defaultOption}
         renderInput={(params) => (
           <TextField
             {...params}
