@@ -79,7 +79,7 @@ export const UserModal = ({
       email: values.email,
       password: values.password,
       name: values.name,
-      imageSource: fileName
+      imageSource: fileName ?? fileData.name ?? ''
     }
 
     const signIn = type === 'registerClient'

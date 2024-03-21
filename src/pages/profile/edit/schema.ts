@@ -1,8 +1,8 @@
 import * as yup from 'yup'
 
 export const updateUserSchema = yup.object().shape({
-  name: yup.string().nullable(),
-  email: yup.string().email().nullable(),
+  name: yup.string(),
+  email: yup.string().email(),
   password: yup
     .string()
     .min(8, 'Senha deve ter no mínimo 8 caracteres')

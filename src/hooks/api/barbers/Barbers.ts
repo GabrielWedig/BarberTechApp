@@ -14,6 +14,7 @@ export interface BarbersData extends CommonData {
 export interface BarberData extends CommonData {
   establishmentId: string
   contact: string
+  imageSource: string
 }
 
 export interface SocialData {
@@ -28,11 +29,13 @@ export interface CreateBarberRequest {
   about?: string
   social: SocialData
   contact: string
+  imageSource: string
 }
 
 export interface UpdateBarberRequest {
   establishmentId?: string
   about?: string
   contact?: string
+  imageSource?: string
   social: SocialData
 }

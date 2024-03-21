@@ -1,5 +1,5 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { SelectField, InputField, Option, TextareaField } from '../../fields'
+import { InputField, Option, TextareaField, FileField } from '../../fields'
 import { Modal } from '../base/Modal'
 import * as S from './style'
 import { useEffect, useState } from 'react'
@@ -8,6 +8,7 @@ import {
   UpdateBarberRequest,
   useBarbers,
   useEstablishments,
+  useRequest,
   useSnackbarContext,
   useUsers,
   usingTryCatch
@@ -15,6 +16,7 @@ import {
 import { Button, Visible } from '../..'
 import { getBarberSchema } from './schema'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { AutocompleteField } from '../../fields/autocomplete/AutocompleteField'
 
 interface BarberModalProps {
   open: boolean
@@ -28,71 +30,60 @@ type Options = {
   [K in OptionsType]: Option[]
 }
 
-interface CreateFormData {
-  establishmentId: string
-  userId: string
-  about?: string
-  contact: string
-  instagram?: string
-  facebook?: string
-  twitter?: string
-}
-
-interface UpdateFormData {
+interface FormData {
   establishmentId?: string
+  userId?: string
   about?: string
   contact?: string
   instagram?: string
   facebook?: string
   twitter?: string
+  imageSource?: string
+}
+
+interface FileData {
+  file: File | null
+  name: string | null
 }
 
 export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
   const isEdit = !!barberId
 
-  const [options, setOptions] = useState<Options>({
-    establishments: [],
-    users: []
-  })
+  const [fileData, setFileData] = useState<FileData>({ name: null, file: null })
 
   const { getEstablishmentOptions } = useEstablishments()
   const { getUserOptions } = useUsers()
+  const { uploadImage } = useRequest('')
   const { createBarber, updateBarber, getBarberById } = useBarbers()
 
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   useEffect(() => {
-    if (!open) return
-
-    fetchOptions()
-
-    if (isEdit) {
+    if (open && isEdit) {
       fetchData()
     }
+    return () => resetAll()
   }, [open])
 
-  const fetchOptions = async () => {
-    const { data, error } = await usingTryCatch(
-      Promise.all([getEstablishmentOptions(''), getUserOptions()])
-    )
+  const resetAll = () => {
+    reset()
+    setFileData({ name: null, file: null })
+  }
 
-    if (error || !data?.[0] || !data?.[1]) {
+  const fetchOptions = async (type: OptionsType, searchTerm?: string) => {
+    const action =
+      type === 'users'
+        ? getUserOptions(searchTerm)
+        : getEstablishmentOptions(searchTerm)
+
+    const { data, error } = await usingTryCatch(action)
+
+    if (error || !data) {
       showErrorSnackbar(error)
-      return
+      return []
     }
 
-    const options = {
-      establishments: data[0].map((establishment) => ({
-        name: establishment.name,
-        value: establishment.id
-      })),
-      users: data[1].map((user) => ({
-        name: user.name,
-        value: user.id
-      }))
-    }
-
-    setOptions(options)
+    return data.map((d) => ({ name: d.name, value: d.id }))
   }
 
   const fetchData = async () => {
@@ -102,6 +93,7 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
       showErrorSnackbar(error)
       return
     }
+
     reset({
       about: data.about,
       contact: data.contact,
@@ -110,15 +102,16 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
       instagram: data.social.instagram,
       twitter: data.social.twitter
     })
+    setFileData((current) => ({ ...current, name: data.imageSource }))
   }
 
-  const { control, handleSubmit, reset } = useForm<
-    CreateFormData | UpdateFormData
-  >({
+  const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(getBarberSchema(isEdit))
   })
 
   const handleModalSubmit = async (values: FieldValues) => {
+    const fileName = await handleUploadImage()
+
     const social = {
       instagram: values.instagram,
       facebook: values.facebook,
@@ -129,14 +122,16 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
       establishmentId: values.establishmentId,
       about: values.about,
       contact: values.contact,
-      social: social
+      social: social,
+      imageSource: fileName ?? fileData.name ?? ''
     }
 
     const createRequest: CreateBarberRequest = {
       ...updateRequest,
       contact: values.contact ?? '',
       establishmentId: values.establishmentId ?? '',
-      userId: values.userId ?? ''
+      userId: values.userId ?? '',
+      imageSource: values.imageSource ?? ''
     }
 
     const action = isEdit
@@ -153,27 +148,48 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
     onClose()
   }
 
+  const handleUploadImage = async () => {
+    if (!fileData.file) return
+
+    const { data, error } = await usingTryCatch(uploadImage(fileData.file))
+
+    if (!data || error) {
+      showErrorSnackbar(error)
+      return
+    }
+    return data
+  }
+
   return (
     <Modal open={open} onClose={onClose}>
       <S.BarberBox>
         <h3>{isEdit ? 'Editar barbeiro' : 'Criar novo barbeiro'}</h3>
         <form>
           <div className="box">
-            <SelectField
+            <AutocompleteField
               control={control}
               label="Estabelecimento"
               name="establishmentId"
-              options={options?.establishments}
+              search={(searchTerm) =>
+                fetchOptions('establishments', searchTerm)
+              }
             />
             <Visible when={!isEdit}>
-              <SelectField
+              <AutocompleteField
                 control={control}
                 label="Usuário"
                 name="userId"
-                options={options?.users}
+                search={(searchTerm) => fetchOptions('users', searchTerm)}
               />
             </Visible>
           </div>
+          <FileField
+            control={control}
+            name="imageSource"
+            onChange={(file) =>
+              setFileData((current) => ({ ...current, file }))
+            }
+          />
           <TextareaField control={control} label="Sobre" name="about" />
           <InputField control={control} label="Instagram" name="instagram" />
           <InputField control={control} label="Twitter" name="twitter" />

@@ -43,13 +43,6 @@ export const HaircutModal = ({
   onClose,
   haircutId
 }: HaircutModalProps) => {
-  const defaultValues = {
-    name: '',
-    about: '',
-    price: 0,
-    imageSource: ''
-  }
-
   const isEdit = !!haircutId
 
   const [fileData, setFileData] = useState<FileData>({ name: null, file: null })
@@ -59,7 +52,7 @@ export const HaircutModal = ({
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   useEffect(() => {
-    if (open) {
+    if (open && isEdit) {
       fetchData()
     }
     return () => resetAll()
@@ -71,8 +64,6 @@ export const HaircutModal = ({
   }
 
   const fetchData = async () => {
-    if (!isEdit) return
-
     const { data, error } = await usingTryCatch(getHaircutById(haircutId ?? ''))
 
     if (error || !data) {
@@ -91,20 +82,17 @@ export const HaircutModal = ({
   const { control, handleSubmit, reset } = useForm<
     CreateFormData | UpdateFormData
   >({
-    resolver: yupResolver(getHaircutSchema(isEdit)),
-    defaultValues
+    resolver: yupResolver(getHaircutSchema(isEdit))
   })
 
   const handleModalSubmit = async (values: FieldValues) => {
     const fileName = await handleUploadImage()
 
-    if (!fileName) return
-
     const request = {
       name: values.name,
       about: values.about,
       price: values.price,
-      imageSource: fileName ?? fileData.name
+      imageSource: fileName ?? fileData.name ?? ''
     }
 
     const action = isEdit

@@ -1,47 +1,99 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, InputField } from '../../../components'
-import { UserData } from '../../../hooks'
+import { Button, FileField, InputField, Visible } from '../../../components'
+import {
+  UserData,
+  useRequest,
+  useSnackbarContext,
+  useUsers,
+  usingTryCatch
+} from '../../../hooks'
 import * as S from './style'
 import { updateUserSchema } from './schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import userImage from '../../../img/user.png'
-import { AddAPhoto } from '@mui/icons-material'
+import { useEffect, useState } from 'react'
 
 interface EditProps {
   isEdit: boolean
-  user?: UserData
+  user: UserData
 }
 
 interface FormData {
-  name?: string | null
-  email?: string | null
-  password?: string | null
-  confirmPassword?: string | null
+  name?: string
+  email?: string
+  password?: string
+  confirmPassword?: string
+  image?: File
 }
 
 export const Edit = ({ isEdit, user }: EditProps) => {
-  const defaultValues = {
-    name: user?.name,
-    email: user?.email,
-    password: null,
-    confirmPassword: null
-  }
+  const [file, setFile] = useState<File>()
 
-  const { handleSubmit, control } = useForm<FormData>({
-    resolver: yupResolver<FormData>(updateUserSchema),
-    defaultValues: defaultValues
+  const { uploadImage } = useRequest('')
+  const { updateUser } = useUsers()
+  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
+
+  useEffect(() => {
+    reset({
+      name: user?.name,
+      email: user?.email
+    })
+  }, [user])
+
+  const { handleSubmit, control, reset } = useForm<FormData>({
+    resolver: yupResolver(updateUserSchema)
   })
 
-  const handleFormSubmit = (data: FieldValues) => {}
+  const handleFormSubmit = async (values: FieldValues) => {
+    const fileName = await handleUploadImage()
+
+    const request = {
+      email: values.email,
+      password: values.password,
+      name: values.name,
+      imageSource: fileName
+    }
+
+    const { error } = await usingTryCatch(updateUser(user?.id, request))
+
+    if (error) {
+      showErrorSnackbar(error)
+      return
+    }
+    showSuccessSnackbar('Cadastro realizado!')
+  }
+
+  const handleUploadImage = async () => {
+    if (!file) return
+
+    const { data, error } = await usingTryCatch(uploadImage(file))
+
+    if (!data || error) {
+      showErrorSnackbar(error)
+      return
+    }
+    return data
+  }
+
+  const getImageSource = () => {
+    if (file) return URL.createObjectURL(file)
+    if (user?.imageSource) return user.imageSource
+    else return userImage
+  }
 
   return (
     <S.EditBox>
       <div className="left-column">
         <h2>Configurações da conta</h2>
-        <S.UserPhoto url={user?.imageSource ?? userImage}>
-          <button className="photo-button">
-            <AddAPhoto fontSize="large" />
-          </button>
+        <S.UserPhoto url={getImageSource()}>
+          <Visible when={isEdit}>
+            <FileField
+              control={control}
+              name="image"
+              type="secondary"
+              onChange={(file) => setFile(file)}
+            />
+          </Visible>
         </S.UserPhoto>
         <p>O tamanho da imagem deve ser inferior a 10 MB</p>
       </div>

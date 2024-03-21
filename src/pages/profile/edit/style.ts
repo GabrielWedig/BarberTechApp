@@ -12,27 +12,20 @@ export const EditBox = styled.form`
   .left-column {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 40px;
     width: 30%;
   }
 
   .rigth-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     width: 65%;
   }
 
-  .photo-button {
-    border-radius: 100%;
-    border: 5px solid var(--white);
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    background-color: var(--orange);
-    bottom: 0;
-    right: 0;
-  }
-
-  .photo-button > svg {
-    color: var(--white);
+  .rigth-column > button {
+    width: 30%;
   }
 
   label {
@@ -40,9 +33,9 @@ export const EditBox = styled.form`
   }
 
   p {
-    width: 60%;
+    width: 80%;
+    color: var(--gray);
     text-align: center;
-    color: var(--black);
   }
 `
 
@@ -52,4 +45,10 @@ export const UserPhoto = styled.div<UserPhotoProps>`
   border-radius: 100%;
   background: url(${(props) => props.url}) center / cover no-repeat;
   position: relative;
+
+  label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
 `

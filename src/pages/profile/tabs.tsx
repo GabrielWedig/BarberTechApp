@@ -18,7 +18,7 @@ interface Header {
 export const getTab = (
   activeTab: string,
   isEdit: boolean,
-  user?: UserData
+  user: UserData
 ) => {
   const tabs: Tabs = {
     profile: {
