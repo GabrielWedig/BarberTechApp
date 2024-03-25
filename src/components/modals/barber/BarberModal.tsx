@@ -185,6 +185,7 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
           </div>
           <FileField
             control={control}
+            label="Imagem"
             name="imageSource"
             onChange={(file) =>
               setFileData((current) => ({ ...current, file }))
