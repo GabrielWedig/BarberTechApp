@@ -13,20 +13,12 @@ import { getTab } from './tabs'
 import { ArrowForward } from '@mui/icons-material'
 
 export const Profile = () => {
-  const defaultUser: UserData = {
-    email: '',
-    eventSchedules: [],
-    id: '',
-    name: '',
-    type: 'Client',
-    imageSource: ''
-  }
+  const userContext = useAuthUser<UserData>()
 
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [activeTab, setActiveTab] = useState<string>('profile')
-  const [user, setUser] = useState<UserData>(defaultUser)
+  const [user, setUser] = useState<UserData | null>(userContext)
 
-  const userContext = useAuthUser<UserData>()
   const { getUserById } = useUsers()
 
   const { showErrorSnackbar } = useSnackbarContext()

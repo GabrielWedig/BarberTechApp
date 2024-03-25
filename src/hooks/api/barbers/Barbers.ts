@@ -39,3 +39,17 @@ export interface UpdateBarberRequest {
   imageSource?: string
   social: SocialData
 }
+
+export interface CalendarData {
+  [key: string]: TimeData
+}
+
+export interface TimeData {
+  [key: string]: ScheduleData | null
+}
+
+export interface ScheduleData {
+  id: string,
+  time: string,
+  userName: string
+}

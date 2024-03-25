@@ -1,6 +1,12 @@
 import * as yup from 'yup'
 
-export const updateUserSchema = yup.object().shape({
+export const getSchema = (isBarber: boolean) => {
+  return yup
+    .object()
+    .shape(isBarber ? { ...userSchema, ...barberSchema } : userSchema)
+}
+
+const userSchema = {
   name: yup.string(),
   email: yup.string().email(),
   password: yup
@@ -12,4 +18,13 @@ export const updateUserSchema = yup.object().shape({
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password')], 'As senhas não são iguais')
-})
+}
+
+const barberSchema = {
+  establishmentId: yup.string(),
+  about: yup.string(),
+  contact: yup.string(),
+  instagram: yup.string(),
+  twitter: yup.string(),
+  facebook: yup.string()
+}

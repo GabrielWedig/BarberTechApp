@@ -1,21 +1,28 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, FileField, InputField, Visible } from '../../../components'
+import {
+  Button,
+  FileField,
+  InputField,
+  Visible,
+  TextareaField
+} from '../../../components'
 import {
   UserData,
+  useBarbers,
   useRequest,
   useSnackbarContext,
   useUsers,
   usingTryCatch
 } from '../../../hooks'
 import * as S from './style'
-import { updateUserSchema } from './schema'
+import { getSchema } from './schema'
 import { yupResolver } from '@hookform/resolvers/yup'
 import userImage from '../../../img/user.png'
 import { useEffect, useState } from 'react'
 
 interface EditProps {
   isEdit: boolean
-  user: UserData
+  user: UserData | null
 }
 
 interface FormData {
@@ -24,6 +31,11 @@ interface FormData {
   password?: string
   confirmPassword?: string
   image?: File
+  about?: string
+  contact?: string
+  instagram?: string
+  facebook?: string
+  twitter?: string
 }
 
 export const Edit = ({ isEdit, user }: EditProps) => {
@@ -31,30 +43,67 @@ export const Edit = ({ isEdit, user }: EditProps) => {
 
   const { uploadImage } = useRequest('')
   const { updateUser } = useUsers()
+  const { getBarberById, updateBarber } = useBarbers()
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   useEffect(() => {
+    if (user?.type === 'Barber' && user.barberId) {
+      fetchBarber(user.barberId)
+    }
+
     reset({
       name: user?.name,
       email: user?.email
     })
   }, [user])
 
+  const fetchBarber = async (barberId: string) => {
+    const { data, error } = await usingTryCatch(getBarberById(barberId))
+
+    if (error || !data) {
+      showErrorSnackbar(error)
+      return
+    }
+
+    reset({
+      about: data.about,
+      contact: data.contact,
+      instagram: data.social.instagram,
+      twitter: data.social.twitter,
+      facebook: data.social.facebook
+    })
+  }
+
   const { handleSubmit, control, reset } = useForm<FormData>({
-    resolver: yupResolver(updateUserSchema)
+    resolver: yupResolver(getSchema(user?.type === 'Barber'))
   })
 
   const handleFormSubmit = async (values: FieldValues) => {
     const fileName = await handleUploadImage()
 
-    const request = {
+    const userRequest = {
       email: values.email,
       password: values.password,
       name: values.name,
       imageSource: fileName
     }
 
-    const { error } = await usingTryCatch(updateUser(user?.id, request))
+    const barberRequest = {
+      about: values.about,
+      contact: values.contact,
+      social: {
+        instagram: values.instagram,
+        twitter: values.twitter,
+        facebook: values.facebook
+      }
+    }
+
+    const { error } = await usingTryCatch(
+      Promise.all([
+        updateUser(user?.id ?? '', userRequest),
+        updateBarber(user?.barberId ?? '', barberRequest)
+      ])
+    )
 
     if (error) {
       showErrorSnackbar(error)
@@ -124,6 +173,38 @@ export const Edit = ({ isEdit, user }: EditProps) => {
           name="confirmPassword"
           type="password"
         />
+        <Visible when={user?.type === 'Barber'}>
+          <TextareaField
+            disabled={!isEdit}
+            control={control}
+            label="Sobre"
+            name="about"
+          />
+          <InputField
+            disabled={!isEdit}
+            control={control}
+            label="Instagram"
+            name="instagram"
+          />
+          <InputField
+            disabled={!isEdit}
+            control={control}
+            label="Twitter"
+            name="twitter"
+          />
+          <InputField
+            disabled={!isEdit}
+            control={control}
+            label="Facebook"
+            name="facebook"
+          />
+          <InputField
+            disabled={!isEdit}
+            control={control}
+            label="Contato"
+            name="contact"
+          />
+        </Visible>
         <Button
           disabled={!isEdit}
           onClick={handleSubmit(handleFormSubmit)}

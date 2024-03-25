@@ -12,7 +12,6 @@ export const EditBox = styled.form`
   .left-column {
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 40px;
     width: 30%;
   }
