@@ -3,7 +3,7 @@ import { UserData } from '../../../hooks'
 import * as S from './style'
 
 interface HistoryProps {
-  user?: UserData
+  user?: UserData | null
 }
 
 export const History = ({ user }: HistoryProps) => {

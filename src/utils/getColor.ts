@@ -5,6 +5,7 @@ export type ColorType =
   | 'orange50'
   | 'blue'
   | 'gray'
+  | 'light-gray'
   | 'transparent'
 
 export const getColor = (color: ColorType) => {

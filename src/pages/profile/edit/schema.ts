@@ -1,8 +1,14 @@
 import * as yup from 'yup'
 
-export const updateUserSchema = yup.object().shape({
-  name: yup.string().nullable(),
-  email: yup.string().email().nullable(),
+export const getSchema = (isBarber: boolean) => {
+  return yup
+    .object()
+    .shape(isBarber ? { ...userSchema, ...barberSchema } : userSchema)
+}
+
+const userSchema = {
+  name: yup.string(),
+  email: yup.string().email(),
   password: yup
     .string()
     .min(8, 'Senha deve ter no mínimo 8 caracteres')
@@ -12,4 +18,13 @@ export const updateUserSchema = yup.object().shape({
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password')], 'As senhas não são iguais')
-})
+}
+
+const barberSchema = {
+  establishmentId: yup.string(),
+  about: yup.string(),
+  contact: yup.string(),
+  instagram: yup.string(),
+  twitter: yup.string(),
+  facebook: yup.string()
+}

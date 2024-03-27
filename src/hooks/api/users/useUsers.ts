@@ -30,8 +30,8 @@ export const useUsers = () => {
     return data
   }
 
-  const getUserOptions = async (): Promise<UserOption[]> => {
-    const { data } = await get('options')
+  const getUserOptions = async (seachTerm?: string): Promise<UserOption[]> => {
+    const { data } = await get(`options?SearchTerm=${seachTerm ?? ''}`)
     return data
   }
 

@@ -2,7 +2,9 @@ import { Control, FieldValues, Path, useController } from 'react-hook-form'
 import { FieldError } from '..'
 import { ChangeEvent } from 'react'
 import * as S from './style'
-import { FileUpload } from '@mui/icons-material'
+import { AddAPhoto, FileUpload } from '@mui/icons-material'
+
+type FileFieldType = 'primary' | 'secondary'
 
 interface TextFieldProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>
@@ -10,6 +12,7 @@ interface TextFieldProps<TFieldValues extends FieldValues> {
   label?: string
   disabled?: boolean
   onChange?: (value: File) => void
+  type?: FileFieldType
 }
 
 export function FileField<TFieldValues extends FieldValues = FieldValues>({
@@ -17,6 +20,7 @@ export function FileField<TFieldValues extends FieldValues = FieldValues>({
   control,
   label,
   disabled = false,
+  type = 'primary',
   onChange
 }: TextFieldProps<TFieldValues>) {
   const { fieldState, field } = useController({ name, control })
@@ -38,13 +42,23 @@ export function FileField<TFieldValues extends FieldValues = FieldValues>({
   return (
     <S.FileInput disabled={disabled}>
       <label className="label">{label}</label>
-      <label
-        htmlFor="fileInput"
-        className={fieldState.error ? 'button error' : 'button'}
-      >
-        <span className="file-name">{fileName}</span>
-        <FileUpload />
-      </label>
+      {type === 'primary' && (
+        <label
+          htmlFor="fileInput"
+          className={fieldState.error ? 'primary error' : 'primary'}
+        >
+          <span className="file-name">{fileName}</span>
+          <FileUpload />
+        </label>
+      )}
+      {type === 'secondary' && (
+        <label
+          htmlFor="fileInput"
+          className={fieldState.error ? 'secondary error' : 'secondary'}
+        >
+          <AddAPhoto fontSize="large" />
+        </label>
+      )}
       <input
         {...field}
         onChange={changeEventHandler}

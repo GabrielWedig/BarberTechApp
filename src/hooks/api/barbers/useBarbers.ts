@@ -3,6 +3,7 @@ import { useRequest } from '../base/useRequest'
 import {
   BarberData,
   BarbersData,
+  CalendarData,
   CreateBarberRequest,
   UpdateBarberRequest
 } from './Barbers'
@@ -54,6 +55,11 @@ export const useBarbers = () => {
     return data
   }
 
+  const getCalendar = async (barberId: string): Promise<CalendarData> => {
+    const { data } = await get(`${barberId}/calendar`)
+    return data
+  }
+
   return {
     getAllBarbers,
     getBarberById,
@@ -61,6 +67,7 @@ export const useBarbers = () => {
     updateBarber,
     deleteBarber,
     getAvaliableDates,
-    getAvaliableTimes
+    getAvaliableTimes,
+    getCalendar
   }
 }

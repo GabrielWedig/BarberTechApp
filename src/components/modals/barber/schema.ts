@@ -9,12 +9,14 @@ const commomSchema = {
   contact: yup.string(),
   instagram: yup.string(),
   twitter: yup.string(),
-  facebook: yup.string()
+  facebook: yup.string(),
+  imageSource: yup.string()
 }
 
 const createSchema = {
   ...commomSchema,
-  establishmentId: commomSchema.establishmentId.required(),
-  userId: yup.string().required(),
-  contact: commomSchema.contact.required()
+  establishmentId: commomSchema.establishmentId.required('Obrigatório'),
+  userId: yup.string().required('Obrigatório'),
+  contact: commomSchema.contact.required('Obrigatório'),
+  imageSource: commomSchema.imageSource.required('Obrigatório')
 }

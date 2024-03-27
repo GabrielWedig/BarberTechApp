@@ -97,6 +97,11 @@ export function List({ type }: ListProps) {
 
   const { control } = useForm()
 
+  const onCloseModals = () => {
+    setOpenCreateModal(false)
+    fetchData(1)
+  }
+
   const content: ContentType = {
     users: {
       name: 'Usuários',
@@ -105,7 +110,7 @@ export function List({ type }: ListProps) {
       modal: (
         <LoginModal
           open={openCreateModal}
-          onClose={() => setOpenCreateModal(false)}
+          onClose={onCloseModals}
           type="register"
         />
       )
@@ -114,33 +119,17 @@ export function List({ type }: ListProps) {
       name: 'Eventos',
       header: ['Nome', 'Barbeiro', 'Corte'],
       get: getAllSchedules,
-      modal: (
-        <ScheduleModal
-          open={openCreateModal}
-          onClose={() => setOpenCreateModal(false)}
-        />
-      )
+      modal: <ScheduleModal open={openCreateModal} onClose={onCloseModals} />
     },
     haircuts: {
       name: 'Cortes',
       header: ['Nome', 'Sobre', 'Preço'],
       get: getAllHaircuts,
-      modal: (
-        <HaircutModal
-          open={openCreateModal}
-          onClose={() => setOpenCreateModal(false)}
-        />
-      )
+      modal: <HaircutModal open={openCreateModal} onClose={onCloseModals} />
     },
     feedbacks: {
       name: 'Avaliações',
-      header: [
-        'Comentário',
-        'Cliente',
-        'Estabelecimento',
-        'Corte',
-        'Barbeiro'
-      ],
+      header: ['Comentário', 'Cliente', 'Estabelecimento', 'Corte', 'Barbeiro'],
       get: getAllFeedbacks
     },
     establishments: {
@@ -148,28 +137,14 @@ export function List({ type }: ListProps) {
       header: ['Endereço'],
       get: getAllEstablishments,
       modal: (
-        <EstablishmentModal
-          open={openCreateModal}
-          onClose={() => setOpenCreateModal(false)}
-        />
+        <EstablishmentModal open={openCreateModal} onClose={onCloseModals} />
       )
     },
     barbers: {
       name: 'Barbeiros',
-      header: [
-        'Usuário',
-        'Contato',
-        'Instagram',
-        'Facebook',
-        'Twitter'
-      ],
+      header: ['Usuário', 'Contato', 'Instagram', 'Facebook', 'Twitter'],
       get: getAllBarbers,
-      modal: (
-        <BarberModal
-          open={openCreateModal}
-          onClose={() => setOpenCreateModal(false)}
-        />
-      )
+      modal: <BarberModal open={openCreateModal} onClose={onCloseModals} />
     }
   }
 

@@ -33,6 +33,7 @@ interface LoginUser extends UsersData {
 
 export interface UserData extends LoginUser {
   eventSchedules: EventScheduleData[]
+  barberId: string | null
 }
 
 interface EventScheduleData {

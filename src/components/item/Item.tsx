@@ -58,12 +58,17 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
 
   const { showErrorSnackbar } = useSnackbarContext()
 
+  const onCloseModals = () => {
+    setConfirmationModal('closed')
+    setEditModal(false)
+  }
+
   const content: ContentType = {
     users: {
       modal: (
         <LoginModal
           open={editModal}
-          onClose={() => setEditModal(false)}
+          onClose={onCloseModals}
           type="edit"
           userId={data.id}
         />
@@ -80,7 +85,7 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
       modal: (
         <HaircutModal
           open={editModal}
-          onClose={() => setEditModal(false)}
+          onClose={onCloseModals}
           haircutId={data.id}
         />
       ),
@@ -103,7 +108,7 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
       modal: (
         <EstablishmentModal
           open={editModal}
-          onClose={() => setEditModal(false)}
+          onClose={onCloseModals}
           establishmentId={data.id}
         />
       ),
@@ -115,7 +120,7 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
       modal: (
         <BarberModal
           open={editModal}
-          onClose={() => setEditModal(false)}
+          onClose={onCloseModals}
           barberId={data.id}
         />
       ),
@@ -185,7 +190,7 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
       {content[type].modal}
       <ConfirmationModal
         open={confirmationModal !== 'closed'}
-        onClose={() => setConfirmationModal('closed')}
+        onClose={onCloseModals}
         handleConfirm={handleConfirm}
       />
     </S.ItemBox>

@@ -18,7 +18,7 @@ interface Header {
 export const getTab = (
   activeTab: string,
   isEdit: boolean,
-  user?: UserData
+  user: UserData | null
 ) => {
   const tabs: Tabs = {
     profile: {
@@ -31,7 +31,7 @@ export const getTab = (
     },
     calendar: {
       header: { label: 'calendário', value: 'calendar' },
-      element: <Calendar />
+      element: <Calendar barberId={user?.barberId ?? ''}/>
     },
     history: {
       header: { label: 'histórico', value: 'history' },
@@ -49,7 +49,7 @@ export const getTab = (
   const userTabs = tabNames[user?.type ?? 'Default']
 
   return {
-    header: userTabs.map(tab => tabs[tab].header),
+    header: userTabs.map((tab) => tabs[tab].header),
     element: tabs[activeTab].element
   }
 }

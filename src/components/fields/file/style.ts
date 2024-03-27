@@ -10,7 +10,7 @@ export const FileInput = styled.div<FileInputProps>`
   flex-direction: column;
   gap: 5px;
 
-  .button {
+  .primary {
     display: flex;
     gap: 10px;
     align-items: center;
@@ -22,6 +22,22 @@ export const FileInput = styled.div<FileInputProps>`
     font-size: 17px;
     border: 1px solid var(--gray);
     height: 48px;
+  }
+
+  .secondary {
+    border-radius: 100%;
+    border: 5px solid var(--white);
+    width: 80px;
+    height: 80px;
+    background-color: var(--orange);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .secondary > svg {
+    color: var(--white);
   }
 
   .label {

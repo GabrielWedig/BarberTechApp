@@ -59,7 +59,7 @@ export const EstablishmentModal = ({
   const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
 
   useEffect(() => {
-    if (open) {
+    if (open && isEdit) {
       fetchData()
     }
     return () => resetAll()
@@ -71,8 +71,6 @@ export const EstablishmentModal = ({
   }
 
   const fetchData = async () => {
-    if (!isEdit) return
-
     const { data, error } = await usingTryCatch(
       getEstablishmentById(establishmentId ?? '')
     )
@@ -81,8 +79,7 @@ export const EstablishmentModal = ({
       showErrorSnackbar(error)
       return
     }
-
-    setFileData((current) => ({ ...current, name: data.imageSource }))
+    
     reset({
       address: data.address,
       lunchInterval: data.lunchInterval,
@@ -90,6 +87,7 @@ export const EstablishmentModal = ({
       openTime: data.openTime,
       workInterval: data.workInterval
     })
+    setFileData((current) => ({ ...current, name: data.imageSource }))
   }
 
   const { control, handleSubmit, reset } = useForm<
@@ -101,15 +99,13 @@ export const EstablishmentModal = ({
   const handleModalSubmit = async (values: FieldValues) => {
     const fileName = await handleUploadImage()
 
-    if (!fileName) return
-
     const request = {
       address: values.address,
       openTime: values.openTime,
       lunchTime: values.lunchTime,
       workInterval: values.workInterval,
       lunchInterval: values.lunchInterval,
-      imageSource: fileName
+      imageSource: fileName ?? fileData.name ?? ''
     }
 
     const action = isEdit

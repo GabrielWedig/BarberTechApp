@@ -41,7 +41,7 @@ export function SelectField<TFieldValues extends FieldValues = FieldValues>({
         {...field}
         disabled={disabled}
         className={fieldState.error ? 'error' : ''}
-        defaultValue={options.find((o) => o.value === field.value)}
+        value={field.value ?? ''}
         onChange={changeEventHandler}
       >
         {options.map((o) => (
