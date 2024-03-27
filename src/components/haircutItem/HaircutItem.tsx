@@ -30,7 +30,7 @@ export const HaircutItem = ({
         </div>
       </div>
       <span className="column date">{date}</span>
-      <div className='column'>
+      <div className='column btn'>
         <Button type="secondary" onClick={() => {}}>
           Avaliar
         </Button>
