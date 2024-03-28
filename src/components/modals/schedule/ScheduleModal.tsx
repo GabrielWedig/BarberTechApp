@@ -1,13 +1,20 @@
 import { FieldValues, useForm } from 'react-hook-form'
-import { Button, InputField, Modal, Option, SelectField, Visible } from '../..'
+import {
+  Button,
+  ConfirmationModal,
+  InputField,
+  Modal,
+  Option,
+  SelectField,
+  Visible
+} from '../..'
 import * as S from './style'
 import {
   useBarbers,
   useEstablishments,
   useHaircuts,
   useSchedules,
-  useSnackbarContext,
-  usingTryCatch
+  useTryCatch
 } from '../../../hooks'
 import { useEffect, useState } from 'react'
 import { getScheduleSchema } from './schema'
@@ -22,11 +29,11 @@ interface ScheduleModalProps {
 
 interface ScheduleFormData {
   name?: string
-  establishment: string
-  barber: string
+  establishment: Option
+  barber: Option
   date: string
   schedule: string
-  haircut?: string
+  haircut?: Option
 }
 
 type OptionTypes = 'establishment' | 'barber' | 'date' | 'schedule' | 'haircut'
@@ -48,124 +55,77 @@ export const ScheduleModal = ({
     haircut: []
   }
 
-  const defaultValues = {
-    barber: '',
-    date: '',
-    establishment: '',
-    haircut: '',
-    name: '',
-    schedule: ''
-  }
-
   const [options, setOptions] = useState<Options>(defaultOptions)
+  const [openModal, setOpenModal] = useState<boolean>(false)
 
   const { handleSubmit, control, watch, reset, resetField } =
     useForm<ScheduleFormData>({
-      resolver: yupResolver(getScheduleSchema(!!haircutId)),
-      defaultValues
+      resolver: yupResolver(getScheduleSchema(!!haircutId))
     })
 
-  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
   const { getAvaliableDates, getAvaliableTimes } = useBarbers()
   const { createSchedule } = useSchedules()
   const { getEstablishmentOptions, getBarberOptions } = useEstablishments()
   const { getHaircutOptions } = useHaircuts()
+  const { fetchAndMapOptions, fetchWithMessage, fetchData } = useTryCatch()
 
-  const establishmentField = watch('establishment')
-  const barberField = watch('barber')
+  const establishmentField = watch('establishment')?.value
+  const barberField = watch('barber')?.value
   const dateField = watch('date')
 
   useEffect(() => {
-    return () => reset()
+    return () =>
+      reset({
+        barber: { name: '', value: '' },
+        establishment: { name: '', value: '' },
+        haircut: { name: '', value: '' },
+        date: '',
+        name: '',
+        schedule: ''
+      })
   }, [])
 
   const fetchHaircutOptions = async (searchTerm?: string) => {
     if (!!haircutId) return []
-
-    const { data, error } = await usingTryCatch(getHaircutOptions(searchTerm))
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return []
-    }
-
-    return data.map((haircut) => ({
-      name: haircut.name,
-      value: haircut.id
-    }))
+    return await fetchAndMapOptions(getHaircutOptions(searchTerm))
   }
 
   const fetchEstablishmentOptions = async (searchTerm?: string) => {
-    const { data, error } = await usingTryCatch(
-      getEstablishmentOptions(searchTerm)
-    )
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return []
-    }
-
     resetFields(['barber', 'date', 'schedule'])
-
-    return data.map((establishment) => ({
-      name: establishment.name,
-      value: establishment.id
-    }))
+    return await fetchAndMapOptions(getEstablishmentOptions(searchTerm))
   }
 
   const fetchBarberOptions = async (searchTerm?: string) => {
     if (!establishmentField) return []
-
-    const { data, error } = await usingTryCatch(
+    resetFields(['date', 'schedule'])
+    return await fetchAndMapOptions(
       getBarberOptions(establishmentField, searchTerm)
     )
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return []
-    }
-
-    resetFields(['date', 'schedule'])
-
-    return data.map((barber) => ({
-      name: barber.name,
-      value: barber.id
-    }))
   }
 
-  const fetchAvaliableDates = async (barberId: string) => {
-    const { data, error } = await usingTryCatch(getAvaliableDates(barberId))
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-
-    const options = data.map((date) => ({
-      name: date,
-      value: date
-    }))
-
+  const fetchAvaliableDates = async (option: Option | null) => {
     resetFields(['schedule'])
-    setOptions((current) => ({ ...current, date: options }))
+
+    const barberId = option?.value
+    if (!barberId) return []
+
+    const { data, success } = await fetchData(getAvaliableDates(barberId))
+
+    if (data && success) {
+      const options = data?.map((d) => ({ name: d, value: d }))
+      setOptions((current) => ({ ...current, date: options }))
+    }
   }
 
   const fetchAvaliableTimes = async (date: string) => {
-    const { data, error } = await usingTryCatch(
+    const { data, success } = await fetchData(
       getAvaliableTimes(barberField, date)
     )
 
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
+    if (data && success) {
+      const options = data?.map((d) => ({ name: d, value: d }))
+      setOptions((current) => ({ ...current, schedule: options }))
     }
-
-    const options = data.map((schedule) => ({
-      name: schedule,
-      value: schedule
-    }))
-
-    setOptions((current) => ({ ...current, schedule: options }))
   }
 
   const resetFields = (fields: OptionTypes[]) =>
@@ -175,20 +135,16 @@ export const ScheduleModal = ({
 
   const handleScheduleSubmit = async (values: FieldValues) => {
     const request = {
-      barberId: values.barber,
-      haircutId: haircutId ?? values.haircut,
+      barberId: values.barber.value,
+      haircutId: haircutId ?? values.haircut.value,
       name: values.name,
       dateTime: `${values.date} ${values.schedule}`
     }
 
-    const { error } = await usingTryCatch(createSchedule(request))
-
-    if (error) {
-      showErrorSnackbar(error)
-      return
-    }
-
-    showSuccessSnackbar('Corte agendado com sucesso!')
+    await fetchWithMessage(
+      createSchedule(request),
+      'Corte agendado com sucesso!'
+    )
     onClose()
   }
 
@@ -217,7 +173,6 @@ export const ScheduleModal = ({
               control={control}
               label="Estabelecimento"
               search={fetchEstablishmentOptions}
-              onChange={fetchBarberOptions}
             />
             <AutocompleteField
               name="barber"
@@ -245,9 +200,14 @@ export const ScheduleModal = ({
               disabled={!establishmentField || !barberField || !dateField}
             />
           </div>
-          <Button type="primary" onClick={handleSubmit(handleScheduleSubmit)}>
+          <Button type="primary" onClick={() => setOpenModal(true)}>
             Agendar horário
           </Button>
+          <ConfirmationModal
+            handleConfirm={handleSubmit(handleScheduleSubmit)}
+            onClose={() => setOpenModal(false)}
+            open={openModal}
+          />
         </form>
       </S.ScheduleBox>
     </Modal>

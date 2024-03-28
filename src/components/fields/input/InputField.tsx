@@ -3,7 +3,7 @@ import { BaseField } from '../base/BaseField'
 import { FieldError } from '..'
 import { ChangeEvent } from 'react'
 
-type InputTypes = 'text' | 'number' | 'password'
+type InputTypes = 'text' | 'password'
 
 interface TextFieldProps<TFieldValues extends FieldValues> {
   name: Path<TFieldValues>
@@ -38,6 +38,7 @@ export function InputField<TFieldValues extends FieldValues = FieldValues>({
     <BaseField label={label} disabled={disabled}>
       <input
         {...field}
+        value={field.value ?? ''}
         placeholder={placeholder ?? label}
         disabled={disabled}
         className={fieldState.error ? 'error' : ''}

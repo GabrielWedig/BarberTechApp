@@ -25,7 +25,6 @@ const App = () => {
             {/* <Route index element={<Home />} /> */}
             {/* <Route path="*" element={<NoPage />} /> */}
             {/* <Route element={<AuthOutlet fallbackPath='/login' />}></Route> // Private route example*/}
-            {/* </Route> */}
           </Routes>
         </BrowserRouter>
       </AuthProvider>

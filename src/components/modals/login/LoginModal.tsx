@@ -13,7 +13,6 @@ export type ModalTypes =
   | 'register'
   | 'registerClient'
   | 'edit'
-  | 'forgot'
 
 export const LoginModal = ({
   open,

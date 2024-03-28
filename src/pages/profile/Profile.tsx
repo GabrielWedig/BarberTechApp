@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Button, Footer, Header, Tabs } from '../../components'
+import { Button, Footer, Header, Snackbar, Tabs } from '../../components'
 import * as S from './style'
-import {
-  UserData,
-  useSnackbarContext,
-  useUsers,
-  usingTryCatch
-} from '../../hooks'
+import { UserData, useUsers, useTryCatch } from '../../hooks'
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser'
 import userImage from '../../img/user.png'
 import { getTab } from './tabs'
@@ -20,24 +15,14 @@ export const Profile = () => {
   const [user, setUser] = useState<UserData | null>(userContext)
 
   const { getUserById } = useUsers()
-
-  const { showErrorSnackbar } = useSnackbarContext()
+  const { fetchAndSet } = useTryCatch()
 
   useEffect(() => {
-    fecthUser()
+    fetchUser()
   }, [])
 
-  const fecthUser = async () => {
-    const { data, error } = await usingTryCatch(
-      getUserById(userContext?.id ?? '')
-    )
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-    setUser(data)
-  }
+  const fetchUser = async () =>
+    await fetchAndSet(getUserById(userContext?.id ?? ''), setUser)
 
   const handleEditClick = () => {
     if (activeTab !== 'profile') {
@@ -75,6 +60,7 @@ export const Profile = () => {
         </S.ProfileContainer>
       </S.Background>
       <Footer />
+      <Snackbar />
     </>
   )
 }

@@ -7,12 +7,6 @@ export const LoginBox = styled.div`
   gap: 20px;
   position: relative;
 
-  .forgot-password {
-    color: var(--gray);
-    width: max-content;
-    align-self: end;
-  }
-
   h3 {
     color: var(--white);
     font-size: 28px;
@@ -23,6 +17,10 @@ export const LoginBox = styled.div`
     flex-direction: column;
     gap: 10px;
     width: 100%;
+  }
+
+  form > button {
+    margin-top: 20px;
   }
 
   div > span {

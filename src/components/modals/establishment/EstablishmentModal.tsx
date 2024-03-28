@@ -2,12 +2,11 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { FileField, InputField, SelectField } from '../../fields'
 import { Modal } from '../base/Modal'
 import * as S from './style'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
+  EstablishmentData,
   useEstablishments,
-  useRequest,
-  useSnackbarContext,
-  usingTryCatch
+  useTryCatch
 } from '../../../hooks'
 import { Button } from '../..'
 import { getEstablishmentSchema } from './schema'
@@ -50,45 +49,32 @@ export const EstablishmentModal = ({
 }: EstablishmentModalProps) => {
   const isEdit = !!establishmentId
 
-  const [fileData, setFileData] = useState<FileData>({ name: null, file: null })
-
-  const { uploadImage } = useRequest('')
   const { createEstablishment, updateEstablishment, getEstablishmentById } =
     useEstablishments()
-
-  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
+  const { fetchData, fetchAndReset } = useTryCatch()
 
   useEffect(() => {
     if (open && isEdit) {
-      fetchData()
+      fetchDataInternal()
     }
-    return () => resetAll()
+    return () => reset()
   }, [open])
 
-  const resetAll = () => {
-    reset()
-    setFileData({ name: null, file: null })
-  }
-
-  const fetchData = async () => {
-    const { data, error } = await usingTryCatch(
-      getEstablishmentById(establishmentId ?? '')
+  const fetchDataInternal = async () =>
+    await fetchAndReset(
+      getEstablishmentById(establishmentId ?? ''),
+      resetEstablishment
     )
 
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-    
+  const resetEstablishment = (data: EstablishmentData) =>
     reset({
       address: data.address,
       lunchInterval: data.lunchInterval,
       lunchTime: data.lunchTime,
       openTime: data.openTime,
-      workInterval: data.workInterval
+      workInterval: data.workInterval,
+      imageSource: data.imageSource
     })
-    setFileData((current) => ({ ...current, name: data.imageSource }))
-  }
 
   const { control, handleSubmit, reset } = useForm<
     CreateFormData | UpdateFormData
@@ -97,42 +83,21 @@ export const EstablishmentModal = ({
   })
 
   const handleModalSubmit = async (values: FieldValues) => {
-    const fileName = await handleUploadImage()
-
     const request = {
       address: values.address,
       openTime: values.openTime,
       lunchTime: values.lunchTime,
       workInterval: values.workInterval,
       lunchInterval: values.lunchInterval,
-      imageSource: fileName ?? fileData.name ?? ''
+      imageSource: values.imageSource
     }
 
     const action = isEdit
       ? updateEstablishment(establishmentId, request)
       : createEstablishment(request)
 
-    const { error } = await usingTryCatch(action)
-
-    if (error) {
-      showErrorSnackbar(error)
-      return
-    }
-    showSuccessSnackbar()
+    await fetchData(action)
     onClose()
-  }
-
-  const handleUploadImage = async () => {
-    if (!fileData.file) return
-
-    const { data, error } = await usingTryCatch(uploadImage(fileData.file))
-
-    if (!data || error) {
-      showErrorSnackbar(error)
-      return
-    }
-
-    return data
   }
 
   return (
@@ -143,14 +108,7 @@ export const EstablishmentModal = ({
         </h3>
         <form>
           <InputField control={control} label="Endereço" name="address" />
-          <FileField
-            label="Imagem"
-            control={control}
-            name="imageSource"
-            onChange={(file) =>
-              setFileData((current) => ({ ...current, file }))
-            }
-          />
+          <FileField label="Imagem" control={control} name="imageSource" />
           <div className="box">
             <SelectField
               control={control}

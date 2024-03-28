@@ -1,9 +1,4 @@
-import {
-  CalendarData,
-  useBarbers,
-  useSnackbarContext,
-  usingTryCatch
-} from '../../../hooks'
+import { CalendarData, useBarbers, useTryCatch } from '../../../hooks'
 import * as S from './style'
 import { useEffect, useState } from 'react'
 import { Day } from '../../../components'
@@ -16,21 +11,14 @@ export const Calendar = ({ barberId }: CalendarProps) => {
   const [calendar, setCalendar] = useState<CalendarData>({})
 
   const { getCalendar } = useBarbers()
-  const { showErrorSnackbar } = useSnackbarContext()
+  const { fetchAndSet } = useTryCatch()
 
   useEffect(() => {
     fetchCalendar()
   }, [])
 
-  const fetchCalendar = async () => {
-    const { data, error } = await usingTryCatch(getCalendar(barberId))
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-    setCalendar(data)
-  }
+  const fetchCalendar = async () =>
+    await fetchAndSet(getCalendar(barberId), setCalendar)
 
   return (
     <S.CalendarBox>

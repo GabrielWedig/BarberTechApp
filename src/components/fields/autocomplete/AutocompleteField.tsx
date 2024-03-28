@@ -5,7 +5,7 @@ import { SyntheticEvent, useEffect, useState } from 'react'
 
 interface Option {
   name: string
-  value: any
+  value: string
 }
 
 interface SelectFieldProps<TFieldValues extends FieldValues> {
@@ -13,7 +13,7 @@ interface SelectFieldProps<TFieldValues extends FieldValues> {
   control: Control<TFieldValues>
   label: string
   search: (searchTerm?: string) => Promise<Option[]>
-  onChange?: (value: string) => void
+  onChange?: (value: Option | null) => void
   placeholder?: string
   disabled?: boolean
 }
@@ -30,22 +30,25 @@ export function AutocompleteField<
   disabled
 }: SelectFieldProps<TFieldValues>) {
   const [options, setOptions] = useState<Option[]>([])
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null)
   const { fieldState, field } = useController({ name, control })
 
   useEffect(() => {
-    if (!disabled) {
-      searchEventHandler(null, '')
+    if (disabled) {
+      setSelectedOption(null)
     }
+    searchEventHandler(null, '')
   }, [disabled])
 
   const changeEventHandler = (
     _: SyntheticEvent<Element, Event>,
-    value: Option | null
+    option: Option | null
   ) => {
     try {
-      onChange?.call(null, value?.value)
+      onChange?.call(null, option)
     } finally {
-      field.onChange(value?.value)
+      field.onChange(option)
+      setSelectedOption(option)
     }
   }
 
@@ -57,8 +60,6 @@ export function AutocompleteField<
     setOptions(options)
   }
 
-  const defaultOption = { name: '', value: '' }
-
   return (
     <BaseField label={label} disabled={disabled}>
       <Autocomplete
@@ -66,10 +67,11 @@ export function AutocompleteField<
         onChange={changeEventHandler}
         onInputChange={searchEventHandler}
         options={options}
-        getOptionLabel={(option) => option?.name}
+        getOptionLabel={(option) => option.name}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
         disabled={disabled}
         className={fieldState.error ? 'error' : ''}
-        value={options.find((o) => o.value === field.value) ?? defaultOption}
+        value={selectedOption}
         renderInput={(params) => (
           <TextField
             {...params}

@@ -5,7 +5,7 @@ import * as S from './style'
 interface ConfirmationModalProps {
   open: boolean
   onClose: () => void
-  handleConfirm: (value: boolean) => void
+  handleConfirm: () => void
 }
 
 export const ConfirmationModal = ({
@@ -13,8 +13,8 @@ export const ConfirmationModal = ({
   onClose,
   handleConfirm
 }: ConfirmationModalProps) => {
-  const handleClick = (value: boolean) => {
-    handleConfirm(value)
+  const handleClickYes = () => {
+    handleConfirm()
     onClose()
   }
 
@@ -23,10 +23,10 @@ export const ConfirmationModal = ({
       <S.ConfirmationBox>
         <h3>Você tem certeza?</h3>
         <div className="buttons">
-          <Button onClick={() => handleClick(true)} type="primary">
+          <Button onClick={handleClickYes} type="primary">
             Sim
           </Button>
-          <Button onClick={() => handleClick(false)} type="primary">
+          <Button onClick={onClose} type="primary">
             Não
           </Button>
         </div>

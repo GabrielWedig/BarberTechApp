@@ -12,8 +12,9 @@ export const FieldBox = styled.div<FieldProps>`
   width: 100%;
 
   .error {
-    border: 1px solid var(--red);
+    border: 1px solid var(--red) !important;
     margin-bottom: 0;
+    border-radius: 8px;
   }
 
   input,

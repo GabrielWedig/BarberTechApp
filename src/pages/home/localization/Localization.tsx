@@ -5,8 +5,7 @@ import { Establishment, Pagination } from '../../../components'
 import {
   useEstablishments,
   EstablishmentsData,
-  usingTryCatch,
-  useSnackbarContext,
+  useTryCatch,
   Paged
 } from '../../../hooks'
 
@@ -15,7 +14,7 @@ export const Localization = () => {
   const pageSize = 3
 
   const { getAllEstablishments } = useEstablishments()
-  const { showErrorSnackbar } = useSnackbarContext()
+  const { fetchAndSet } = useTryCatch()
 
   const [establishments, setEstablishments] =
     useState<Paged<EstablishmentsData[]>>()
@@ -24,17 +23,8 @@ export const Localization = () => {
     fetchEstablishments(1)
   }, [])
 
-  const fetchEstablishments = async (page: number) => {
-    const { data, error } = await usingTryCatch(
-      getAllEstablishments(page, pageSize)
-    )
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-    setEstablishments(data)
-  }
+  const fetchEstablishments = async (page: number) =>
+    await fetchAndSet(getAllEstablishments(page, pageSize), setEstablishments)
 
   return (
     <S.EstablishmentsContainer>

@@ -33,11 +33,12 @@ export function FileField<TFieldValues extends FieldValues = FieldValues>({
     try {
       onChange?.call(null, file)
     } finally {
-      field.onChange(event)
+      field.onChange(file)
     }
   }
 
-  const fileName = !field.value ? 'Fazer upload' : field.value.substring(12)
+  const fileName = !field.value ? 'Fazer upload' : field.value.name
+  
 
   return (
     <S.FileInput disabled={disabled}>
@@ -60,7 +61,7 @@ export function FileField<TFieldValues extends FieldValues = FieldValues>({
         </label>
       )}
       <input
-        {...field}
+        name={field.name}
         onChange={changeEventHandler}
         type="file"
         id="fileInput"

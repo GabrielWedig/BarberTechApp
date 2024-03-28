@@ -33,7 +33,7 @@ export const Menu = ({ user, showMenu, setShowMenu }: MenuProps) => {
   }
 
   return (
-    <S.Menu showMenu={showMenu} onMouseLeave={() => setShowMenu('inactive')}>
+    <S.Menu $showMenu={showMenu} onMouseLeave={() => setShowMenu('inactive')}>
       <button onClick={handleProfile} className="row">
         <PersonOutlined />
         <span>Perfil</span>

@@ -5,7 +5,7 @@ import * as S from './style'
 interface DayProps {
   name: string
   schedules: TimeData
-  fetchCalendar: () => Promise<void>
+  fetchCalendar: () => void
 }
 
 export const Day = ({ name, schedules, fetchCalendar }: DayProps) => {
@@ -18,6 +18,7 @@ export const Day = ({ name, schedules, fetchCalendar }: DayProps) => {
             fetchCalendar={fetchCalendar}
             schedule={schedules[time]}
             time={time}
+            key={time}
           />
         ))}
       </div>

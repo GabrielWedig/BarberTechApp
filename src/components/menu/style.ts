@@ -2,11 +2,11 @@ import styled, { keyframes } from 'styled-components'
 import { MenuType } from '..'
 
 interface UserPhotoProps {
-  url: string
+  $url: string
 }
 
 interface MenuProps {
-  showMenu: MenuType
+  $showMenu: MenuType
 }
 
 export const UserMenuBox = styled.button`
@@ -35,7 +35,7 @@ export const UserPhoto = styled.div<UserPhotoProps>`
   width: 50px;
   height: 50px;
   border-radius: 100%;
-  background: url(${(props) => props.url}) center / cover no-repeat;
+  background: url(${(props) => props.$url}) center / cover no-repeat;
 `
 
 const slideDown = keyframes`
@@ -62,7 +62,7 @@ export const Menu = styled.div<MenuProps>`
   background-color: var(--blue);
   top: -30px;
   right: 0;
-  animation: ${({ showMenu }) => animation(showMenu)} 0.5s ease forwards;
+  animation: ${({ $showMenu }) => animation($showMenu)} 0.5s ease forwards;
   z-index: 4;
   display: flex;
   flex-direction: column;

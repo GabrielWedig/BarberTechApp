@@ -2,20 +2,14 @@ import * as S from './style'
 import contentJson from '../../../content.json'
 import { useEffect, useState } from 'react'
 import { Haircut, Pagination } from '../../../components'
-import {
-  useHaircuts,
-  HaircutsData,
-  usingTryCatch,
-  useSnackbarContext,
-  Paged
-} from '../../../hooks'
+import { useHaircuts, HaircutsData, useTryCatch, Paged } from '../../../hooks'
 
 export const Services = () => {
   const content = contentJson.home.services
   const pageSize = 4
 
   const { getAllHaircuts } = useHaircuts()
-  const { showErrorSnackbar } = useSnackbarContext()
+  const { fetchAndSet } = useTryCatch()
 
   const [haircuts, setHaircuts] = useState<Paged<HaircutsData[]>>()
 
@@ -23,15 +17,8 @@ export const Services = () => {
     fetchHaircuts(1)
   }, [])
 
-  const fetchHaircuts = async (page: number) => {
-    const { data, error } = await usingTryCatch(getAllHaircuts(page, pageSize))
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-    setHaircuts(data)
-  }
+  const fetchHaircuts = async (page: number) =>
+    await fetchAndSet(getAllHaircuts(page, pageSize), setHaircuts)
 
   return (
     <S.ServicesContainer id="services">
@@ -40,6 +27,7 @@ export const Services = () => {
       <div className="haircuts-box">
         {haircuts?.items.map((h) => (
           <Haircut
+            key={h.id}
             id={h.id}
             name={h.name}
             about={h.about}

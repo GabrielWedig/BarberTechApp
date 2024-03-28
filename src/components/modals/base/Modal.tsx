@@ -10,7 +10,7 @@ interface ModalProps {
 
 export const Modal = ({ children, open, onClose }: ModalProps) => {
   return (
-    <MuiModal sx={modalSx} open={open} onClose={onClose}>
+    <MuiModal sx={modalSx} open={open} onClose={onClose} disableScrollLock>
       <Box sx={boxSx}>
         {children}
         <Close sx={closeSx} fontSize="large" onClick={onClose} />

@@ -6,7 +6,6 @@ export const Footer = styled.footer`
   color: var(--white);
   display: flex;
   justify-content: space-between;
-  position: absolute;
 
   .column {
     width: 20%;

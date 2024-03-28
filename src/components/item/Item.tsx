@@ -8,9 +8,8 @@ import {
   useFeedbacks,
   useHaircuts,
   useSchedules,
-  useSnackbarContext,
   useUsers,
-  usingTryCatch
+  useTryCatch
 } from '../../hooks'
 import {
   BarberModal,
@@ -25,7 +24,7 @@ import {
 interface ItemProps {
   type: ManageTypes
   data: GetResponse
-  fetchData: (page: number, searchTerm?: string) => Promise<void>
+  fetchDataInternal: (page: number, searchTerm?: string) => Promise<void>
 }
 
 type ContentType = {
@@ -44,7 +43,7 @@ type ContentType = {
 
 type ConfirmationModal = 'delete' | 'complete' | 'cancel' | 'closed'
 
-export const Item = ({ type, data, fetchData }: ItemProps) => {
+export const Item = ({ type, data, fetchDataInternal }: ItemProps) => {
   const [editModal, setEditModal] = useState<boolean>(false)
   const [confirmationModal, setConfirmationModal] =
     useState<ConfirmationModal>('closed')
@@ -55,8 +54,7 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
   const { deleteFeedback } = useFeedbacks()
   const { deleteEstablishment } = useEstablishments()
   const { deleteBarber } = useBarbers()
-
-  const { showErrorSnackbar } = useSnackbarContext()
+  const { fetchData } = useTryCatch()
 
   const onCloseModals = () => {
     setConfirmationModal('closed')
@@ -143,17 +141,16 @@ export const Item = ({ type, data, fetchData }: ItemProps) => {
     closed: null
   }
 
-  const handleConfirm = async (value: boolean) => {
+  const handleConfirm = async () => {
     const action = actions[confirmationModal]
 
-    if (!action || !value) return
+    if (!action) return
 
-    const { error } = await usingTryCatch(action(data.id ?? ''))
+    const { success } = await fetchData(action(data.id ?? ''))
 
-    if (error) {
-      showErrorSnackbar(error)
+    if (success) {
+      fetchDataInternal(1)
     }
-    fetchData(1)
   }
 
   return (

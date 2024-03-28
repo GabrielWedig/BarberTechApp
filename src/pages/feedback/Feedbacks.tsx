@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react'
 import { FeedbackCard, Footer, Header, Snackbar } from '../../components'
 import contentJson from '../../content.json'
 import * as S from './style'
-import {
-  FeedbacksData,
-  useFeedbacks,
-  useSnackbarContext,
-  usingTryCatch
-} from '../../hooks'
+import { FeedbacksData, Paged, useFeedbacks, useTryCatch } from '../../hooks'
 import feedbacksImage from '../../img/feedbacks.jpg'
 import { scrollToSection } from '../../utils'
 import { useLocation } from 'react-router-dom'
@@ -16,10 +11,10 @@ export const Feedbacks = () => {
   const content = contentJson.feedback
   const pageSize = 5
 
-  const [feedbacks, setFeedbacks] = useState<FeedbacksData[]>([])
+  const [feedbacks, setFeedbacks] = useState<Paged<FeedbacksData[]>>()
 
   const { getAllFeedbacks } = useFeedbacks()
-  const { showErrorSnackbar } = useSnackbarContext()
+  const { fetchAndSet } = useTryCatch()
 
   const location = useLocation()
 
@@ -28,15 +23,8 @@ export const Feedbacks = () => {
     fetchFeedbacks(1)
   }, [])
 
-  const fetchFeedbacks = async (page: number) => {
-    const { data, error } = await usingTryCatch(getAllFeedbacks(page, pageSize))
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-    setFeedbacks(data.items)
-  }
+  const fetchFeedbacks = async (page: number) =>
+    await fetchAndSet(getAllFeedbacks(page, pageSize), setFeedbacks)
 
   return (
     <>
@@ -52,7 +40,7 @@ export const Feedbacks = () => {
           <img src={feedbacksImage} alt="barber with client" />
         </div>
         <div className="column">
-          {feedbacks.map((f) => (
+          {feedbacks?.items.map((f) => (
             <FeedbackCard
               comment={f.comment}
               stars={f.ratingAverage}

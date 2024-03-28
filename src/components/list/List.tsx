@@ -12,9 +12,8 @@ import {
   useFeedbacks,
   useHaircuts,
   useSchedules,
-  useSnackbarContext,
   useUsers,
-  usingTryCatch
+  useTryCatch
 } from '../../hooks'
 import { Item } from '../item/Item'
 import * as S from './style'
@@ -91,15 +90,15 @@ export function List({ type }: ListProps) {
   const { getAllFeedbacks } = useFeedbacks()
   const { getAllEstablishments } = useEstablishments()
   const { getAllBarbers } = useBarbers()
+  const { fetchData } = useTryCatch()
 
-  const { showErrorSnackbar } = useSnackbarContext()
   const pageSize = 5
 
   const { control } = useForm()
 
   const onCloseModals = () => {
     setOpenCreateModal(false)
-    fetchData(1)
+    fetchDataInternal(1)
   }
 
   const content: ContentType = {
@@ -117,7 +116,7 @@ export function List({ type }: ListProps) {
     },
     schedules: {
       name: 'Eventos',
-      header: ['Nome', 'Barbeiro', 'Corte'],
+      header: ['Cliente', 'Barbeiro', 'Corte'],
       get: getAllSchedules,
       modal: <ScheduleModal open={openCreateModal} onClose={onCloseModals} />
     },
@@ -149,19 +148,17 @@ export function List({ type }: ListProps) {
   }
 
   useEffect(() => {
-    fetchData(1)
+    fetchDataInternal(1)
   }, [])
 
-  const fetchData = async (page: number, searchTerm?: string) => {
+  const fetchDataInternal = async (page: number, searchTerm?: string) => {
     const get = content[type].get
 
-    const { data, error } = await usingTryCatch(get(page, pageSize, searchTerm))
+    const { success, data } = await fetchData(get(page, pageSize, searchTerm))
 
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
+    if (success && data) {
+      setData((current) => ({ ...current, [type]: data }))
     }
-    setData((current) => ({ ...current, [type]: data }))
   }
 
   return (
@@ -172,7 +169,7 @@ export function List({ type }: ListProps) {
           control={control}
           name="filter"
           placeholder="Pesquisar"
-          onChange={(value) => fetchData(1, value as string)}
+          onChange={(value) => fetchDataInternal(1, value as string)}
         />
         <Visible when={!!content[type].modal}>
           <Button type="secondary" onClick={() => setOpenCreateModal(true)}>
@@ -187,13 +184,18 @@ export function List({ type }: ListProps) {
       </div>
       <div className="table-content">
         {data[type].items.map((item) => (
-          <Item key={item.id} type={type} data={item} fetchData={fetchData} />
+          <Item
+            key={item.id}
+            type={type}
+            data={item}
+            fetchDataInternal={fetchDataInternal}
+          />
         ))}
       </div>
       <Pagination
         totalCount={data[type].totalCount ?? 0}
         pageSize={pageSize}
-        handleChange={fetchData}
+        handleChange={fetchDataInternal}
       />
       {content[type].modal}
     </S.ListBox>

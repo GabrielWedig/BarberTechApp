@@ -15,7 +15,7 @@ export const UserMenu = ({ setShowMenu, user }: UserMenuProps) => {
         <span>Bem vindo!</span>
         <span>{user?.name}</span>
       </div>
-      <S.UserPhoto url={user?.imageSource ?? userImage} />
+      <S.UserPhoto $url={user?.imageSource ?? userImage} />
     </S.UserMenuBox>
   )
 }

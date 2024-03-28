@@ -2,13 +2,7 @@ import * as S from './style'
 import contentJson from '../../../content.json'
 import { useEffect, useState } from 'react'
 import { Barber, Pagination } from '../../../components'
-import {
-  useBarbers,
-  BarbersData,
-  usingTryCatch,
-  useSnackbarContext,
-  Paged
-} from '../../../hooks'
+import { useBarbers, BarbersData, useTryCatch, Paged } from '../../../hooks'
 
 export const Team = () => {
   const content = contentJson.home.team
@@ -16,23 +10,15 @@ export const Team = () => {
 
   const [barbers, setBarbers] = useState<Paged<BarbersData[]>>()
 
-  const { showErrorSnackbar } = useSnackbarContext()
-
   const { getAllBarbers } = useBarbers()
+  const { fetchAndSet } = useTryCatch()
 
   useEffect(() => {
     fetchBarbers(1)
   }, [])
 
-  const fetchBarbers = async (page: number) => {
-    const { data, error } = await usingTryCatch(getAllBarbers(page, pageSize))
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-    setBarbers(data)
-  }
+  const fetchBarbers = async (page: number) =>
+    await fetchAndSet(getAllBarbers(page, pageSize), setBarbers)
 
   return (
     <S.TeamContainer>

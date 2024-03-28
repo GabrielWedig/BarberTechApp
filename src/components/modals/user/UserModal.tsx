@@ -1,13 +1,8 @@
 import { FieldValues, useForm } from 'react-hook-form'
 import { Button, FileField, InputField, ModalTypes, Visible } from '../..'
 import * as S from './style'
-import { useEffect, useState } from 'react'
-import {
-  useRequest,
-  useSnackbarContext,
-  useUsers,
-  usingTryCatch
-} from '../../../hooks'
+import { useEffect } from 'react'
+import { useUsers, useTryCatch, UserData, useRequest } from '../../../hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getUserSchema } from './schema'
 
@@ -21,14 +16,10 @@ interface UserModalProps {
 interface FormData {
   name?: string
   email?: string
-  image?: File
+  image?: File | null
+  imageSource?: string
   password?: string
   confirmPassword?: string
-}
-
-interface FileData {
-  file: File | null
-  name?: string | null
 }
 
 export const UserModal = ({
@@ -40,46 +31,39 @@ export const UserModal = ({
   const isClientModal = type === 'registerClient' && !!setModalType
   const isEdit = type === 'edit' && !!userId
 
-  const [fileData, setFileData] = useState<FileData>({ name: null, file: null })
-
-  const { uploadImage } = useRequest('')
   const { register, updateUser, getUserById } = useUsers()
-  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
+  const { uploadImage } = useRequest('')
+  const { fetchData, fetchAndReset, fetchWithMessage, fetchAndUploadImage } =
+    useTryCatch()
 
   const invokeSetModalType = (type: ModalTypes) =>
     isClientModal ? setModalType(type) : undefined
 
   useEffect(() => {
-    fetchData()
+    if (isEdit) {
+      fetchDataInternal()
+    }
     return () => invokeSetModalType('login')
   }, [])
 
-  const fetchData = async () => {
-    if (!isEdit) return
+  const fetchDataInternal = async () =>
+    await fetchAndReset(getUserById(userId ?? ''), resetUser)
 
-    const { data, error } = await usingTryCatch(getUserById(userId ?? ''))
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-
-    setFileData((current) => ({ ...current, name: data.imageSource }))
-    reset({ name: data.name, email: data.email })
-  }
+  const resetUser = (data: UserData) =>
+    reset({ name: data.name, email: data.email, imageSource: data.imageSource })
 
   const { handleSubmit, control, reset } = useForm<FormData>({
     resolver: yupResolver(getUserSchema(isEdit))
   })
 
   const handleUserSubmit = async (values: FieldValues) => {
-    const fileName = await handleUploadImage()
+    const image = await fetchAndUploadImage(values.image, values.imageSource)
 
     const request = {
       email: values.email,
       password: values.password,
       name: values.name,
-      imageSource: fileName ?? fileData.name ?? ''
+      imageSource: image
     }
 
     const signIn = type === 'registerClient'
@@ -88,26 +72,8 @@ export const UserModal = ({
       ? updateUser(userId, request)
       : register(request, signIn)
 
-    const { error } = await usingTryCatch(action)
-
-    if (error) {
-      showErrorSnackbar(error)
-      return
-    }
-    showSuccessSnackbar('Cadastro realizado!')
+    await fetchWithMessage(action, 'Cadastro realizado!')
     onClose()
-  }
-
-  const handleUploadImage = async () => {
-    if (!fileData.file) return
-
-    const { data, error } = await usingTryCatch(uploadImage(fileData.file))
-
-    if (!data || error) {
-      showErrorSnackbar(error)
-      return
-    }
-    return data
   }
 
   return (
@@ -126,12 +92,7 @@ export const UserModal = ({
           label="E-mail"
           placeholder="Digite seu e-mail"
         />
-        <FileField
-          control={control}
-          name="image"
-          label="Imagem"
-          onChange={(file) => setFileData((current) => ({ ...current, file }))}
-        />
+        <FileField control={control} name="image" label="Imagem" />
         <InputField
           name="password"
           control={control}

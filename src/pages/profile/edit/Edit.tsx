@@ -9,10 +9,9 @@ import {
 import {
   UserData,
   useBarbers,
-  useRequest,
-  useSnackbarContext,
   useUsers,
-  usingTryCatch
+  useTryCatch,
+  BarberData
 } from '../../../hooks'
 import * as S from './style'
 import { getSchema } from './schema'
@@ -30,7 +29,7 @@ interface FormData {
   email?: string
   password?: string
   confirmPassword?: string
-  image?: File
+  imageSource?: string
   about?: string
   contact?: string
   instagram?: string
@@ -39,12 +38,9 @@ interface FormData {
 }
 
 export const Edit = ({ isEdit, user }: EditProps) => {
-  const [file, setFile] = useState<File>()
-
-  const { uploadImage } = useRequest('')
   const { updateUser } = useUsers()
   const { getBarberById, updateBarber } = useBarbers()
-  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
+  const { fetchWithMessage, fetchAndReset } = useTryCatch()
 
   useEffect(() => {
     if (user?.type === 'Barber' && user.barberId) {
@@ -58,34 +54,28 @@ export const Edit = ({ isEdit, user }: EditProps) => {
   }, [user])
 
   const fetchBarber = async (barberId: string) => {
-    const { data, error } = await usingTryCatch(getBarberById(barberId))
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-
-    reset({
-      about: data.about,
-      contact: data.contact,
-      instagram: data.social.instagram,
-      twitter: data.social.twitter,
-      facebook: data.social.facebook
-    })
+    await fetchAndReset(getBarberById(barberId), resetBarber)
   }
+
+  const resetBarber = (data: BarberData) =>
+    reset({
+      about: data?.about,
+      contact: data?.contact,
+      instagram: data?.social.instagram,
+      twitter: data?.social.twitter,
+      facebook: data?.social.facebook
+    })
 
   const { handleSubmit, control, reset } = useForm<FormData>({
     resolver: yupResolver(getSchema(user?.type === 'Barber'))
   })
 
   const handleFormSubmit = async (values: FieldValues) => {
-    const fileName = await handleUploadImage()
-
     const userRequest = {
       email: values.email,
       password: values.password,
       name: values.name,
-      imageSource: fileName
+      imageSource: values.imageSource
     }
 
     const barberRequest = {
@@ -98,34 +88,16 @@ export const Edit = ({ isEdit, user }: EditProps) => {
       }
     }
 
-    const { error } = await usingTryCatch(
-      Promise.all([
-        updateUser(user?.id ?? '', userRequest),
-        updateBarber(user?.barberId ?? '', barberRequest)
-      ])
-    )
+    const calls = [
+      updateUser(user?.id ?? '', userRequest),
+      updateBarber(user?.barberId ?? '', barberRequest)
+    ]
 
-    if (error) {
-      showErrorSnackbar(error)
-      return
-    }
-    showSuccessSnackbar('Cadastro realizado!')
-  }
-
-  const handleUploadImage = async () => {
-    if (!file) return
-
-    const { data, error } = await usingTryCatch(uploadImage(file))
-
-    if (!data || error) {
-      showErrorSnackbar(error)
-      return
-    }
-    return data
+    await fetchWithMessage(Promise.all(calls), 'Cadastro realizado!')
   }
 
   const getImageSource = () => {
-    if (file) return URL.createObjectURL(file)
+    //if (file) return URL.createObjectURL(file)
     if (user?.imageSource) return user.imageSource
     else return userImage
   }
@@ -136,12 +108,7 @@ export const Edit = ({ isEdit, user }: EditProps) => {
         <h2>Configurações da conta</h2>
         <S.UserPhoto url={getImageSource()}>
           <Visible when={isEdit}>
-            <FileField
-              control={control}
-              name="image"
-              type="secondary"
-              onChange={(file) => setFile(file)}
-            />
+            <FileField control={control} name="imageSource" type="secondary" />
           </Visible>
         </S.UserPhoto>
         <p>O tamanho da imagem deve ser inferior a 10 MB</p>

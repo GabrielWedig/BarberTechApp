@@ -14,7 +14,7 @@ interface SelectFieldProps<TFieldValues extends FieldValues> {
 
 export interface Option {
   name: string
-  value: any
+  value: string
 }
 
 export function SelectField<TFieldValues extends FieldValues = FieldValues>({
@@ -45,7 +45,9 @@ export function SelectField<TFieldValues extends FieldValues = FieldValues>({
         onChange={changeEventHandler}
       >
         {options.map((o) => (
-          <MenuItem value={o.value}>{o.name}</MenuItem>
+          <MenuItem key={o.value} value={o.value}>
+            {o.name}
+          </MenuItem>
         ))}
       </Select>
       <FieldError message={fieldState.error?.message} />

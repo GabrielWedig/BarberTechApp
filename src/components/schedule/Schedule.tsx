@@ -1,10 +1,5 @@
 import { useState } from 'react'
-import {
-  ScheduleData,
-  useSchedules,
-  useSnackbarContext,
-  usingTryCatch
-} from '../../hooks'
+import { ScheduleData, useSchedules, useTryCatch } from '../../hooks'
 import * as S from './style'
 import { Check, Close } from '@mui/icons-material'
 import { ConfirmationModal } from '../modals'
@@ -12,7 +7,7 @@ import { ConfirmationModal } from '../modals'
 interface ScheduleProps {
   time: string
   schedule: ScheduleData | null
-  fetchCalendar: () => Promise<void>
+  fetchCalendar: () => void
 }
 
 type ConfirmationModal = 'complete' | 'cancel' | 'closed'
@@ -22,20 +17,19 @@ export const Schedule = ({ time, schedule, fetchCalendar }: ScheduleProps) => {
     useState<ConfirmationModal>('closed')
 
   const { cancelSchedule, completeSchedule } = useSchedules()
-  const { showErrorSnackbar } = useSnackbarContext()
+  const { fetchData } = useTryCatch()
 
-  const handleConfirm = async (value: boolean) => {
+  const handleConfirm = async () => {
     const action =
       confirmationModal === 'cancel' ? cancelSchedule : completeSchedule
 
-    if (!action || !value) return
+    if (!action) return
 
-    const { error } = await usingTryCatch(action(schedule?.id ?? ''))
+    const { success } = await fetchData(action(schedule?.id ?? ''))
 
-    if (error) {
-      showErrorSnackbar(error)
+    if (success) {
+      fetchCalendar()
     }
-    fetchCalendar()
   }
 
   return (

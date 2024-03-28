@@ -2,16 +2,15 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { InputField, Option, TextareaField, FileField } from '../../fields'
 import { Modal } from '../base/Modal'
 import * as S from './style'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   CreateBarberRequest,
   UpdateBarberRequest,
   useBarbers,
   useEstablishments,
-  useRequest,
-  useSnackbarContext,
   useUsers,
-  usingTryCatch
+  useTryCatch,
+  BarberData
 } from '../../../hooks'
 import { Button, Visible } from '../..'
 import { getBarberSchema } from './schema'
@@ -41,34 +40,20 @@ interface FormData {
   imageSource?: string
 }
 
-interface FileData {
-  file: File | null
-  name: string | null
-}
-
 export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
   const isEdit = !!barberId
 
-  const [fileData, setFileData] = useState<FileData>({ name: null, file: null })
-
   const { getEstablishmentOptions } = useEstablishments()
   const { getUserOptions } = useUsers()
-  const { uploadImage } = useRequest('')
   const { createBarber, updateBarber, getBarberById } = useBarbers()
-
-  const { showErrorSnackbar, showSuccessSnackbar } = useSnackbarContext()
+  const { fetchData, fetchAndReset, fetchAndMapOptions } = useTryCatch()
 
   useEffect(() => {
     if (open && isEdit) {
-      fetchData()
+      fetchDataInternal()
     }
-    return () => resetAll()
+    return () => reset()
   }, [open])
-
-  const resetAll = () => {
-    reset()
-    setFileData({ name: null, file: null })
-  }
 
   const fetchOptions = async (type: OptionsType, searchTerm?: string) => {
     const action =
@@ -76,42 +61,28 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
         ? getUserOptions(searchTerm)
         : getEstablishmentOptions(searchTerm)
 
-    const { data, error } = await usingTryCatch(action)
-
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return []
-    }
-
-    return data.map((d) => ({ name: d.name, value: d.id }))
+    return await fetchAndMapOptions(action)
   }
 
-  const fetchData = async () => {
-    const { data, error } = await usingTryCatch(getBarberById(barberId ?? ''))
+  const fetchDataInternal = async () =>
+    await fetchAndReset(getBarberById(barberId ?? ''), resetBarber)
 
-    if (error || !data) {
-      showErrorSnackbar(error)
-      return
-    }
-
+  const resetBarber = (data: BarberData) =>
     reset({
       about: data.about,
       contact: data.contact,
       establishmentId: data.establishmentId,
       facebook: data.social.facebook,
       instagram: data.social.instagram,
-      twitter: data.social.twitter
+      twitter: data.social.twitter,
+      imageSource: data.imageSource
     })
-    setFileData((current) => ({ ...current, name: data.imageSource }))
-  }
 
   const { control, handleSubmit, reset } = useForm<FormData>({
     resolver: yupResolver(getBarberSchema(isEdit))
   })
 
   const handleModalSubmit = async (values: FieldValues) => {
-    const fileName = await handleUploadImage()
-
     const social = {
       instagram: values.instagram,
       facebook: values.facebook,
@@ -122,8 +93,8 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
       establishmentId: values.establishmentId,
       about: values.about,
       contact: values.contact,
-      social: social,
-      imageSource: fileName ?? fileData.name ?? ''
+      imageSource: values.imageSource,
+      social: social
     }
 
     const createRequest: CreateBarberRequest = {
@@ -138,26 +109,8 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
       ? updateBarber(barberId, updateRequest)
       : createBarber(createRequest)
 
-    const { error } = await usingTryCatch(action)
-
-    if (error) {
-      showErrorSnackbar(error)
-      return
-    }
-    showSuccessSnackbar()
+    await fetchData(action)
     onClose()
-  }
-
-  const handleUploadImage = async () => {
-    if (!fileData.file) return
-
-    const { data, error } = await usingTryCatch(uploadImage(fileData.file))
-
-    if (!data || error) {
-      showErrorSnackbar(error)
-      return
-    }
-    return data
   }
 
   return (
@@ -183,14 +136,7 @@ export const BarberModal = ({ open, onClose, barberId }: BarberModalProps) => {
               />
             </Visible>
           </div>
-          <FileField
-            control={control}
-            label="Imagem"
-            name="imageSource"
-            onChange={(file) =>
-              setFileData((current) => ({ ...current, file }))
-            }
-          />
+          <FileField control={control} label="Imagem" name="imageSource" />
           <TextareaField control={control} label="Sobre" name="about" />
           <InputField control={control} label="Instagram" name="instagram" />
           <InputField control={control} label="Twitter" name="twitter" />

@@ -1,7 +1,7 @@
 import { FieldValues, useForm } from 'react-hook-form'
 import { Button, ModalTypes, InputField } from '../..'
 import * as S from './style'
-import { useSnackbarContext, useUsers, usingTryCatch } from '../../../hooks'
+import { useSnackbarContext, useUsers, useTryCatch } from '../../../hooks'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { loginSchema } from './schema'
 
@@ -20,8 +20,8 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
     resolver: yupResolver(loginSchema)
   })
 
-  const { showErrorSnackbar } = useSnackbarContext()
   const { login } = useUsers()
+  const { fetchData } = useTryCatch()
 
   const handleLoginSubmit = async (values: FieldValues) => {
     const request = {
@@ -29,12 +29,7 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
       password: values.password
     }
 
-    const { error } = await usingTryCatch(login(request))
-
-    if (error) {
-      showErrorSnackbar(error)
-      return
-    }
+    await fetchData(login(request))
     onClose()
   }
 
@@ -55,9 +50,6 @@ export const Login = ({ setModalType, onClose }: LoginProps) => {
           placeholder="Digite sua senha"
           type="password"
         />
-        <a onClick={() => setModalType('forgot')} className="forgot-password">
-          Esqueceu a senha?
-        </a>
         <Button type="primary" onClick={handleSubmit(handleLoginSubmit)}>
           Fazer Login
         </Button>

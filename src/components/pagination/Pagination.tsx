@@ -30,7 +30,7 @@ export const Pagination = ({
     <Visible when={totalCount > pageSize}>
       <Stack spacing={2}>
         <S.StyledPagination
-          paginationColor={paginationColor}
+          paginationcolor={paginationColor}
           count={count}
           page={page}
           onChange={(_, page) => handlePaginationChange(page)}
