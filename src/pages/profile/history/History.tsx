@@ -7,6 +7,8 @@ interface HistoryProps {
 }
 
 export const History = ({ user }: HistoryProps) => {
+  const events = user?.eventSchedules ?? []
+
   return (
     <S.HistoryBox>
       <h1>Histórico de cortes</h1>
@@ -16,7 +18,7 @@ export const History = ({ user }: HistoryProps) => {
         <p>AVALIAÇÃO</p>
       </div>
       <div>
-        {user?.eventSchedules.map((es) => (
+        {events.map((es) => (
           <HaircutItem
             barberName={es.barberName}
             name={es.haircut.name}
