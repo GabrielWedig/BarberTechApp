@@ -24,6 +24,7 @@ export const History = ({ user }: HistoryProps) => {
             name={es.haircut.name}
             date={es.dateTime}
             imageSource={es.haircut.imageSource}
+            eventScheduleId={es.id}
           />
         ))}
       </div>

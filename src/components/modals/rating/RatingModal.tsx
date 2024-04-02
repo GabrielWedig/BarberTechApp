@@ -6,6 +6,7 @@ import { RatingComment } from './RatingComment'
 interface RatingModalProps {
   open: boolean
   onClose: () => void
+  eventScheduleId: string
 }
 
 export interface RatingStarsData {
@@ -22,7 +23,11 @@ export type RatingModalTypes =
   | 'haircut'
   | 'comment'
 
-export const RatingModal = ({ open, onClose }: RatingModalProps) => {
+export const RatingModal = ({
+  eventScheduleId,
+  open,
+  onClose
+}: RatingModalProps) => {
   const defaultData = {
     establishment: 0,
     barber: 0,
@@ -67,7 +72,13 @@ export const RatingModal = ({ open, onClose }: RatingModalProps) => {
         />
       )}
       {type === 'comment' && (
-        <RatingComment setType={setType} setData={setData} />
+        <RatingComment
+          setType={setType}
+          setData={setData}
+          data={data}
+          onClose={onClose}
+          eventScheduleId={eventScheduleId}
+        />
       )}
     </Modal>
   )

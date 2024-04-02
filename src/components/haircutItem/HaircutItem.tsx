@@ -9,6 +9,7 @@ interface HaircutItemProps {
   name: string
   barberName: string
   date: string
+  eventScheduleId: string
 }
 
 export const HaircutItem = ({
@@ -16,28 +17,33 @@ export const HaircutItem = ({
   name,
   barberName,
   date,
+  eventScheduleId
 }: HaircutItemProps) => {
   const [openModal, setOpenModal] = useState<boolean>(false)
-  
+
   return (
     <S.HaircutItem>
       <div className="column">
-      <S.Image url={imageSource}></S.Image>
+        <S.Image url={imageSource}></S.Image>
         <div className="names">
           <span>{name}</span>
           <div>
-            <span className='barber'>Barbeiro: </span>
+            <span className="barber">Barbeiro: </span>
             <span>{barberName}</span>
           </div>
         </div>
       </div>
       <span className="column date">{date}</span>
-      <div className='column btn'>
+      <div className="column btn">
         <Button type="secondary" onClick={() => setOpenModal(true)}>
           Avaliar
         </Button>
       </div>
-      <RatingModal open={openModal} onClose={() => setOpenModal(false)}/>
+      <RatingModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        eventScheduleId={eventScheduleId}
+      />
     </S.HaircutItem>
   )
 }
