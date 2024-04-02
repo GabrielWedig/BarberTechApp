@@ -18,7 +18,7 @@ export const HaircutItem = styled.div`
     width: 400px;
   }
 
-  .date{
+  .date {
     color: var(--orange);
   }
 
@@ -28,12 +28,16 @@ export const HaircutItem = styled.div`
     margin-left: 15px;
   }
 
-  .names > span{
+  .names > span {
     margin-bottom: 15px;
   }
 
-  .barber{
-    color: #A1A5B3;
+  .barber {
+    color: #a1a5b3;
+  }
+
+  .btn {
+    margin-right: 18px;
   }
 `
 
@@ -43,5 +47,3 @@ export const Image = styled.div<ImageProps>`
   background: url(${(props) => props.url}) center / cover no-repeat;
   position: relative;
 `
-
-
